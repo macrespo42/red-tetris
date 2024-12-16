@@ -10,7 +10,7 @@ on:
 jobs:
   styles:
     name: Style
-    on: ubuntu-latest
+    runs-on: ubuntu-latest
 
   steps:
     - name: Check out code
