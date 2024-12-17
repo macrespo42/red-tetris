@@ -5,21 +5,21 @@ import prettierPlugin from "eslint-plugin-prettier";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-	{
-		files: ["**/*.js"],
-		languageOptions: {
-			sourceType: "commonjs",
-			globals: {
-				...globals.node,
-				...globals.browser,
-			}
-		},
-		rules: {
-			...pluginJs.configs.recommended.rules,
-		},
-		plugins: {
-			prettier: prettierPlugin,
-		},
-	},
-	prettierConfig,
+  {
+    files: ["**/*.js"],
+    languageOptions: {
+      sourceType: "module",
+      globals: {
+        ...globals.node,
+        ...globals.browser,
+      }
+    },
+    rules: {
+      ...pluginJs.configs.recommended.rules,
+    },
+    plugins: {
+      prettier: prettierPlugin,
+    },
+  },
+  prettierConfig,
 ];
