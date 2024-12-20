@@ -7,9 +7,15 @@ button {
 	font-weight: 500;
 	font-size: 32px;
 	padding: 1rem 2rem;
+	transition: ease-in-out 0.3s;
 }
 
 a {
 	color: var(--black);
 	text-decoration: none;
+}
+
+button:hover {
+	background-color: var(--secondary-light);
+	border: 6px solid var(--black);
 }
