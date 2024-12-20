@@ -1,5 +1,6 @@
 import { useParams } from "react-router";
 import Button from "./Button";
+import "../styles/Room.css";
 
 const Room = () => {
   const { room } = useParams();
@@ -12,11 +13,13 @@ const Room = () => {
       <section className="player-list">
         <ul>
           {players.map((player) => (
-            <li key={player}>{player}</li>
+            <li className="guest" key={player}>{player}</li>
           ))}
         </ul>
       </section>
-      <Button text="START" to="/" />
+      <div className="submit-button">
+        <Button text="START" to="/" />
+      </div>
     </div>
   );
 };
