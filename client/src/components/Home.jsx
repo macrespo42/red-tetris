@@ -4,7 +4,7 @@ const Home = () => {
   return (
     <div className="homepage">
       <header>
-        <h1 className="main-title">RED-TETRIS</h1>
+        <h1>RED TETRIS</h1>
       </header>
       <section className="home-section">
         <input type="text" name="room-name" placeholder="room" />

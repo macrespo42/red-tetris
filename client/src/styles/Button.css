@@ -1,0 +1,15 @@
+button {
+	width: 341px;
+	height: 100px;
+	background-color: var(--secondary);
+	border: 5px solid var(--black);
+	font-family: "Roboto", serif;
+	font-weight: 500;
+	font-size: 32px;
+	padding: 1rem 2rem;
+}
+
+a {
+	color: var(--black);
+	text-decoration: none;
+}

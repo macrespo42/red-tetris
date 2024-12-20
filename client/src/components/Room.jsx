@@ -7,7 +7,7 @@ const Room = () => {
   return (
     <div className="room-page">
       <header>
-        <h1 className="main-title">{room}</h1>
+        <h1>{room}</h1>
       </header>
       <section className="player-list">
         <ul>
