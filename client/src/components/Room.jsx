@@ -13,7 +13,9 @@ const Room = () => {
       <section className="player-list">
         <ul>
           {players.map((player) => (
-            <li className="guest" key={player}>{player}</li>
+            <li className="guest" key={player}>
+              {player}
+            </li>
           ))}
         </ul>
       </section>
