@@ -1,0 +1,50 @@
+.gameView {
+	display: grid;
+	grid-template-columns: 45% 100px 1fr;
+	grid-template-rows: 50px 1fr 1fr 100px;
+	gap: 32px;
+	justify-items: center;
+	align-items: center;
+}
+
+.gameBoard {
+	width: 391px;
+	height: 781px;
+	background-color: black;
+	grid-column: 1 / 2;
+	grid-row: 2 / 4;
+	color: white;
+	justify-self: end;
+}
+
+.gameSideInfos {
+	grid-column: 2 / 3;
+	grid-row: 2 / 4;
+	justify-self: stretch;
+	align-self: self-start;
+}
+
+.gameSideInfos .nextPieces {
+	width: 181px;
+	height: 282px;
+	background-color: red;
+	margin-bottom: 64px;
+}
+
+.gameSideInfos .controls {
+	width: 181px;
+	height: 282px;
+	background-color: red;
+}
+
+.opponentBoards {
+	background-color: beige;
+	grid-column: 3 / 4;
+	grid-row: 2 / 4;
+}
+
+.opponentBoards .opponent {
+	width: 100%;
+	height: 282;
+	margin-bottom: 64px;
+}

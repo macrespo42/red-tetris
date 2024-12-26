@@ -26,6 +26,13 @@ h1 {
 	font-style: normal;
 }
 
+h2 {
+	font-family: "Roboto", serif;
+	color: #FFF;
+	font-weight: bold;
+	font-size: 32px;
+}
+
 p {
 	font-family: "Roboto", serif;
 	font-weight: 400;
