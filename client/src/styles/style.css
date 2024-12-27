@@ -1,0 +1,42 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+:root {
+	--primary: #1900D8;
+	--secondary: #E3170A;
+	--secondary-light: #E4572E;
+	--gold: #BFAB25;
+	--black: #080F0F;
+	--grey: #9AA0A8;
+}
+
+body {
+	background-color: var(--primary);
+}
+
+h1 {
+	color: var(--secondary);
+	-webkit-text-stroke: 1px black;
+	font-size: 88px;
+	font-family: "Rubik Mono One", serif;
+	font-weight: 400;
+	font-style: normal;
+}
+
+h2 {
+	font-family: "Roboto", serif;
+	color: #FFF;
+	font-weight: bold;
+	font-size: 32px;
+}
+
+p {
+	font-family: "Roboto", serif;
+	font-weight: 400;
+	font-style: normal;
+	color: #FFF;
+	font-size: 24px;
+}

@@ -1,0 +1,39 @@
+header {
+	margin-top: 80px;
+	margin-bottom: 80px;
+	text-align: center;
+}
+
+input {
+	background-color: var(--primary);
+	border: 5px solid var(--black);
+	color: #FFF;
+	width: 735px;
+	height: 100px;
+	margin-bottom: 28px;
+	padding-left: 1rem;
+	font-size: 32px;
+	color: #FFF;
+}
+
+::placeholder {
+	font-size: 32px;
+	color: #FFF;
+	opacity: 0.8;
+}
+
+.home-section {
+	width: 51%;
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+section div {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
