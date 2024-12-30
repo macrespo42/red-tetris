@@ -9,7 +9,7 @@ app.get("/", (_, res) => {
 });
 
 app.get("/:room/:player_name", (_, res) => {
-  res.send("My room")
+  res.send("My room");
 });
 
 app.listen(app.get("port"), () => {
