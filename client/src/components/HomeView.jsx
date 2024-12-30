@@ -1,5 +1,5 @@
 import Button from "./Button";
-import "../styles/Home.css";
+import "../styles/HomeView.css";
 import { useState } from "react";
 
 const Home = () => {

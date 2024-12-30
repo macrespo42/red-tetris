@@ -1,6 +1,6 @@
 import { useParams } from "react-router";
 import Button from "./Button";
-import "../styles/Room.css";
+import "../styles/RoomView.css";
 
 const Room = () => {
   const { room } = useParams();
