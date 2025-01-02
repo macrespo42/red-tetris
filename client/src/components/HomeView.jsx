@@ -15,12 +15,14 @@ const HomeView = () => {
           type="text"
           name="player-name"
           placeholder="pseudo"
+          autoComplete="off"
           onChange={(e) => setPlayer(e.target.value)}
         />
         <input
           type="text"
           name="room-name"
           placeholder="room"
+          autoComplete="off"
           onChange={(e) => setRoom(e.target.value)}
         />
         <div className="button-container">
