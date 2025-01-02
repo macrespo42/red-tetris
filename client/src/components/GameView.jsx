@@ -1,8 +1,10 @@
 import "../styles/GameView.css";
-const Game = () => {
+import TetrisGrid from "./TetrisGrid";
+
+const GameView = () => {
   return (
     <div className="gameView">
-      <div className="gameBoard"></div>
+      <TetrisGrid width={10} height={20} />
       <div className="gameSideInfos">
         <h2>Next pieces</h2>
         <div className="nextPieces"></div>
@@ -14,4 +16,4 @@ const Game = () => {
   );
 };
 
-export default Game;
+export default GameView;

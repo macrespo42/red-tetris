@@ -2,7 +2,7 @@ import Button from "./Button";
 import "../styles/HomeView.css";
 import { useState } from "react";
 
-const Home = () => {
+const HomeView = () => {
   const [room, setRoom] = useState("");
   const [player, setPlayer] = useState("");
   return (
@@ -32,4 +32,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomeView;

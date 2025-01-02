@@ -2,7 +2,7 @@ import { useParams } from "react-router";
 import Button from "./Button";
 import "../styles/RoomView.css";
 
-const Room = () => {
+const RoomView = () => {
   const { room } = useParams();
   const players = ["player1", "player2", "lorem ipsum"];
   return (
@@ -26,4 +26,4 @@ const Room = () => {
   );
 };
 
-export default Room;
+export default RoomView;
