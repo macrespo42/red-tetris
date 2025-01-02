@@ -5,8 +5,8 @@ services:
     ports:
       - 5173:5173
     volumes:
-      - './client:/app'
-      - '/app/node_modules'
+      - "./client:/app"
+      - "/app/node_modules"
     stdin_open: true
   server:
     build: ./server
@@ -14,7 +14,7 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - './server:/app'
-      - '/app/node_modules'
+      - "./server:/app"
+      - "/app/node_modules"
     environment:
       - PORT=3000

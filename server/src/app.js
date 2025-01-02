@@ -1,14 +1,14 @@
 import express from "express";
 import { Server } from "socket.io";
+import { createServer } from "node:http";
 
 const app = express();
-const io = new Server({
-  cors: {
-    origin: "http://localhost:5173",
-  },
-});
+const server = createServer(app);
 
-io.listen(4000);
+const io = new Server(server, {
+  cors: "http://localhost:5173",
+  methods: ["GET", "POST"],
+});
 
 app.set("port", process.env.PORT || 3000);
 
@@ -16,17 +16,10 @@ app.get("/", (_, res) => {
   res.send("hello world");
 });
 
-app.get("/:room/:player_name", (_, res) => {
-  res.send("My room");
-});
-
 io.on("connection", (socket) => {
-  console.log("A user is connected");
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
-  });
+  console.log(`A user is connected: ${socket.id}`);
 });
 
-app.listen(app.get("port"), () => {
+server.listen(3000, () => {
   console.log(`App listening on port ${app.get("port")}`);
 });
