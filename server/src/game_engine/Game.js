@@ -3,6 +3,10 @@ import Board from "./Board";
 
 class Game {
   QUEUE_SIZE = 20;
+
+  /**
+   * @param { string } name
+   **/
   constructor(name) {
     this.name = name;
     this.isStarted = false;
@@ -17,6 +21,9 @@ class Game {
     }
   }
 
+  /**
+   * @param { Player} player
+   **/
   addPlayer(player) {
     player.board = new Board();
     this.players.add(player);

@@ -1,4 +1,8 @@
 class Board {
+  /**
+   * @param {number} [width=10]
+   * @param {number} [height=20]
+   **/
   constructor(width = 10, height = 20) {
     this.width = width;
     this.height = height;

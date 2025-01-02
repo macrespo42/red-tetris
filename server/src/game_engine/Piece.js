@@ -31,6 +31,9 @@ class Piece {
 
   static I = [[1, 1, 1, 1]];
 
+  /**
+   * @param {string} [type="random"]
+   **/
   constructor(type = "random") {
     if (type) {
       if (type == "0") this.shape = [...Piece.O];
