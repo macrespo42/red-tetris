@@ -1,22 +1,13 @@
 import Piece from "./Piece";
+import Board from "./Board";
 
 class Game {
   QUEUE_SIZE = 20;
-  constructor(width = 10, height = 20) {
-    this.width = width;
-    this.height = height;
+  constructor(name) {
+    this.name = name;
     this.isStarted = false;
     this.players = [];
     this.pieceQueue = [];
-    this.#initBoard();
-  }
-
-  #initBoard() {
-    this.board = [];
-    for (let i = 0; i < this.height; i++) {
-      const arr = Array(this.width).fill(0);
-      this.board.push(arr);
-    }
   }
 
   #fillPieceQueue() {
@@ -24,6 +15,11 @@ class Game {
       const piece = new Piece();
       this.pieceQueue.push(piece);
     }
+  }
+
+  addPlayer(player) {
+    player.board = new Board();
+    this.players.add(player);
   }
 
   startGame() {
