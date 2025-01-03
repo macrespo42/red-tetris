@@ -1,5 +1,5 @@
-import Piece from "./Piece";
-import Board from "./Board";
+import Piece from "./Piece.js";
+import Board from "./Board.js";
 
 class Game {
   QUEUE_SIZE = 20;
@@ -26,7 +26,7 @@ class Game {
    **/
   addPlayer(player) {
     player.board = new Board();
-    this.players.add(player);
+    this.players.push(player);
   }
 
   startGame() {
