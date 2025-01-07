@@ -31,7 +31,10 @@ const RoomView = () => {
       <section className="player-list">
         <ul>
           {players.map((player) => (
-            <li className="guest" key={player.id}>
+            <li
+              className={`player ${player.isGameOwner ? "owner" : "guest"}`}
+              key={player.id}
+            >
               {player.name}
             </li>
           ))}

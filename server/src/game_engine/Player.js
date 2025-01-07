@@ -5,11 +5,11 @@ class Player {
    * @param { string } id
    * @param { boolean } [gameOwner=false]
    **/
-  constructor(name, id, gameOwner = false) {
+  constructor(name, id, isGameOwner = false) {
     this.name = name;
     this.id = id;
     this.inGame = false;
-    this.gameOwner = gameOwner;
+    this.isGameOwner = isGameOwner;
   }
 }
 
