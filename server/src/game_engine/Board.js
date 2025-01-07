@@ -1,3 +1,4 @@
+"use strict";
 class Board {
   /**
    * @param {number} [width=10]

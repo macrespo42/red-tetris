@@ -1,3 +1,4 @@
+"use strict";
 import express from "express";
 import { Server } from "socket.io";
 import { createServer } from "node:http";
@@ -28,14 +29,30 @@ app.get("/", (_, res) => {
     });
 
     socket.on("joining room", (gameInfos) => {
-      const { room, player } = gameInfos;
+      const { room, player, socketId } = gameInfos;
+      socket.join(room);
       let game = games.find((game) => game.name == room);
+
       if (game != undefined) {
-        game.addPlayer(new Player(player));
+        const isPlayerInGame = game.players.find((p) => p.id === socketId);
+        if (!isPlayerInGame) game.addPlayer(new Player(player, socketId));
       } else {
         game = new Game(room);
-        game.addPlayer(new Player(player));
+        game.addPlayer(new Player(player, socketId, true));
         games.push(game);
+      }
+      io.to(room).emit("players list", game.players);
+    });
+  });
+
+  io.on("disconnect", (socket) => {
+    console.log(`User: ${socket.id} disconnect`);
+    games.forEach((game) => {
+      const playerIndex = game.players.findIndex(
+        (player) => player.id === socket.id,
+      );
+      if (playerIndex !== -1) {
+        game.players.splice(playerIndex, 1);
       }
     });
   });

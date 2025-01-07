@@ -4,9 +4,9 @@ export const playerSlice = createSlice({
   name: "player",
   initialState: {
     value: {
-      socketId: "1234",
-      name: "roger",
-      roomName: "42",
+      socketId: "",
+      name: "",
+      roomName: "",
     },
   },
   reducers: {

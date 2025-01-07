@@ -1,5 +1,6 @@
+"use strict";
 import Piece from "./Piece.js";
-import Board from "./Board.js";
+// import Board from "./Board.js";
 
 class Game {
   QUEUE_SIZE = 20;
@@ -25,7 +26,7 @@ class Game {
    * @param { Player} player
    **/
   addPlayer(player) {
-    player.board = new Board();
+    // player.board = new Board();
     this.players.push(player);
   }
 

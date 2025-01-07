@@ -9,7 +9,7 @@ const SocketMiddleware = ({ children }) => {
   useEffect(() => {
     socket.on("connect", () => {
       console.log(`Connected: ${socket.id}`);
-      dispatch(socketId({ socketID: socket.id }));
+      dispatch(socketId({ socketId: socket.id }));
     });
 
     socket.on("connect_error", (err) => {
@@ -22,8 +22,7 @@ const SocketMiddleware = ({ children }) => {
       socket.off("connect_error");
       socket.disconnect();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   return <>{children}</>;
 };
