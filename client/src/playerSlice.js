@@ -7,6 +7,7 @@ export const playerSlice = createSlice({
       socketId: "",
       name: "",
       roomName: "",
+      isGameOwner: false,
     },
   },
   reducers: {
@@ -22,8 +23,12 @@ export const playerSlice = createSlice({
     roomName: (state, action) => {
       state.value.roomName = action.payload.roomName;
     },
+    isGameOwner: (state, action) => {
+      state.value.isGameOwner = action.payload.isGameOwner;
+    },
   },
 });
 
-export const { all, socketId, name, roomName } = playerSlice.actions;
+export const { all, socketId, name, roomName, isGameOwner } =
+  playerSlice.actions;
 export default playerSlice.reducer;

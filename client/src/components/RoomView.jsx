@@ -4,16 +4,21 @@ import "../styles/RoomView.css";
 import { socket } from "../socket";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { name, roomName } from "../playerSlice";
+import { name, roomName, isGameOwner } from "../playerSlice";
 
 const RoomView = () => {
   let { room, player } = useParams();
   let [players, setPlayers] = useState([player]);
   const dispatch = useDispatch();
   const socketId = useSelector((state) => state.player.value.socketId);
+  const gameOwner = useSelector((state) => state.player.value.isGameOwner);
 
   socket.on("players list", (playersLst) => {
     players = playersLst.map((player) => player);
+    const currentPlayer = players.find((player) => player.id === socketId);
+    if (currentPlayer) {
+      dispatch(isGameOwner({ isGameOwner: currentPlayer.isGameOwner }));
+    }
     setPlayers([...players]);
   });
 
@@ -41,7 +46,7 @@ const RoomView = () => {
         </ul>
       </section>
       <div className="submit-button">
-        <Button text="START" to={`/${room}/${player}`} />
+        {gameOwner && <Button text="START" to={`/${room}/${player}`} />}
       </div>
     </div>
   );
