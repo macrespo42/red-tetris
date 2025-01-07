@@ -2,21 +2,21 @@ import { useParams } from "react-router";
 import Button from "./Button";
 import "../styles/RoomView.css";
 import { socket } from "../socket";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const RoomView = () => {
-  const { room, player } = useParams();
-  const players = ["player1", "player2", "lorem ipsum"];
+  let { room, player } = useParams();
+  let [players, setPlayers] = useState([player]);
+
+  socket.on("players list", (playersLst) => {
+    players = playersLst.map((player) => player.name);
+    setPlayers([...players]);
+  });
 
   useEffect(() => {
     socket.emit("joining room", { room, player });
   }, [room, player]);
 
-  function startGame() {
-    console.log(`SARTING THE GAMEEEEEE.... ${player}`);
-    socket.connect();
-    socket.emit("start game", player);
-  }
   return (
     <div className="room-page">
       <header>
@@ -31,7 +31,6 @@ const RoomView = () => {
           ))}
         </ul>
       </section>
-      <button onClick={startGame}>click me lol</button>
       <div className="submit-button">
         <Button text="START" to={`/${room}/${player}`} />
       </div>
