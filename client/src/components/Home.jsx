@@ -21,11 +21,12 @@ const Home = () => {
           type="text"
           name="room-name"
           placeholder="room"
+          aria-label="room"
           onChange={(e) => setRoom(e.target.value)}
         />
         <div className="button-container">
-          <Button text="CREATE ROOM" to={`/lobby/${room}/${player}`} />
-          <Button text="JOIN GAME" to={`/lobby/${room}/${player}`} />
+          <Button id="create-room" text="CREATE ROOM" to={`/lobby/${room}/${player}`} />
+          <Button id="join-room" text="JOIN GAME" to={`/lobby/${room}/${player}`} />
         </div>
       </section>
     </div>

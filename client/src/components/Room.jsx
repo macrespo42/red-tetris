@@ -20,7 +20,7 @@ const Room = () => {
         </ul>
       </section>
       <div className="submit-button">
-        <Button text="START" to="/" />
+        <Button id="start-room" text="START" to="/" />
       </div>
     </div>
   );

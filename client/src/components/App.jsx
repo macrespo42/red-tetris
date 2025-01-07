@@ -3,8 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import Home from "./Home";
 import Room from "./Room";
 import Game from "./Game";
+import React from "react";
 
-const App = () => {
+const  App = () => {
   return (
     <BrowserRouter>
       <Routes>
@@ -19,3 +20,5 @@ const App = () => {
 const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(<App />);
+
+export default App;

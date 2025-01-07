@@ -1,9 +1,10 @@
 import { Link } from "react-router";
 import "../styles/Button.css";
 
-const Button = ({ text, to }) => {
+const Button = ({ id, text, to }) => {
   return (
-    <button className="button-primary" type="submit">
+    
+    <button id={id} className="button-primary" type="submit">
       <Link to={to}>{text}</Link>
     </button>
   );
