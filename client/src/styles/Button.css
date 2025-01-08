@@ -18,4 +18,5 @@ a {
 button:hover {
 	background-color: var(--secondary-light);
 	border: 6px solid var(--black);
+	cursor: pointer;
 }

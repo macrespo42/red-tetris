@@ -39,8 +39,23 @@ app.get("/", (_, res) => {
         games.push(game);
       }
       const playersArray = Array.from(game.players.values());
-      console.debug(playersArray);
+      // console.debug(playersArray);
       io.to(room).emit("players list", playersArray);
+    });
+
+    socket.on("start game", (args) => {
+      const { room } = args;
+      const game = games.find((g) => g.name === room);
+      if (game) {
+        const player = game.players.get(socket.id);
+        if (player && player.isGameOwner) {
+          // start game in backend
+          game.startGame();
+          // emit an event to all player so we can redirect them in client
+          io.to(room).emit("game started", game);
+          // set interval where we emit game update every x seconds
+        }
+      }
     });
   });
 
