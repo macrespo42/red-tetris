@@ -1,8 +1,8 @@
 import Button from "./Button";
-import "../styles/Home.css";
+import "../styles/HomeView.css";
 import { useState } from "react";
 
-const Home = () => {
+const HomeView = () => {
   const [room, setRoom] = useState("");
   const [player, setPlayer] = useState("");
   return (
@@ -15,22 +15,23 @@ const Home = () => {
           type="text"
           name="player-name"
           placeholder="pseudo"
+          autoComplete="off"
           onChange={(e) => setPlayer(e.target.value)}
         />
         <input
           type="text"
           name="room-name"
           placeholder="room"
-          aria-label="room"
+          autoComplete="off"
           onChange={(e) => setRoom(e.target.value)}
         />
         <div className="button-container">
-          <Button id="create-room" text="CREATE ROOM" to={`/lobby/${room}/${player}`} />
-          <Button id="join-room" text="JOIN GAME" to={`/lobby/${room}/${player}`} />
+          <Button text="CREATE ROOM" to={`/lobby/${room}/${player}`} />
+          <Button text="JOIN GAME" to={`/lobby/${room}/${player}`} />
         </div>
       </section>
     </div>
   );
 };
 
-export default Home;
+export default HomeView;

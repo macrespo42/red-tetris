@@ -8,8 +8,8 @@
 }
 
 .gameBoard {
-	width: 391px;
-	height: 781px;
+	width: 400px;
+	height: 780px;
 	background-color: black;
 	grid-column: 1 / 2;
 	grid-row: 2 / 4;

@@ -1,10 +1,6 @@
-import { describe, it, expect, test } from "vitest";
-import Home from "../components/Home";
-import { MemoryRouter, Route, Routes } from "react-router";
-import userEvent from '@testing-library/user-event'
-import Room from "../components/Room";
+import { render, } from "@testing-library/react";
+import { describe, it, expect, } from "vitest";
 import App from "../components/App";
-import { createRoot } from 'react-dom/client';
 import { vi, beforeEach, afterEach } from 'vitest';
 
 // Mock de createRoot pour capturer les appels à cette fonction
@@ -16,7 +12,6 @@ vi.mock('react-dom/client', () => ({
 
 describe('DOM rendering', () => {
   beforeEach(() => {
-    // Reset du DOM et des mocks avant chaque test
     document.body.innerHTML = '';
   });
 
@@ -24,30 +19,19 @@ describe('DOM rendering', () => {
     vi.clearAllMocks();
   });
 
-  it('renders the application if #root is present', () => {
+
+  it('renders without crashing', () => {
     const rootDiv = document.createElement('div');
     rootDiv.id = 'root';
     document.body.appendChild(rootDiv);
 
-    // Mock getElementById pour qu'il retourne rootDiv
-    vi.spyOn(document, 'getElementById').mockReturnValue(rootDiv);
+    render(
+        <App />,
+      { container: rootDiv } 
+    );
+
     expect(document.body.innerHTML).toMatch(/RED TETRIS/i); 
-
-    // Nettoyage
-    document.body.removeChild(rootDiv);
   });
-
-
-//   it('renders without crashing', () => {
-//     const rootDiv = document.createElement('div');
-//     rootDiv.id = 'root';
-//     document.body.appendChild(rootDiv);
-
-//     render(
-//         <App />,
-//       { container: rootDiv } 
-//     );
-
-//     expect(document.body.innerHTML).toMatch(/RED TETRIS/i); 
-//   });
 })
+
+
