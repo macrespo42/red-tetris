@@ -24,36 +24,30 @@ app.get("/", (_, res) => {
 
   io.on("connection", (socket) => {
     console.log(`A user is connected: ${socket.id}`);
-    socket.on("start game", (player) => {
-      console.log(`${player} Want to start the game!`);
-    });
 
     socket.on("joining room", (gameInfos) => {
-      const { room, player, socketId } = gameInfos;
+      const { room, player } = gameInfos;
       socket.join(room);
       let game = games.find((game) => game.name == room);
 
       if (game != undefined) {
-        const isPlayerInGame = game.players.find((p) => p.id === socketId);
-        if (!isPlayerInGame) game.addPlayer(new Player(player, socketId));
+        if (!game.players.get(socket.id))
+          game.addPlayer(new Player(player, socket.id));
       } else {
         game = new Game(room);
-        game.addPlayer(new Player(player, socketId, true));
+        game.addPlayer(new Player(player, socket.id, true));
         games.push(game);
       }
-      io.to(room).emit("players list", game.players);
+      const playersArray = Array.from(game.players.values());
+      console.debug(playersArray);
+      io.to(room).emit("players list", playersArray);
     });
   });
 
   io.on("disconnect", (socket) => {
     console.log(`User: ${socket.id} disconnect`);
     games.forEach((game) => {
-      const playerIndex = game.players.findIndex(
-        (player) => player.id === socket.id,
-      );
-      if (playerIndex !== -1) {
-        game.players.splice(playerIndex, 1);
-      }
+      if (game.players[socket.id]) delete game.players[socket.id];
     });
   });
 }

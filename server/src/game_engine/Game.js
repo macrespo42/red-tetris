@@ -1,9 +1,9 @@
 "use strict";
 import Piece from "./Piece.js";
-// import Board from "./Board.js";
+import Board from "./Board.js";
 
 class Game {
-  QUEUE_SIZE = 20;
+  QUEUE_SIZE = 4096;
 
   /**
    * @param { string } name
@@ -11,7 +11,7 @@ class Game {
   constructor(name) {
     this.name = name;
     this.isStarted = false;
-    this.players = [];
+    this.players = new Map();
     this.pieceQueue = [];
   }
 
@@ -25,9 +25,9 @@ class Game {
   /**
    * @param { Player} player
    **/
-  addPlayer(player) {
-    // player.board = new Board();
-    this.players.push(player);
+  addPlayer(newPlayer) {
+    newPlayer.board = new Board();
+    this.players.set(newPlayer.id, newPlayer);
   }
 
   startGame() {
