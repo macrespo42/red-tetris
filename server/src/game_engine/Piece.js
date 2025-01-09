@@ -1,9 +1,9 @@
 "use strict";
 class Piece {
   static O = [
+    [1, 1, 0],
+    [1, 1, 0],
     [0, 0, 0],
-    [1, 1, 0],
-    [1, 1, 0],
   ];
 
   static S = [
@@ -19,21 +19,21 @@ class Piece {
   ];
 
   static T = [
-    [0, 0, 0],
     [0, 1, 0],
     [1, 1, 1],
+    [0, 0, 0],
   ];
 
   static L = [
-    [0, 0, 0],
     [0, 0, 1],
     [1, 1, 1],
+    [0, 0, 0],
   ];
 
   static J = [
-    [0, 0, 0],
     [1, 0, 0],
     [1, 1, 1],
+    [0, 0, 0],
   ];
 
   static I = [
@@ -46,7 +46,7 @@ class Piece {
    * @param {string} [type="random"]
    **/
   constructor(type = "random") {
-    if (type) {
+    if (type !== "random") {
       if (type == "0") this.shape = [...Piece.O];
       if (type == "S") this.shape = [...Piece.S];
       if (type == "Z") this.shape = [...Piece.Z];
@@ -54,7 +54,7 @@ class Piece {
       if (type == "L") this.shape = [...Piece.L];
       if (type == "J") this.shape = [...Piece.J];
       if (type == "I") this.shape = [...Piece.I];
-    } else if (type == "random") {
+    } else {
       const shapes = [
         Piece.O,
         Piece.S,

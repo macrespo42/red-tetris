@@ -17,7 +17,7 @@ class Game {
 
   #fillPieceQueue() {
     for (let i = 0; i < this.QUEUE_SIZE; i++) {
-      const piece = new Piece("I");
+      const piece = new Piece();
       this.pieceQueue.push(piece);
     }
   }
