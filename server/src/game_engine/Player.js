@@ -10,6 +10,7 @@ class Player {
     this.id = id;
     this.inGame = false;
     this.isGameOwner = isGameOwner;
+    this.board = null;
   }
 }
 

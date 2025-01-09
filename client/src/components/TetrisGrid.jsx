@@ -1,18 +1,6 @@
 import "../styles/TetrisGrid.css";
-import { useState } from "react";
 
-const TetrisGrid = ({ width, height }) => {
-  const [matrix, setMatrix] = useState(
-    Array(height)
-      .fill(0)
-      .map(() => Array(width).fill(0)),
-  );
-
-  const handleFillCell = () => {
-    matrix[4][5] = 1;
-    setMatrix([...matrix]);
-  };
-
+const TetrisGrid = ({ matrix }) => {
   return (
     <div className="gameBoard">
       <div id="tetris-grid">
@@ -25,7 +13,6 @@ const TetrisGrid = ({ width, height }) => {
           )),
         )}
       </div>
-      <button onClick={handleFillCell}>click me!</button>
     </div>
   );
 };

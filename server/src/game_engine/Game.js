@@ -17,7 +17,7 @@ class Game {
 
   #fillPieceQueue() {
     for (let i = 0; i < this.QUEUE_SIZE; i++) {
-      const piece = new Piece();
+      const piece = new Piece("I");
       this.pieceQueue.push(piece);
     }
   }
@@ -33,6 +33,9 @@ class Game {
   startGame() {
     this.#fillPieceQueue();
     this.isStarted = true;
+    this.players.forEach((player) => {
+      player.board.insertPiece(this.pieceQueue[player.board.nextPieceIndex]);
+    });
   }
 }
 
