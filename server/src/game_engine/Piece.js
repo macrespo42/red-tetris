@@ -2,56 +2,65 @@
 class Piece {
   static O = [
     [
-      { x: 0, y: 0 },
-      { x: 0, y: 1 },
       { x: 1, y: 0 },
       { x: 1, y: 1 },
+      { x: 0, y: 0 },
+      { x: 0, y: 1 },
     ],
   ];
 
   static S = [
     [
+      { x: 1, y: 1 },
+      { x: 1, y: 0 },
       { x: 0, y: 1 },
       { x: 0, y: 2 },
-      { x: 1, y: 1 },
-      { x: 2, y: 0 },
-      { x: 2, y: 1 },
     ],
   ];
 
   static Z = [
-    { x: 0, y: 1 },
-    { x: 0, y: 2 },
-    { x: 1, y: 0 },
-    { x: 1, y: 1 },
+    [
+      { x: 1, y: 0 },
+      { x: 1, y: 1 },
+      { x: 0, y: 1 },
+      { x: 0, y: 2 },
+    ],
   ];
 
   static T = [
-    { x: 0, y: 1 },
-    { x: 1, y: 0 },
-    { x: 1, y: 1 },
-    { x: 1, y: 2 },
+    [
+      { x: 1, y: 0 },
+      { x: 1, y: 1 },
+      { x: 1, y: 2 },
+      { x: 0, y: 1 },
+    ],
   ];
 
   static L = [
-    { x: 0, y: 2 },
-    { x: 1, y: 0 },
-    { x: 1, y: 1 },
-    { x: 1, y: 2 },
+    [
+      { x: 1, y: 0 },
+      { x: 1, y: 1 },
+      { x: 1, y: 2 },
+      { x: 0, y: 2 },
+    ],
   ];
 
   static J = [
-    { x: 0, y: 0 },
-    { x: 1, y: 0 },
-    { x: 1, y: 1 },
-    { x: 1, y: 2 },
+    [
+      { x: 1, y: 0 },
+      { x: 1, y: 1 },
+      { x: 1, y: 2 },
+      { x: 0, y: 0 },
+    ],
   ];
 
   static I = [
-    { x: 1, y: 0 },
-    { x: 1, y: 1 },
-    { x: 1, y: 2 },
-    { x: 1, y: 3 },
+    [
+      { x: 0, y: 0 },
+      { x: 0, y: 1 },
+      { x: 0, y: 2 },
+      { x: 0, y: 3 },
+    ],
   ];
 
   /**
@@ -78,6 +87,12 @@ class Piece {
       ];
       this.shape = [...shapes[Math.floor(Math.random() * shapes.length)]];
     }
+  }
+
+  isInPiece(x, y, r) {
+    return this.shape[r].some(
+      (position) => position.x === x && position.y === y,
+    );
   }
 }
 

@@ -34,7 +34,20 @@ class Game {
     this.#fillPieceQueue();
     this.isStarted = true;
     this.players.forEach((player) => {
-      player.board.insertPiece(this.pieceQueue[player.board.nextPieceIndex]);
+      player.currentPiece = player.board.insertPiece(
+        this.pieceQueue[player.board.nextPieceIndex],
+      );
+    });
+  }
+
+  tick() {
+    this.players.forEach((player) => {
+      player.currentPiece = player.board.moveDown(player.currentPiece);
+      if (!player.currentPiece) {
+        player.currentPiece = player.board.insertPiece(
+          this.pieceQueue[player.board.nextPieceIndex],
+        );
+      }
     });
   }
 }

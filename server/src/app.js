@@ -39,27 +39,25 @@ app.get("/", (_, res) => {
         games.push(game);
       }
       const playersArray = Array.from(game.players.values());
-      // console.debug(playersArray);
       io.to(room).emit("players list", playersArray);
     });
 
     socket.on("start game", (args) => {
       const { room } = args;
       const game = games.find((g) => g.name === room);
-      console.log("start game received");
       if (game) {
-        console.log("game founded");
         const player = game.players.get(socket.id);
         if (player && player.isGameOwner) {
-          console.log("player founded and he is the game owner 😎");
           game.startGame();
-          const playersArray = Array.from(game.players.values());
-          console.table(playersArray[0].board.grid);
+
+          let playersArray = Array.from(game.players.values());
           io.to(room).emit("game started", playersArray);
-          // set interval where we emit game update every x seconds
-          // TODO make piece falls
-          // // please make this emit in a setInterval
-          io.to(room).emit("game state", playersArray);
+
+          setInterval(() => {
+            game.tick();
+            playersArray = Array.from(game.players.values());
+            io.to(room).emit("game state", playersArray);
+          }, 500);
         }
       }
     });

@@ -11,6 +11,7 @@ class Player {
     this.inGame = false;
     this.isGameOwner = isGameOwner;
     this.board = null;
+    this.currentPiece = null;
   }
 }
 

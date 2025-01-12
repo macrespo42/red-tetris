@@ -8,10 +8,7 @@ class Board {
   constructor(width = 10, height = 20) {
     this.width = width;
     this.height = height;
-    this.offset = 3;
     this.nextPieceIndex = 0;
-    this.pieceInMovement = false;
-    this.pieces = [];
     this.#initGrid();
   }
 
@@ -26,16 +23,50 @@ class Board {
    * @param {Piece} [piece]
    **/
   insertPiece(piece) {
-    this.pieces.push(piece);
-    piece.shape.forEach((position) => {
-      console.table(this.grid);
-      console.log(position);
-      this.grid[position.x][this.offset + position.y] = 1;
+    const offset = Math.floor((this.width - 1) / 2) - 1;
+    piece.shape[0] = piece.shape[0].map((position) => ({
+      x: position.x,
+      y: position.y + offset,
+    }));
+    piece.shape[0].forEach((position) => {
+      this.grid[position.x][position.y] = 1;
     });
+    return piece;
   }
 
-  fall() {
-    console.error("Not implemented yet");
+  moveDown(piece) {
+    const newPositions = [];
+    let collision = false;
+
+    piece.shape[0].forEach((position) => {
+      const newX = position.x + 1;
+      const newY = position.y;
+
+      if (
+        newX >= this.height ||
+        (this.grid[newX][newY] == 1 && !piece.isInPiece(newX, newY, 0))
+      ) {
+        collision = true;
+      } else {
+        newPositions.push({ x: newX, y: newY });
+      }
+    });
+
+    if (collision) {
+      this.nextPieceIndex++;
+      return null;
+    }
+
+    piece.shape[0].forEach((position) => {
+      this.grid[position.x][position.y] = 0;
+    });
+
+    newPositions.forEach((position) => {
+      this.grid[position.x][position.y] = 1;
+    });
+
+    piece.shape[0] = newPositions;
+    return piece;
   }
 }
 
