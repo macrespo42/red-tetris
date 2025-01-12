@@ -8,8 +8,10 @@ class Board {
   constructor(width = 10, height = 20) {
     this.width = width;
     this.height = height;
+    this.offset = 3;
     this.nextPieceIndex = 0;
     this.pieceInMovement = false;
+    this.pieces = [];
     this.#initGrid();
   }
 
@@ -24,18 +26,16 @@ class Board {
    * @param {Piece} [piece]
    **/
   insertPiece(piece) {
-    const middleWidth = Math.floor(this.width / 2);
-    for (let h = 0; h < 3; h++) {
-      this.grid[h].splice(
-        middleWidth - 1,
-        piece.shape[h].length,
-        ...piece.shape[h],
-      );
-    }
-    //check collision
-    //save piece position for next movement ?
-    this.pieceInMovement = true;
-    this.nextPieceIndex++;
+    this.pieces.push(piece);
+    piece.shape.forEach((position) => {
+      console.table(this.grid);
+      console.log(position);
+      this.grid[position.x][this.offset + position.y] = 1;
+    });
+  }
+
+  fall() {
+    console.error("Not implemented yet");
   }
 }
 

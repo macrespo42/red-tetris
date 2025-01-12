@@ -57,10 +57,9 @@ app.get("/", (_, res) => {
           console.table(playersArray[0].board.grid);
           io.to(room).emit("game started", playersArray);
           // set interval where we emit game update every x seconds
-          setInterval(() => {
-            // TODO make piece falls
-            io.to(room).emit("game state", playersArray);
-          }, 1000);
+          // TODO make piece falls
+          // // please make this emit in a setInterval
+          io.to(room).emit("game state", playersArray);
         }
       }
     });
