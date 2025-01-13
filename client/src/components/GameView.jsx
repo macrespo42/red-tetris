@@ -3,6 +3,7 @@ import "../styles/GameView.css";
 import TetrisGrid from "./TetrisGrid";
 import { socket } from "../socket";
 import { useSelector } from "react-redux";
+import useMoveTetrominoes from "../hooks/useMoveTetrominoes";
 
 const GameView = () => {
   const [matrix, setMatrix] = useState(
@@ -16,6 +17,8 @@ const GameView = () => {
     const currentPlayer = players.find((player) => player.id === socketId);
     if (currentPlayer) setMatrix([...currentPlayer.board.grid]);
   });
+
+  useMoveTetrominoes({ id: socketId });
 
   return (
     <div className="gameView">
