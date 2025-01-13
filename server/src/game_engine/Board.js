@@ -68,6 +68,46 @@ class Board {
     piece.shape[0] = newPositions;
     return piece;
   }
+
+  moveHorizontally(piece, direction) {
+    const newPositions = [];
+    let collision = false;
+
+    piece.shape[0].map((position) => ({
+      x: position.x,
+      y: position.y,
+    }));
+
+    piece.shape[0].forEach((position) => {
+      const newX = position.x;
+      const newY = direction === "right" ? position.y + 1 : position.y - 1;
+
+      if (
+        newY < 0 ||
+        newY >= this.width ||
+        (this.grid[newX][newY] == 1 && !piece.isInPiece(newX, newY, 0))
+      ) {
+        collision = true;
+      } else {
+        newPositions.push({ x: newX, y: newY });
+      }
+    });
+
+    if (collision) {
+      return piece;
+    }
+
+    piece.shape[0].forEach((position) => {
+      this.grid[position.x][position.y] = 0;
+    });
+
+    newPositions.forEach((position) => {
+      this.grid[position.x][position.y] = 1;
+    });
+
+    piece.shape[0] = newPositions;
+    return piece;
+  }
 }
 
 export default Board;

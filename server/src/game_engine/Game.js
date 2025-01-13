@@ -50,6 +50,21 @@ class Game {
       }
     });
   }
+
+  move(movement, playerId) {
+    const player = this.players.get(playerId);
+    if (movement === "moveLeft") {
+      player.currentPiece = player.board.moveHorizontally(
+        player.currentPiece,
+        "left",
+      );
+    } else if (movement === "moveRight") {
+      player.currentPiece = player.board.moveHorizontally(
+        player.currentPiece,
+        "right",
+      );
+    }
+  }
 }
 
 export default Game;
