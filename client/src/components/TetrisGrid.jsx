@@ -1,6 +1,15 @@
 import "../styles/TetrisGrid.css";
 
 const TetrisGrid = ({ matrix }) => {
+  const colorMap = {
+    1: "yellow",
+    2: "green",
+    3: "red",
+    4: "purple",
+    5: "orange",
+    6: "dark-blue",
+    7: "blue",
+  };
   return (
     <div className="gameBoard">
       <div id="tetris-grid">
@@ -8,7 +17,7 @@ const TetrisGrid = ({ matrix }) => {
           row.map((cell, colIndex) => (
             <div
               key={`${rowIndex}-${colIndex}`}
-              className={`cell ${cell === 1 ? "filled" : ""}`}
+              className={`cell ${cell > 0 ? colorMap[cell] : ""}`}
             ></div>
           )),
         )}

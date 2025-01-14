@@ -68,13 +68,34 @@ class Piece {
    **/
   constructor(type = "random") {
     if (type !== "random") {
-      if (type == "0") this.shape = [...Piece.O];
-      if (type == "S") this.shape = [...Piece.S];
-      if (type == "Z") this.shape = [...Piece.Z];
-      if (type == "T") this.shape = [...Piece.T];
-      if (type == "L") this.shape = [...Piece.L];
-      if (type == "J") this.shape = [...Piece.J];
-      if (type == "I") this.shape = [...Piece.I];
+      if (type == "0") {
+        this.shape = [...Piece.O];
+        this.color = 1;
+      }
+      if (type == "S") {
+        this.shape = [...Piece.S];
+        this.color = 2;
+      }
+      if (type == "Z") {
+        this.shape = [...Piece.Z];
+        this.color = 3;
+      }
+      if (type == "T") {
+        this.shape = [...Piece.T];
+        this.color = 4;
+      }
+      if (type == "L") {
+        this.shape = [...Piece.L];
+        this.color = 5;
+      }
+      if (type == "J") {
+        this.shape = [...Piece.J];
+        this.color = 6;
+      }
+      if (type == "I") {
+        this.shape = [...Piece.I];
+        this.color = 7;
+      }
     } else {
       const shapes = [
         Piece.O,
@@ -85,7 +106,9 @@ class Piece {
         Piece.J,
         Piece.I,
       ];
-      this.shape = [...shapes[Math.floor(Math.random() * shapes.length)]];
+      const randomIndex = Math.floor(Math.random() * shapes.length);
+      this.shape = [...shapes[randomIndex]];
+      this.color = randomIndex + 1;
     }
   }
 

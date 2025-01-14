@@ -56,6 +56,7 @@ app.get("/", (_, res) => {
           setInterval(() => {
             game.tick();
             playersArray = Array.from(game.players.values());
+            console.table(playersArray[0].board.grid);
             io.to(room).emit("game state", playersArray);
           }, 500);
 

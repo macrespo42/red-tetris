@@ -29,7 +29,7 @@ class Board {
       y: position.y + offset,
     }));
     piece.shape[0].forEach((position) => {
-      this.grid[position.x][position.y] = 1;
+      this.grid[position.x][position.y] = piece.color;
     });
     return piece;
   }
@@ -44,7 +44,7 @@ class Board {
 
       if (
         newX >= this.height ||
-        (this.grid[newX][newY] == 1 && !piece.isInPiece(newX, newY, 0))
+        (this.grid[newX][newY] > 0 && !piece.isInPiece(newX, newY, 0))
       ) {
         collision = true;
       } else {
@@ -62,7 +62,7 @@ class Board {
     });
 
     newPositions.forEach((position) => {
-      this.grid[position.x][position.y] = 1;
+      this.grid[position.x][position.y] = piece.color;
     });
 
     piece.shape[0] = newPositions;
@@ -85,7 +85,7 @@ class Board {
       if (
         newY < 0 ||
         newY >= this.width ||
-        (this.grid[newX][newY] == 1 && !piece.isInPiece(newX, newY, 0))
+        (this.grid[newX][newY] > 0 && !piece.isInPiece(newX, newY, 0))
       ) {
         collision = true;
       } else {
@@ -93,16 +93,14 @@ class Board {
       }
     });
 
-    if (collision) {
-      return piece;
-    }
+    if (collision) return piece;
 
     piece.shape[0].forEach((position) => {
       this.grid[position.x][position.y] = 0;
     });
 
     newPositions.forEach((position) => {
-      this.grid[position.x][position.y] = 1;
+      this.grid[position.x][position.y] = piece.color;
     });
 
     piece.shape[0] = newPositions;
