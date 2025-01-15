@@ -12,6 +12,12 @@ function useMoveTetrominoes({ id }) {
         e.preventDefault();
         console.log("Pressing arrow right");
         socket.emit("move right", id);
+      } else if (e.code === "ArrowDown") {
+        e.preventDefault();
+        socket.emit("move down", id);
+      } else if (e.code === "Space") {
+        e.preventDefault();
+        socket.emit("move bottom", id);
       } else {
         console.log("Unhandled keystroke");
       }

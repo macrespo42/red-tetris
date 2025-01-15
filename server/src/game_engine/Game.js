@@ -63,6 +63,12 @@ class Game {
         player.currentPiece,
         "right",
       );
+    } else if (movement === "moveDown") {
+      player.currentPiece = player.board.moveDown(player.currentPiece);
+    } else if (movement === "moveBottom") {
+      while (player.currentPiece) {
+        player.currentPiece = player.board.moveDown(player.currentPiece);
+      }
     }
   }
 }

@@ -35,6 +35,9 @@ class Board {
   }
 
   moveDown(piece) {
+    if (!piece) {
+      return null;
+    }
     const newPositions = [];
     let collision = false;
 
@@ -70,6 +73,9 @@ class Board {
   }
 
   moveHorizontally(piece, direction) {
+    if (!piece) {
+      return piece;
+    }
     const newPositions = [];
     let collision = false;
 

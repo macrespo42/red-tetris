@@ -56,17 +56,30 @@ app.get("/", (_, res) => {
           setInterval(() => {
             game.tick();
             playersArray = Array.from(game.players.values());
-            console.table(playersArray[0].board.grid);
             io.to(room).emit("game state", playersArray);
           }, 500);
 
           socket.on("move left", (id) => {
             game.move("moveLeft", id);
+            playersArray = Array.from(game.players.values());
             io.to(room).emit("game state", playersArray);
           });
 
           socket.on("move right", (id) => {
             game.move("moveRight", id);
+            playersArray = Array.from(game.players.values());
+            io.to(room).emit("game state", playersArray);
+          });
+
+          socket.on("move down", (id) => {
+            game.move("moveDown", id);
+            playersArray = Array.from(game.players.values());
+            io.to(room).emit("game state", playersArray);
+          });
+
+          socket.on("move bottom", (id) => {
+            game.move("moveBottom", id);
+            playersArray = Array.from(game.players.values());
             io.to(room).emit("game state", playersArray);
           });
         }
