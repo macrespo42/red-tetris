@@ -21,16 +21,34 @@ class Board {
 
   /**
    * @param {Piece} [piece]
+   * @return {Piece || null}
    **/
   insertPiece(piece) {
     const offset = Math.floor((this.width - 1) / 2) - 1;
+    let collision = false;
+
     piece.shape[0] = piece.shape[0].map((position) => ({
       x: position.x,
       y: position.y + offset,
     }));
+
+    piece.shape[0].forEach((position) => {
+      if (this.grid[position.x][position.y] > 0) {
+        console.log(
+          `Collision detected at (${position.x}, ${position.y}) during piece insertion.`,
+        );
+        collision = true;
+      }
+    });
+
+    if (collision) return null;
+
     piece.shape[0].forEach((position) => {
       this.grid[position.x][position.y] = piece.color;
     });
+
+    console.table(this.grid);
+
     return piece;
   }
 

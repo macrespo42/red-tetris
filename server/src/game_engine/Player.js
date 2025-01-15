@@ -8,10 +8,10 @@ class Player {
   constructor(name, id, isGameOwner = false) {
     this.name = name;
     this.id = id;
-    this.inGame = false;
     this.isGameOwner = isGameOwner;
     this.board = null;
     this.currentPiece = null;
+    this.isAlive = true;
   }
 }
 
