@@ -40,6 +40,7 @@ class Game {
       if (player.isAlive) {
         player.currentPiece = player.board.moveDown(player.currentPiece);
         if (!player.currentPiece) {
+          player.board.checkForFullRows();
           player.currentPiece = player.board.insertPiece(
             this.pieceQueue[player.board.nextPieceIndex],
           );
@@ -54,7 +55,6 @@ class Game {
   move(movement, playerId) {
     const player = this.players.get(playerId);
     if (!player.isAlive) {
-      console.log("Can't move this player is deaaaad!");
       return;
     }
     if (movement === "moveLeft") {

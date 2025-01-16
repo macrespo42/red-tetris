@@ -21,7 +21,7 @@ class Board {
 
   /**
    * @param {Piece} [piece]
-   * @return {Piece || null}
+   * @returns {Piece || null}
    **/
   insertPiece(piece) {
     const offset = Math.floor((this.width - 1) / 2) - 1;
@@ -34,9 +34,6 @@ class Board {
 
     piece.shape[0].forEach((position) => {
       if (this.grid[position.x][position.y] > 0) {
-        console.log(
-          `Collision detected at (${position.x}, ${position.y}) during piece insertion.`,
-        );
         collision = true;
       }
     });
@@ -52,6 +49,26 @@ class Board {
     return piece;
   }
 
+  checkForFullRows() {
+    let score = 0;
+    const fullRowsIndex = [];
+    for (let i = 0; i < this.grid.length; i++) {
+      if (!this.grid[i].some((cell) => cell === 0 || cell === 9)) {
+        fullRowsIndex.push(i);
+      }
+    }
+    for (const i of fullRowsIndex) {
+      this.grid.splice(i, 1);
+      this.grid.unshift(Array(this.width).fill(0));
+      score += 40;
+    }
+    return score;
+  }
+
+  /**
+   * @param {Piece} [piece]
+   * @returns { Piece || null }
+   **/
   moveDown(piece) {
     if (!piece) {
       return null;

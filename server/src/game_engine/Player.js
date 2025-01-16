@@ -12,6 +12,7 @@ class Player {
     this.board = null;
     this.currentPiece = null;
     this.isAlive = true;
+    this.score = 0;
   }
 }
 
