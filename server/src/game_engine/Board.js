@@ -27,12 +27,14 @@ class Board {
     const offset = Math.floor((this.width - 1) / 2) - 1;
     let collision = false;
 
-    piece.shape[0] = piece.shape[0].map((position) => ({
-      x: position.x,
-      y: position.y + offset,
-    }));
+    piece.shape[piece.currentRotation] = piece.shape[piece.currentRotation].map(
+      (position) => ({
+        x: position.x,
+        y: position.y + offset,
+      }),
+    );
 
-    piece.shape[0].forEach((position) => {
+    piece.shape[piece.currentRotation].forEach((position) => {
       if (this.grid[position.x][position.y] > 0) {
         collision = true;
       }
@@ -40,11 +42,9 @@ class Board {
 
     if (collision) return null;
 
-    piece.shape[0].forEach((position) => {
+    piece.shape[piece.currentRotation].forEach((position) => {
       this.grid[position.x][position.y] = piece.color;
     });
-
-    console.table(this.grid);
 
     return piece;
   }
@@ -76,7 +76,7 @@ class Board {
     const newPositions = [];
     let collision = false;
 
-    piece.shape[0].forEach((position) => {
+    piece.shape[piece.currentRotation].forEach((position) => {
       const newX = position.x + 1;
       const newY = position.y;
 
@@ -95,7 +95,7 @@ class Board {
       return null;
     }
 
-    piece.shape[0].forEach((position) => {
+    piece.shape[piece.currentRotation].forEach((position) => {
       this.grid[position.x][position.y] = 0;
     });
 
@@ -103,7 +103,7 @@ class Board {
       this.grid[position.x][position.y] = piece.color;
     });
 
-    piece.shape[0] = newPositions;
+    piece.shape[piece.currentRotation] = newPositions;
     return piece;
   }
 
@@ -114,12 +114,12 @@ class Board {
     const newPositions = [];
     let collision = false;
 
-    piece.shape[0].map((position) => ({
+    piece.shape[piece.currentRotation].map((position) => ({
       x: position.x,
       y: position.y,
     }));
 
-    piece.shape[0].forEach((position) => {
+    piece.shape[piece.currentRotation].forEach((position) => {
       const newX = position.x;
       const newY = direction === "right" ? position.y + 1 : position.y - 1;
 
@@ -136,7 +136,7 @@ class Board {
 
     if (collision) return piece;
 
-    piece.shape[0].forEach((position) => {
+    piece.shape[piece.currentRotation].forEach((position) => {
       this.grid[position.x][position.y] = 0;
     });
 
@@ -144,7 +144,7 @@ class Board {
       this.grid[position.x][position.y] = piece.color;
     });
 
-    piece.shape[0] = newPositions;
+    piece.shape[piece.currentRotation] = newPositions;
     return piece;
   }
 }
