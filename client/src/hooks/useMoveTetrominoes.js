@@ -18,6 +18,9 @@ function useMoveTetrominoes({ id }) {
       } else if (e.code === "Space") {
         e.preventDefault();
         socket.emit("move bottom", id);
+      } else if (e.code === "ArrowUp") {
+        e.preventDefault();
+        socket.emit("rotate", id);
       } else {
         console.log("Unhandled keystroke");
       }
