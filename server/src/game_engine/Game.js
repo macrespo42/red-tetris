@@ -42,7 +42,7 @@ class Game {
         if (!player.currentPiece) {
           player.board.checkForFullRows();
           player.currentPiece = player.board.insertPiece(
-            this.pieceQueue[player.board.nextPieceIndex],
+            this.pieceQueue[player.board.nextPieceIndex].clone(),
           );
           if (!player.currentPiece) {
             player.isAlive = false;

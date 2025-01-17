@@ -245,7 +245,15 @@ class Piece {
     }
   }
 
-  isInPiece(x, y, r) {
+  clone() {
+    const piece = new Piece();
+    piece.shape = [...this.shape];
+    piece.color = this.color;
+    piece.currentRotation = this.currentRotation;
+    return piece;
+  }
+
+  isInPiece(x, y) {
     return this.shape[this.currentRotation].some(
       (position) => position.x === x && position.y === y,
     );

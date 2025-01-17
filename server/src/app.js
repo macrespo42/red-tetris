@@ -2,6 +2,7 @@
 import express from "express";
 import { Server } from "socket.io";
 import { createServer } from "node:http";
+import os from "node:os";
 import Game from "./game_engine/Game.js";
 import Player from "./game_engine/Player.js";
 
@@ -101,6 +102,21 @@ app.get("/", (_, res) => {
   });
 }
 
-server.listen(app.get("port"), () => {
-  console.log(`App listening on port ${app.get("port")}`);
+const getNetworkAddress = () => {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]) {
+      if (iface.family === "IPv4" && !iface.internal) {
+        return iface.address;
+      }
+    }
+  }
+  return "127.0.0.1";
+};
+
+server.listen(app.get("port"), "0.0.0.0", () => {
+  console.log(`App listening on port http://localhost:${app.get("port")}`);
+  console.log(
+    `Accessible on the network: http://${getNetworkAddress()}:${app.get("port")}`,
+  );
 });
