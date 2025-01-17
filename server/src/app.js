@@ -82,6 +82,12 @@ app.get("/", (_, res) => {
             playersArray = Array.from(game.players.values());
             io.to(room).emit("game state", playersArray);
           });
+
+          socket.on("rotate", (id) => {
+            game.move("rotate", id);
+            playersArray = Array.from(game.players.values());
+            io.to(room).emit("game state", playersArray);
+          });
         }
       }
     });

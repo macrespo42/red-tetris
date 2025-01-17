@@ -182,10 +182,10 @@ class Piece {
       { x: 3, y: 2 },
     ],
     [
+      { x: 2, y: 0 },
+      { x: 2, y: 1 },
       { x: 2, y: 2 },
-      { x: 2, y: 2 },
-      { x: 2, y: 2 },
-      { x: 2, y: 2 },
+      { x: 2, y: 3 },
     ],
     [
       { x: 0, y: 1 },
@@ -246,9 +246,23 @@ class Piece {
   }
 
   isInPiece(x, y, r) {
-    return this.shape[r].some(
+    return this.shape[this.currentRotation].some(
       (position) => position.x === x && position.y === y,
     );
+  }
+
+  nextRotation() {
+    this.currentRotation++;
+    if (this.currentRotation > this.shape.length - 1) {
+      this.currentRotation = 0;
+    }
+  }
+
+  previousRotation() {
+    this.currentRotation--;
+    if (this.currentRotation < 0) {
+      this.currentRotation = this.shape.length - 1;
+    }
   }
 }
 

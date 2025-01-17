@@ -73,6 +73,8 @@ class Game {
       while (player.currentPiece) {
         player.currentPiece = player.board.moveDown(player.currentPiece);
       }
+    } else if (movement === "rotate") {
+      player.currentPiece = player.board.rotate(player.currentPiece);
     }
   }
 }

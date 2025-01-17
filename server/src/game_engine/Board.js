@@ -19,6 +19,16 @@ class Board {
       .map(() => Array(this.width).fill(0));
   }
 
+  #applyOffset(piece, offset, direction) {
+    for (let i = 0; i < piece.shape.length; i++) {
+      piece.shape[i] = piece.shape[i].map((position) => ({
+        x: direction === "vertical" ? position.x + offset : position.x,
+        y: direction === "horizontal" ? position.y + offset : position.y,
+      }));
+    }
+    return piece.shape;
+  }
+
   /**
    * @param {Piece} [piece]
    * @returns {Piece || null}
@@ -27,12 +37,7 @@ class Board {
     const offset = Math.floor((this.width - 1) / 2) - 1;
     let collision = false;
 
-    piece.shape[piece.currentRotation] = piece.shape[piece.currentRotation].map(
-      (position) => ({
-        x: position.x,
-        y: position.y + offset,
-      }),
-    );
+    piece.shape = this.#applyOffset(piece, offset, "horizontal");
 
     piece.shape[piece.currentRotation].forEach((position) => {
       if (this.grid[position.x][position.y] > 0) {
@@ -82,7 +87,7 @@ class Board {
 
       if (
         newX >= this.height ||
-        (this.grid[newX][newY] > 0 && !piece.isInPiece(newX, newY, 0))
+        (this.grid[newX][newY] > 0 && !piece.isInPiece(newX, newY))
       ) {
         collision = true;
       } else {
@@ -103,7 +108,8 @@ class Board {
       this.grid[position.x][position.y] = piece.color;
     });
 
-    piece.shape[piece.currentRotation] = newPositions;
+    piece.shape = this.#applyOffset(piece, 1, "vertical");
+
     return piece;
   }
 
@@ -111,6 +117,7 @@ class Board {
     if (!piece) {
       return piece;
     }
+    const offset = direction === "right" ? 1 : -1;
     const newPositions = [];
     let collision = false;
 
@@ -121,12 +128,12 @@ class Board {
 
     piece.shape[piece.currentRotation].forEach((position) => {
       const newX = position.x;
-      const newY = direction === "right" ? position.y + 1 : position.y - 1;
+      const newY = position.y + offset;
 
       if (
         newY < 0 ||
         newY >= this.width ||
-        (this.grid[newX][newY] > 0 && !piece.isInPiece(newX, newY, 0))
+        (this.grid[newX][newY] > 0 && !piece.isInPiece(newX, newY))
       ) {
         collision = true;
       } else {
@@ -144,7 +151,49 @@ class Board {
       this.grid[position.x][position.y] = piece.color;
     });
 
-    piece.shape[piece.currentRotation] = newPositions;
+    piece.shape = this.#applyOffset(piece, offset, "horizontal");
+    return piece;
+  }
+
+  rotate(piece) {
+    if (!piece) {
+      return null;
+    }
+
+    let collision = false;
+
+    piece.nextRotation();
+
+    piece.shape[piece.currentRotation].forEach((position) => {
+      if (position.x < 0 || position.x >= this.height) {
+        console.log("Collision spotted on x");
+        collision = true;
+      } else if (position.y >= this.width || position.y < 0) {
+        console.log("Collision spotted on y!");
+        collision = true;
+      } else if (
+        this.grid[position.x][position.y] > 0 &&
+        !piece.isInPiece(position.x, position.y)
+      ) {
+        console.log("Collision spotted mama");
+        collision = true;
+      }
+    });
+
+    if (collision) {
+      piece.previousRotation();
+      return piece;
+    }
+
+    piece.previousRotation();
+    piece.shape[piece.currentRotation].forEach((position) => {
+      this.grid[position.x][position.y] = 0;
+    });
+
+    piece.nextRotation();
+    piece.shape[piece.currentRotation].forEach((position) => {
+      this.grid[position.x][position.y] = piece.color;
+    });
     return piece;
   }
 }
