@@ -46,7 +46,7 @@ const RoomView = () => {
         </ul>
       </section>
       <div className="submit-button">
-        {gameOwner && <Button text="START" to={`/${room}/${player}`} />}
+        {gameOwner && <Button id="start-room" text="START" to={`/${room}/${player}`} />}
       </div>
     </div>
   );
