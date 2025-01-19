@@ -8,14 +8,28 @@ import HomeView from "../components/HomeView";
 import RoomView from "../components/RoomView";
 
 
-
-test("home render", () => {
-  const home = render(
-    <MemoryRouter>
-      <HomeView />
+describe("room view", () => {
+     
+it("home render", async () => {
+    const home = render( 
+         <Provider store={store}>
+    <MemoryRouter initialEntries={["/"]}>
+         <Routes>
+        <Route path="/" element={<HomeView />} />
+        <Route path="/lobby/:room/:player" element={<RoomView />} /> 
+      </Routes>
     </MemoryRouter>
+         </Provider>
   );
-  expect(screen.getByText(/RED TETRIS/)).toBeDefined();
-  home.unmount();
+  const user = userEvent.setup()
+  const input = screen.getByPlaceholderText("room");
+  fireEvent.change(input, { target: { value: "room_test" } });
+  const inputPseudo = screen.getByPlaceholderText("pseudo");
+  fireEvent.change(inputPseudo, { target: { value: "user_mockup" } });
+  await user.click(screen.getByText(/CREATE ROOM/i));
+  expect(screen.getByText("room_test")).toBeDefined()
+  home.unmount()
 });
 
+
+})

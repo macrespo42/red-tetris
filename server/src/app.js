@@ -2,6 +2,7 @@
 import express from "express";
 import { Server } from "socket.io";
 import { createServer } from "node:http";
+import os from "node:os";
 import Game from "./game_engine/Game.js";
 import Player from "./game_engine/Player.js";
 
@@ -24,40 +25,98 @@ app.get("/", (_, res) => {
 
   io.on("connection", (socket) => {
     console.log(`A user is connected: ${socket.id}`);
-    socket.on("start game", (player) => {
-      console.log(`${player} Want to start the game!`);
-    });
 
     socket.on("joining room", (gameInfos) => {
-      const { room, player, socketId } = gameInfos;
+      const { room, player } = gameInfos;
       socket.join(room);
       let game = games.find((game) => game.name == room);
 
       if (game != undefined) {
-        const isPlayerInGame = game.players.find((p) => p.id === socketId);
-        if (!isPlayerInGame) game.addPlayer(new Player(player, socketId));
+        if (!game.players.get(socket.id))
+          game.addPlayer(new Player(player, socket.id));
       } else {
         game = new Game(room);
-        game.addPlayer(new Player(player, socketId, true));
+        game.addPlayer(new Player(player, socket.id, true));
         games.push(game);
       }
-      io.to(room).emit("players list", game.players);
+      const playersArray = Array.from(game.players.values());
+      io.to(room).emit("players list", playersArray);
+    });
+
+    socket.on("start game", (args) => {
+      const { room } = args;
+      const game = games.find((g) => g.name === room);
+      if (game) {
+        const player = game.players.get(socket.id);
+        if (player && player.isGameOwner) {
+          game.startGame();
+
+          let playersArray = Array.from(game.players.values());
+          io.to(room).emit("game started", playersArray);
+
+          setInterval(() => {
+            game.tick();
+            playersArray = Array.from(game.players.values());
+            io.to(room).emit("game state", playersArray);
+          }, 500);
+
+          socket.on("move left", (id) => {
+            game.move("moveLeft", id);
+            playersArray = Array.from(game.players.values());
+            io.to(room).emit("game state", playersArray);
+          });
+
+          socket.on("move right", (id) => {
+            game.move("moveRight", id);
+            playersArray = Array.from(game.players.values());
+            io.to(room).emit("game state", playersArray);
+          });
+
+          socket.on("move down", (id) => {
+            game.move("moveDown", id);
+            playersArray = Array.from(game.players.values());
+            io.to(room).emit("game state", playersArray);
+          });
+
+          socket.on("move bottom", (id) => {
+            game.move("moveBottom", id);
+            playersArray = Array.from(game.players.values());
+            io.to(room).emit("game state", playersArray);
+          });
+
+          socket.on("rotate", (id) => {
+            game.move("rotate", id);
+            playersArray = Array.from(game.players.values());
+            io.to(room).emit("game state", playersArray);
+          });
+        }
+      }
     });
   });
 
   io.on("disconnect", (socket) => {
     console.log(`User: ${socket.id} disconnect`);
     games.forEach((game) => {
-      const playerIndex = game.players.findIndex(
-        (player) => player.id === socket.id,
-      );
-      if (playerIndex !== -1) {
-        game.players.splice(playerIndex, 1);
-      }
+      if (game.players[socket.id]) delete game.players[socket.id];
     });
   });
 }
 
-server.listen(app.get("port"), () => {
-  console.log(`App listening on port ${app.get("port")}`);
+const getNetworkAddress = () => {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]) {
+      if (iface.family === "IPv4" && !iface.internal) {
+        return iface.address;
+      }
+    }
+  }
+  return "127.0.0.1";
+};
+
+server.listen(app.get("port"), "0.0.0.0", () => {
+  console.log(`App listening on port http://localhost:${app.get("port")}`);
+  console.log(
+    `Accessible on the network: http://${getNetworkAddress()}:${app.get("port")}`,
+  );
 });

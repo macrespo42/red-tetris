@@ -12,6 +12,30 @@
 	background-color: var(--black);
 }
 
-.cell.filled {
-	background-color: #f00;
+.yellow {
+	background-color: #fafa03;
+}
+
+.green {
+	background-color: #00c900;
+}
+
+.red {
+	background-color: #f00000;
+}
+
+.purple {
+	background-color: #650065;
+}
+
+.orange {
+	background-color: #f0a000;
+}
+
+.dark-blue {
+	background-color: #0000f0;
+}
+
+.blue {
+	background-color: #00ffff;
 }

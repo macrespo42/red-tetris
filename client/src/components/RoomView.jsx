@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import Button from "./Button";
 import "../styles/RoomView.css";
 import { socket } from "../socket";
@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { name, roomName, isGameOwner } from "../playerSlice";
 
 const RoomView = () => {
+  const navigate = useNavigate();
   let { room, player } = useParams();
   let [players, setPlayers] = useState([player]);
   const dispatch = useDispatch();
@@ -22,11 +23,22 @@ const RoomView = () => {
     setPlayers([...players]);
   });
 
+  socket.on("game started", (playersArray) => {
+    console.table(playersArray[0].board.grid);
+    navigate(`/${room}/${player}`);
+  });
+
   useEffect(() => {
     dispatch(name({ name: player }));
     dispatch(roomName({ roomName: room }));
     socket.emit("joining room", { room, player, socketId });
   }, [room, player, dispatch, socketId]);
+
+  function startGame() {
+    if (gameOwner) {
+      socket.emit("start game", { room });
+    }
+  }
 
   return (
     <div className="room-page">
@@ -38,7 +50,7 @@ const RoomView = () => {
           {players.map((player) => (
             <li
               className={`player ${player.isGameOwner ? "owner" : "guest"}`}
-              key={player.id}
+              key={player.id + player.name}
             >
               {player.name}
             </li>
@@ -46,7 +58,7 @@ const RoomView = () => {
         </ul>
       </section>
       <div className="submit-button">
-        {gameOwner && <Button id="start-room" text="START" to={`/${room}/${player}`} />}
+        {gameOwner && <Button id="start-room" text="START" onClick={startGame} />}
       </div>
     </div>
   );
