@@ -28,11 +28,11 @@ class Player {
    **/
   computeScore(lines) {
     // original BPS scoring system
-    const scoreAddition = this.scoringSystem[lines];
+    const scoreAddition = Player.scoringSystem[lines];
     if (scoreAddition) {
       this.score += scoreAddition;
     } else {
-      this.score += this.scoringSystem[4];
+      this.score += Player.scoringSystem[4];
     }
   }
 }
