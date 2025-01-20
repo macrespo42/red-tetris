@@ -1,26 +1,24 @@
 import { useEffect } from "react";
 import { socket } from "../socket";
 
-function useMoveTetrominoes({ id }) {
+function useMoveTetrominoes({ room }) {
   useEffect(() => {
     function keyPressedHandler(e) {
       if (e.code === "ArrowLeft") {
-        console.log("Pressing arrow left");
         e.preventDefault();
-        socket.emit("move left", id);
+        socket.emit("move left", room);
       } else if (e.code === "ArrowRight") {
         e.preventDefault();
-        console.log("Pressing arrow right");
-        socket.emit("move right", id);
+        socket.emit("move right", room);
       } else if (e.code === "ArrowDown") {
         e.preventDefault();
-        socket.emit("move down", id);
+        socket.emit("move down", room);
       } else if (e.code === "Space") {
         e.preventDefault();
-        socket.emit("move bottom", id);
+        socket.emit("move bottom", room);
       } else if (e.code === "ArrowUp") {
         e.preventDefault();
-        socket.emit("rotate", id);
+        socket.emit("rotate", room);
       } else {
         console.log("Unhandled keystroke");
       }
@@ -31,7 +29,7 @@ function useMoveTetrominoes({ id }) {
     return () => {
       document.removeEventListener("keydown");
     };
-  }, [id]);
+  }, [room]);
 }
 
 export default useMoveTetrominoes;

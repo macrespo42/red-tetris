@@ -3,7 +3,7 @@ import Piece from "./Piece.js";
 import Board from "./Board.js";
 
 class Game {
-  QUEUE_SIZE = 4096;
+  static QUEUE_SIZE = 4096;
 
   /**
    * @param { string } name
@@ -16,9 +16,13 @@ class Game {
   }
 
   #fillPieceQueue() {
-    for (let i = 0; i < this.QUEUE_SIZE; i++) {
-      const piece = new Piece();
-      this.pieceQueue.push(piece);
+    if (this.pieceQueue.length === Game.QUEUE_SIZE) {
+      this.pieceQueue.sort(() => Math.random() - 0.5);
+    } else {
+      for (let i = 0; i < Game.QUEUE_SIZE; i++) {
+        const piece = new Piece();
+        this.pieceQueue.push(piece);
+      }
     }
   }
 
@@ -35,23 +39,61 @@ class Game {
     this.isStarted = true;
   }
 
+  clearGame() {
+    this.players.forEach((player) => {
+      player.reset();
+      player.board = new Board();
+    });
+  }
+
+  hasWon(currentPlayer) {
+    const isAlive = currentPlayer.isAlive;
+    let aliveCount = 0;
+    this.players.forEach((player) => {
+      if (player.isAlive) {
+        aliveCount++;
+      }
+    });
+    return isAlive && aliveCount === 1;
+  }
+
+  /**
+   * @returns {(string|null)}
+   **/
   tick() {
     this.players.forEach((player) => {
       if (player.isAlive) {
         player.currentPiece = player.board.moveDown(player.currentPiece);
         if (!player.currentPiece) {
-          player.board.checkForFullRows();
+          const rowsFullfilled = player.board.checkForFullRows();
+          if (rowsFullfilled > 0) player.computeScore(rowsFullfilled);
+          if (rowsFullfilled > 1) {
+            this.players.forEach((penalizedPlayer) => {
+              if (penalizedPlayer.id !== player.id && penalizedPlayer.isAlive) {
+                penalizedPlayer.board.inflictPenalty(rowsFullfilled);
+              }
+            });
+          }
           player.currentPiece = player.board.insertPiece(
             this.pieceQueue[player.board.nextPieceIndex].clone(),
           );
           if (!player.currentPiece) {
             player.isAlive = false;
+          } else {
+            if (this.hasWon(player)) {
+              player.isWinner = true;
+              this.isStarted = false;
+            }
           }
         }
       }
     });
   }
 
+  /**
+   * @param {string} movement
+   * @param {string} playerId
+   **/
   move(movement, playerId) {
     const player = this.players.get(playerId);
     if (!player.isAlive) {

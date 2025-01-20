@@ -16,8 +16,8 @@ const io = new Server(server, {
 
 app.set("port", process.env.PORT || 3000);
 
-app.get("/", (_, res) => {
-  res.send("hello world");
+app.get("/ping", (_, res) => {
+  res.send("pong");
 });
 
 {
@@ -43,6 +43,51 @@ app.get("/", (_, res) => {
       io.to(room).emit("players list", playersArray);
     });
 
+    socket.on("move left", (room) => {
+      const game = games.find((g) => g.name === room);
+      if (game) {
+        game.move("moveLeft", socket.id);
+        const playersArray = Array.from(game.players.values());
+        io.to(room).emit("game state", playersArray);
+      }
+    });
+
+    socket.on("move right", (room) => {
+      const game = games.find((g) => g.name === room);
+      if (game) {
+        game.move("moveRight", socket.id);
+        const playersArray = Array.from(game.players.values());
+        io.to(room).emit("game state", playersArray);
+      }
+    });
+
+    socket.on("move down", (room) => {
+      const game = games.find((g) => g.name === room);
+      if (game) {
+        game.move("moveDown", socket.id);
+        const playersArray = Array.from(game.players.values());
+        io.to(room).emit("game state", playersArray);
+      }
+    });
+
+    socket.on("move bottom", (room) => {
+      const game = games.find((g) => g.name === room);
+      if (game) {
+        game.move("moveBottom", socket.id);
+        const playersArray = Array.from(game.players.values());
+        io.to(room).emit("game state", playersArray);
+      }
+    });
+
+    socket.on("rotate", (room) => {
+      const game = games.find((g) => g.name === room);
+      if (game) {
+        game.move("rotate", socket.id);
+        const playersArray = Array.from(game.players.values());
+        io.to(room).emit("game state", playersArray);
+      }
+    });
+
     socket.on("start game", (args) => {
       const { room } = args;
       const game = games.find((g) => g.name === room);
@@ -52,45 +97,26 @@ app.get("/", (_, res) => {
           game.startGame();
 
           let playersArray = Array.from(game.players.values());
-          io.to(room).emit("game started", playersArray);
+          io.to(room).emit("game started");
 
-          setInterval(() => {
+          const gameInterval = setInterval(() => {
             game.tick();
             playersArray = Array.from(game.players.values());
             io.to(room).emit("game state", playersArray);
+            if (game.isStarted === false) {
+              game.clearGame();
+              clearInterval(gameInterval);
+            }
           }, 500);
-
-          socket.on("move left", (id) => {
-            game.move("moveLeft", id);
-            playersArray = Array.from(game.players.values());
-            io.to(room).emit("game state", playersArray);
-          });
-
-          socket.on("move right", (id) => {
-            game.move("moveRight", id);
-            playersArray = Array.from(game.players.values());
-            io.to(room).emit("game state", playersArray);
-          });
-
-          socket.on("move down", (id) => {
-            game.move("moveDown", id);
-            playersArray = Array.from(game.players.values());
-            io.to(room).emit("game state", playersArray);
-          });
-
-          socket.on("move bottom", (id) => {
-            game.move("moveBottom", id);
-            playersArray = Array.from(game.players.values());
-            io.to(room).emit("game state", playersArray);
-          });
-
-          socket.on("rotate", (id) => {
-            game.move("rotate", id);
-            playersArray = Array.from(game.players.values());
-            io.to(room).emit("game state", playersArray);
-          });
         }
       }
+    });
+  });
+
+  io.on("leave game", (socket) => {
+    console.log(`User: ${socket.id} leave game`);
+    games.forEach((game) => {
+      if (game.players[socket.id]) delete game.players[socket.id];
     });
   });
 
@@ -102,6 +128,9 @@ app.get("/", (_, res) => {
   });
 }
 
+/**
+ * @returns {string}
+ **/
 const getNetworkAddress = () => {
   const interfaces = os.networkInterfaces();
   for (const name of Object.keys(interfaces)) {

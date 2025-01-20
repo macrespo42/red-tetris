@@ -9,6 +9,7 @@ const TetrisGrid = ({ matrix }) => {
     5: "orange",
     6: "dark-blue",
     7: "blue",
+    8: "grey",
   };
   return (
     <div className="gameBoard">
