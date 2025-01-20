@@ -43,6 +43,41 @@ app.get("/", (_, res) => {
       io.to(room).emit("players list", playersArray);
     });
 
+    socket.on("move left", (room) => {
+      const game = games.find((g) => g.name === room);
+      game.move("moveLeft", socket.id);
+      const playersArray = Array.from(game.players.values());
+      io.to(room).emit("game state", playersArray);
+    });
+
+    socket.on("move right", (room) => {
+      const game = games.find((g) => g.name === room);
+      game.move("moveRight", socket.id);
+      const playersArray = Array.from(game.players.values());
+      io.to(room).emit("game state", playersArray);
+    });
+
+    socket.on("move down", (room) => {
+      const game = games.find((g) => g.name === room);
+      game.move("moveDown", socket.id);
+      const playersArray = Array.from(game.players.values());
+      io.to(room).emit("game state", playersArray);
+    });
+
+    socket.on("move bottom", (room) => {
+      const game = games.find((g) => g.name === room);
+      game.move("moveBottom", socket.id);
+      const playersArray = Array.from(game.players.values());
+      io.to(room).emit("game state", playersArray);
+    });
+
+    socket.on("rotate", (room) => {
+      const game = games.find((g) => g.name === room);
+      game.move("rotate", socket.id);
+      const playersArray = Array.from(game.players.values());
+      io.to(room).emit("game state", playersArray);
+    });
+
     socket.on("start game", (args) => {
       const { room } = args;
       const game = games.find((g) => g.name === room);
@@ -59,36 +94,6 @@ app.get("/", (_, res) => {
             playersArray = Array.from(game.players.values());
             io.to(room).emit("game state", playersArray);
           }, 500);
-
-          socket.on("move left", (id) => {
-            game.move("moveLeft", id);
-            playersArray = Array.from(game.players.values());
-            io.to(room).emit("game state", playersArray);
-          });
-
-          socket.on("move right", (id) => {
-            game.move("moveRight", id);
-            playersArray = Array.from(game.players.values());
-            io.to(room).emit("game state", playersArray);
-          });
-
-          socket.on("move down", (id) => {
-            game.move("moveDown", id);
-            playersArray = Array.from(game.players.values());
-            io.to(room).emit("game state", playersArray);
-          });
-
-          socket.on("move bottom", (id) => {
-            game.move("moveBottom", id);
-            playersArray = Array.from(game.players.values());
-            io.to(room).emit("game state", playersArray);
-          });
-
-          socket.on("rotate", (id) => {
-            game.move("rotate", id);
-            playersArray = Array.from(game.players.values());
-            io.to(room).emit("game state", playersArray);
-          });
         }
       }
     });

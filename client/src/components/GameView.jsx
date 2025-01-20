@@ -11,6 +11,8 @@ const GameView = () => {
       .fill(0)
       .map(() => Array(10).fill(0)),
   );
+
+  const room = useSelector((state) => state.player.value.roomName);
   const socketId = useSelector((state) => state.player.value.socketId);
 
   socket.on("game state", (players) => {
@@ -18,7 +20,7 @@ const GameView = () => {
     if (currentPlayer) setMatrix([...currentPlayer.board.grid]);
   });
 
-  useMoveTetrominoes({ id: socketId });
+  useMoveTetrominoes({ room: room });
 
   return (
     <div className="gameView">
