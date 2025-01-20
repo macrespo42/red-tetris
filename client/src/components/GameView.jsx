@@ -28,6 +28,7 @@ const GameView = () => {
 
   const room = useSelector((state) => state.player.value.roomName);
   const socketId = useSelector((state) => state.player.value.socketId);
+  const isGameOwner = useSelector((state) => state.player.value.isGameOwner);
 
   function playAgain() {
     socket.emit("play again");
@@ -59,17 +60,14 @@ const GameView = () => {
       </div>
       <div className="opponentBoards">this is where opponent board show up</div>
       <EndGameModal isOpen={modalOpen} onClose={closeModal}>
-        {isWinner ? (
-          <>
-            <h2>Victory!</h2>
+        <>
+          <h2>{isWinner ? "Victory!" : "Game Over"}</h2>
+          {isGameOwner ? (
             <Button text="PLAY AGAIN" onClick={playAgain} />
-          </>
-        ) : (
-          <>
-            <h2>Game Over</h2>
-            <Button text="LEAVE" to={`/`} />
-          </>
-        )}
+          ) : (
+            <Button text="LEAVE" onClick={playAgain} />
+          )}
+        </>
       </EndGameModal>
       {isWinner && modalOpen ? (
         <>
