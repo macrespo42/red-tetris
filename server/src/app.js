@@ -10,7 +10,7 @@ const app = express();
 const server = createServer(app);
 
 const io = new Server(server, {
-  cors: "http://localhost:5173",
+  cors: ["http://localhost:5173", "192.168.1.181:5173"],
   methods: ["GET", "POST"],
 });
 
@@ -104,6 +104,7 @@ app.get("/ping", (_, res) => {
             playersArray = Array.from(game.players.values());
             io.to(room).emit("game state", playersArray);
             if (game.isStarted === false) {
+              console.log("end of the game detected");
               game.clearGame();
               clearInterval(gameInterval);
             }

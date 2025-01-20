@@ -54,7 +54,7 @@ class Game {
         aliveCount++;
       }
     });
-    return isAlive && aliveCount === 1;
+    return isAlive && aliveCount === 1 && this.players.size > 1;
   }
 
   /**
@@ -79,6 +79,7 @@ class Game {
           );
           if (!player.currentPiece) {
             player.isAlive = false;
+            if (this.players.size === 1) this.isStarted = false;
           } else {
             if (this.hasWon(player)) {
               player.isWinner = true;
