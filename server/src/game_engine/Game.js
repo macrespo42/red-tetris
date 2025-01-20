@@ -40,7 +40,15 @@ class Game {
       if (player.isAlive) {
         player.currentPiece = player.board.moveDown(player.currentPiece);
         if (!player.currentPiece) {
-          player.board.checkForFullRows();
+          const rowsFullfilled = player.board.checkForFullRows();
+          if (rowsFullfilled > 0) player.computeScore(rowsFullfilled);
+          if (rowsFullfilled > 1) {
+            this.players.forEach((penalizedPlayer) => {
+              if (penalizedPlayer.id !== player.id && penalizedPlayer.isAlive) {
+                penalizedPlayer.board.inflictPenalty(rowsFullfilled);
+              }
+            });
+          }
           player.currentPiece = player.board.insertPiece(
             this.pieceQueue[player.board.nextPieceIndex].clone(),
           );

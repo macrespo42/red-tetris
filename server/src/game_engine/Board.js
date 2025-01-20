@@ -9,6 +9,7 @@ class Board {
     this.width = width;
     this.height = height;
     this.nextPieceIndex = 0;
+    this.currentPenalty = 0;
     this.#initGrid();
   }
 
@@ -67,7 +68,7 @@ class Board {
     let n = 0;
     const fullRowsIndex = [];
     for (let i = 0; i < this.grid.length; i++) {
-      if (!this.grid[i].some((cell) => cell === 0 || cell === 9)) {
+      if (!this.grid[i].some((cell) => cell === 0 || cell === 8)) {
         fullRowsIndex.push(i);
       }
     }
@@ -77,6 +78,18 @@ class Board {
       n += 1;
     }
     return n;
+  }
+
+  /**
+   * @param {number} n
+   **/
+  inflictPenalty(n) {
+    let n_penalty = n;
+    while (n_penalty > 0) {
+      this.grid[this.grid.length - (n_penalty + this.currentPenalty)].fill(8);
+      n_penalty--;
+    }
+    this.currentPenalty += n;
   }
 
   /**

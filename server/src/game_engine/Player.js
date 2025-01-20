@@ -1,5 +1,12 @@
 "use strict";
 class Player {
+  static scoringSystem = {
+    1: 40,
+    2: 100,
+    3: 300,
+    4: 1200,
+  };
+
   /**
    * @param { string } name
    * @param { string } id
@@ -14,6 +21,19 @@ class Player {
     this.isAlive = true;
     this.score = 0;
     this.n = 0;
+  }
+
+  /**
+   * @param {number} lines
+   **/
+  computeScore(lines) {
+    // original BPS scoring system
+    const scoreAddition = this.scoringSystem[lines];
+    if (scoreAddition) {
+      this.score += scoreAddition;
+    } else {
+      this.score += this.scoringSystem[4];
+    }
   }
 }
 
