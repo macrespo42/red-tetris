@@ -3,7 +3,6 @@ import { describe, it, expect, } from "vitest";
 import App from "../components/App";
 import { vi, beforeEach, afterEach } from 'vitest';
 
-// Mock de createRoot pour capturer les appels à cette fonction
 vi.mock('react-dom/client', () => ({
   createRoot: vi.fn(() => ({
     render: vi.fn(),
