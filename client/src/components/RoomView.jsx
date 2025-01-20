@@ -23,8 +23,7 @@ const RoomView = () => {
     setPlayers([...players]);
   });
 
-  socket.on("game started", (playersArray) => {
-    console.table(playersArray[0].board.grid);
+  socket.on("game started", () => {
     navigate(`/${room}/${player}`);
   });
 

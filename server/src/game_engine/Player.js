@@ -19,6 +19,7 @@ class Player {
     this.board = null;
     this.currentPiece = null;
     this.isAlive = true;
+    this.isWinner = false;
     this.score = 0;
     this.n = 0;
   }

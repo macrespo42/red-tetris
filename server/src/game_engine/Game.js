@@ -3,7 +3,7 @@ import Piece from "./Piece.js";
 import Board from "./Board.js";
 
 class Game {
-  QUEUE_SIZE = 4096;
+  static QUEUE_SIZE = 4096;
 
   /**
    * @param { string } name
@@ -16,9 +16,13 @@ class Game {
   }
 
   #fillPieceQueue() {
-    for (let i = 0; i < this.QUEUE_SIZE; i++) {
-      const piece = new Piece();
-      this.pieceQueue.push(piece);
+    if (this.pieceQueue.length === Game.QUEUE_SIZE) {
+      this.pieceQueue.sort(() => Math.random() - 0.5);
+    } else {
+      for (let i = 0; i < Game.QUEUE_SIZE; i++) {
+        const piece = new Piece();
+        this.pieceQueue.push(piece);
+      }
     }
   }
 
@@ -35,6 +39,20 @@ class Game {
     this.isStarted = true;
   }
 
+  hasWon(currentPlayer) {
+    const isAlive = currentPlayer.isAlive;
+    let aliveCount = 0;
+    this.players.forEach((player) => {
+      if (player.isAlive) {
+        aliveCount++;
+      }
+    });
+    return isAlive && aliveCount === 1;
+  }
+
+  /**
+   * @returns {(string|null)}
+   **/
   tick() {
     this.players.forEach((player) => {
       if (player.isAlive) {
@@ -54,6 +72,11 @@ class Game {
           );
           if (!player.currentPiece) {
             player.isAlive = false;
+          } else {
+            if (this.hasWon(player)) {
+              player.isWinner = true;
+              this.isStarted = false;
+            }
           }
         }
       }

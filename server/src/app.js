@@ -97,15 +97,25 @@ app.get("/ping", (_, res) => {
           game.startGame();
 
           let playersArray = Array.from(game.players.values());
-          io.to(room).emit("game started", playersArray);
+          io.to(room).emit("game started");
 
-          setInterval(() => {
+          const gameInterval = setInterval(() => {
             game.tick();
             playersArray = Array.from(game.players.values());
             io.to(room).emit("game state", playersArray);
+            if (game.isStarted === false) {
+              clearInterval(gameInterval);
+            }
           }, 500);
         }
       }
+    });
+  });
+
+  io.on("leave game", (socket) => {
+    console.log(`User: ${socket.id} leave game`);
+    games.forEach((game) => {
+      if (game.players[socket.id]) delete game.players[socket.id];
     });
   });
 
