@@ -88,6 +88,16 @@ app.get("/ping", (_, res) => {
       }
     });
 
+    socket.on("leave game", (room) => {
+      const game = games.find((g) => g.name === room);
+      socket.leave(room);
+      if (game) {
+        if (game.players.has(socket.id)) {
+          game.players.delete(socket.id);
+        }
+      }
+    });
+
     socket.on("start game", (args) => {
       const { room } = args;
       const game = games.find((g) => g.name === room);
@@ -104,27 +114,12 @@ app.get("/ping", (_, res) => {
             playersArray = Array.from(game.players.values());
             io.to(room).emit("game state", playersArray);
             if (game.isStarted === false) {
-              console.log("end of the game detected");
               game.clearGame();
               clearInterval(gameInterval);
             }
           }, 500);
         }
       }
-    });
-  });
-
-  io.on("leave game", (socket) => {
-    console.log(`User: ${socket.id} leave game`);
-    games.forEach((game) => {
-      if (game.players[socket.id]) delete game.players[socket.id];
-    });
-  });
-
-  io.on("disconnect", (socket) => {
-    console.log(`User: ${socket.id} disconnect`);
-    games.forEach((game) => {
-      if (game.players[socket.id]) delete game.players[socket.id];
     });
   });
 }
