@@ -7,6 +7,7 @@ import useMoveTetrominoes from "../hooks/useMoveTetrominoes";
 import Button from "./Button";
 import EndGameModal from "./EndGameModal";
 import Confetti from "react-confetti";
+import { useNavigate } from "react-router";
 
 const GameView = () => {
   const [matrix, setMatrix] = useState(
@@ -15,6 +16,7 @@ const GameView = () => {
       .map(() => Array(10).fill(0)),
   );
 
+  const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const [isWinner, setIsWinner] = useState(false);
 
@@ -33,6 +35,12 @@ const GameView = () => {
   function playAgain() {
     socket.emit("start game", { room });
     closeModal();
+  }
+
+  function leaveRoom() {
+    socket.emit("leave game", room);
+    closeModal();
+    navigate("/");
   }
 
   socket.on("game started", () => {
@@ -70,7 +78,7 @@ const GameView = () => {
           {isGameOwner ? (
             <Button text="PLAY AGAIN" onClick={playAgain} />
           ) : (
-            <Button text="LEAVE" to="" />
+            <Button text="LEAVE" onClick={leaveRoom} />
           )}
         </>
       </EndGameModal>
