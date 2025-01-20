@@ -21,7 +21,6 @@ class Player {
     this.isAlive = true;
     this.isWinner = false;
     this.score = 0;
-    this.n = 0;
   }
 
   /**
@@ -35,6 +34,14 @@ class Player {
     } else {
       this.score += Player.scoringSystem[4];
     }
+  }
+
+  reset() {
+    this.board = null;
+    this.currentPiece = null;
+    this.isAlive = true;
+    this.isWinner = false;
+    this.score = 0;
   }
 }
 

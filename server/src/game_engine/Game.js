@@ -39,6 +39,13 @@ class Game {
     this.isStarted = true;
   }
 
+  clearGame() {
+    this.players.forEach((player) => {
+      player.reset();
+      player.board = new Board();
+    });
+  }
+
   hasWon(currentPlayer) {
     const isAlive = currentPlayer.isAlive;
     let aliveCount = 0;

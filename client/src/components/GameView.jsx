@@ -31,8 +31,13 @@ const GameView = () => {
   const isGameOwner = useSelector((state) => state.player.value.isGameOwner);
 
   function playAgain() {
-    socket.emit("play again");
+    socket.emit("start game", { room });
+    closeModal();
   }
+
+  socket.on("game started", () => {
+    closeModal();
+  });
 
   socket.on("game state", (players) => {
     const currentPlayer = players.find((player) => player.id === socketId);
@@ -65,7 +70,7 @@ const GameView = () => {
           {isGameOwner ? (
             <Button text="PLAY AGAIN" onClick={playAgain} />
           ) : (
-            <Button text="LEAVE" onClick={playAgain} />
+            <Button text="LEAVE" to="" />
           )}
         </>
       </EndGameModal>

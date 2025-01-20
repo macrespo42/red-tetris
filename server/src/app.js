@@ -104,6 +104,7 @@ app.get("/ping", (_, res) => {
             playersArray = Array.from(game.players.values());
             io.to(room).emit("game state", playersArray);
             if (game.isStarted === false) {
+              game.clearGame();
               clearInterval(gameInterval);
             }
           }, 500);
