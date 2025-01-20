@@ -2,8 +2,8 @@
 
 class Board {
   /**
-   * @param {number} [width=10]
-   * @param {number} [height=20]
+   * @param {number} width=10
+   * @param {number} height=20
    **/
   constructor(width = 10, height = 20) {
     this.width = width;
@@ -19,6 +19,12 @@ class Board {
       .map(() => Array(this.width).fill(0));
   }
 
+  /**
+   * @param {Piece} piece
+   * @param {number} offset
+   * @param {string} direction
+   * @returns {Array}
+   **/
   #applyOffset(piece, offset, direction) {
     for (let i = 0; i < piece.shape.length; i++) {
       piece.shape[i] = piece.shape[i].map((position) => ({
@@ -54,8 +60,11 @@ class Board {
     return piece;
   }
 
+  /**
+   * @returns {number}
+   **/
   checkForFullRows() {
-    let score = 0;
+    let n = 0;
     const fullRowsIndex = [];
     for (let i = 0; i < this.grid.length; i++) {
       if (!this.grid[i].some((cell) => cell === 0 || cell === 9)) {
@@ -65,14 +74,14 @@ class Board {
     for (const i of fullRowsIndex) {
       this.grid.splice(i, 1);
       this.grid.unshift(Array(this.width).fill(0));
-      score += 40;
+      n += 1;
     }
-    return score;
+    return n;
   }
 
   /**
-   * @param {Piece} [piece]
-   * @returns { Piece || null }
+   * @param {Piece} piece
+   * @returns {(Piece|null)}
    **/
   moveDown(piece) {
     if (!piece) {
@@ -113,6 +122,10 @@ class Board {
     return piece;
   }
 
+  /**
+   * @param {Piece} piece
+   * @returns {(Piece|null)}
+   **/
   moveHorizontally(piece, direction) {
     if (!piece) {
       return piece;
@@ -155,6 +168,10 @@ class Board {
     return piece;
   }
 
+  /**
+   * @param {Piece} piece
+   * @returns {(Piece|null)}
+   **/
   rotate(piece) {
     if (!piece) {
       return null;

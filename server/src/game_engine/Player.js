@@ -13,6 +13,7 @@ class Player {
     this.currentPiece = null;
     this.isAlive = true;
     this.score = 0;
+    this.n = 0;
   }
 }
 

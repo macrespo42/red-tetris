@@ -245,6 +245,9 @@ class Piece {
     }
   }
 
+  /**
+   * @return {Piece}
+   **/
   clone() {
     const piece = new Piece();
     piece.shape = [...this.shape];
@@ -253,6 +256,11 @@ class Piece {
     return piece;
   }
 
+  /**
+   * @param {number} x
+   * @param {number} y
+   * @return {boolean}
+   **/
   isInPiece(x, y) {
     return this.shape[this.currentRotation].some(
       (position) => position.x === x && position.y === y,

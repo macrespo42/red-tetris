@@ -52,6 +52,10 @@ class Game {
     });
   }
 
+  /**
+   * @param {string} movement
+   * @param {string} playerId
+   **/
   move(movement, playerId) {
     const player = this.players.get(playerId);
     if (!player.isAlive) {

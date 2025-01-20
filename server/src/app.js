@@ -16,8 +16,8 @@ const io = new Server(server, {
 
 app.set("port", process.env.PORT || 3000);
 
-app.get("/", (_, res) => {
-  res.send("hello world");
+app.get("/ping", (_, res) => {
+  res.send("pong");
 });
 
 {
@@ -107,6 +107,9 @@ app.get("/", (_, res) => {
   });
 }
 
+/**
+ * @returns {string}
+ **/
 const getNetworkAddress = () => {
   const interfaces = os.networkInterfaces();
   for (const name of Object.keys(interfaces)) {
