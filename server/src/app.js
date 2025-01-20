@@ -45,37 +45,47 @@ app.get("/ping", (_, res) => {
 
     socket.on("move left", (room) => {
       const game = games.find((g) => g.name === room);
-      game.move("moveLeft", socket.id);
-      const playersArray = Array.from(game.players.values());
-      io.to(room).emit("game state", playersArray);
+      if (game) {
+        game.move("moveLeft", socket.id);
+        const playersArray = Array.from(game.players.values());
+        io.to(room).emit("game state", playersArray);
+      }
     });
 
     socket.on("move right", (room) => {
       const game = games.find((g) => g.name === room);
-      game.move("moveRight", socket.id);
-      const playersArray = Array.from(game.players.values());
-      io.to(room).emit("game state", playersArray);
+      if (game) {
+        game.move("moveRight", socket.id);
+        const playersArray = Array.from(game.players.values());
+        io.to(room).emit("game state", playersArray);
+      }
     });
 
     socket.on("move down", (room) => {
       const game = games.find((g) => g.name === room);
-      game.move("moveDown", socket.id);
-      const playersArray = Array.from(game.players.values());
-      io.to(room).emit("game state", playersArray);
+      if (game) {
+        game.move("moveDown", socket.id);
+        const playersArray = Array.from(game.players.values());
+        io.to(room).emit("game state", playersArray);
+      }
     });
 
     socket.on("move bottom", (room) => {
       const game = games.find((g) => g.name === room);
-      game.move("moveBottom", socket.id);
-      const playersArray = Array.from(game.players.values());
-      io.to(room).emit("game state", playersArray);
+      if (game) {
+        game.move("moveBottom", socket.id);
+        const playersArray = Array.from(game.players.values());
+        io.to(room).emit("game state", playersArray);
+      }
     });
 
     socket.on("rotate", (room) => {
       const game = games.find((g) => g.name === room);
-      game.move("rotate", socket.id);
-      const playersArray = Array.from(game.players.values());
-      io.to(room).emit("game state", playersArray);
+      if (game) {
+        game.move("rotate", socket.id);
+        const playersArray = Array.from(game.players.values());
+        io.to(room).emit("game state", playersArray);
+      }
     });
 
     socket.on("start game", (args) => {
