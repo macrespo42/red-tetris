@@ -5,6 +5,7 @@ import { socket } from "../socket";
 import { useSelector } from "react-redux";
 import useMoveTetrominoes from "../hooks/useMoveTetrominoes";
 import NextPiece from "./NextPiece";
+import Controls from "./Controls";
 import Button from "./Button";
 import EndGameModal from "./EndGameModal";
 import Confetti from "react-confetti";
@@ -76,10 +77,10 @@ const GameView = () => {
     <div className="gameView">
       <TetrisGrid matrix={matrix} />
       <div className="gameSideInfos">
-        <h2>Next pieces</h2>
+        <h2>Next piece:</h2>
         <NextPiece matrix={nextPieceMatrix} />
-        <h2>Controls</h2>
-        <div className="controls"></div>
+        <h2>Controls:</h2>
+        <Controls />
       </div>
       <div className="opponentBoards">this is where opponent board show up</div>
       <EndGameModal isOpen={modalOpen} onClose={closeModal}>

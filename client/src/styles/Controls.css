@@ -1,0 +1,86 @@
+.key {
+	width: 50px;
+	height: 50px;
+	background-color: var(--black);
+}
+
+.top {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-right: 1rem;
+	margin-bottom: 1rem;
+	gap: 1rem;
+}
+
+.middle {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	margin-bottom: 1rem;
+}
+
+.bottom {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+}
+
+.space-bar {
+	width: 200px;
+	height: 35px;
+	background-color: var(--black);
+	display: flex;
+	justify-content: center;
+}
+
+.space-bar .space-key {
+	border-top: 5px solid var(--grey);
+	margin-top: 10px;
+	width: 75px;
+}
+
+.triangle-up {
+	width: 0;
+	height: 0;
+	border-left: 12.5px solid transparent;
+	border-right: 12.5px solid transparent;
+	border-bottom: 25px solid var(--grey);
+	margin: auto;
+	margin-top: 9px;
+}
+
+.triangle-left {
+	width: 0;
+	height: 0;
+	border-top: 12.5px solid transparent;
+	border-right: 25px solid var(--grey);
+	border-bottom: 12.5px solid transparent;
+	margin: auto;
+	margin-top: 12px;
+}
+
+.triangle-down {
+	width: 0;
+	height: 0;
+	border-left: 12.5px solid transparent;
+	border-right: 12.5px solid transparent;
+	border-top: 25px solid var(--grey);
+	margin: auto;
+	margin-top: 14px;
+}
+
+.triangle-right {
+	width: 0;
+	height: 0;
+	border-top: 12.5px solid transparent;
+	border-left: 25px solid var(--grey);
+	border-bottom: 12.5px solid transparent;
+	margin: auto;
+	margin-top: 14px;
+}
