@@ -31,6 +31,7 @@ class Game {
    **/
   addPlayer(newPlayer) {
     newPlayer.board = new Board();
+    newPlayer.drawNextPiece(this.pieceQueue[0]);
     this.players.set(newPlayer.id, newPlayer);
   }
 
@@ -76,6 +77,9 @@ class Game {
           }
           player.currentPiece = player.board.insertPiece(
             this.pieceQueue[player.board.nextPieceIndex].clone(),
+          );
+          player.drawNextPiece(
+            this.pieceQueue[player.board.nextPieceIndex + 1],
           );
           if (!player.currentPiece) {
             player.isAlive = false;

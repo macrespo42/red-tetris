@@ -1,4 +1,5 @@
 "use strict";
+
 class Player {
   static scoringSystem = {
     1: 40,
@@ -21,6 +22,32 @@ class Player {
     this.isAlive = true;
     this.isWinner = false;
     this.score = 0;
+    this.nextPieceGrid = Array(6)
+      .fill(0)
+      .map(() => Array(6).fill(0));
+  }
+
+  /**
+   * @param { Piece } piece
+   **/
+  drawNextPiece(piece) {
+    if (!piece) {
+      return;
+    }
+
+    const xOffset = 2;
+    const yOffset = piece.color === 7 ? 1 : 2;
+
+    for (const row of this.nextPieceGrid) {
+      for (let i = 0; i < row.length; i++) {
+        row[i] = 0;
+      }
+    }
+
+    piece.shape[piece.currentRotation].forEach((position) => {
+      this.nextPieceGrid[position.x + xOffset][position.y + yOffset] =
+        piece.color;
+    });
   }
 
   /**
