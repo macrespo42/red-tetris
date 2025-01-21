@@ -77,9 +77,9 @@ const GameView = () => {
     <div className="gameView">
       <TetrisGrid matrix={matrix} />
       <div className="gameSideInfos">
-        <h2>Next pieces</h2>
+        <h2>Next piece:</h2>
         <NextPiece matrix={nextPieceMatrix} />
-        <h2>Controls</h2>
+        <h2>Controls:</h2>
         <Controls />
       </div>
       <div className="opponentBoards">this is where opponent board show up</div>
