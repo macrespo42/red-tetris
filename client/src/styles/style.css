@@ -5,12 +5,12 @@
 }
 
 :root {
-	--primary: #1900D8;
-	--secondary: #E3170A;
-	--secondary-light: #E4572E;
-	--gold: #BFAB25;
-	--black: #080F0F;
-	--grey: #9AA0A8;
+	--primary: #1900d8;
+	--secondary: #e3170a;
+	--secondary-light: #e4572e;
+	--gold: #bfab25;
+	--black: #080f0f;
+	--grey: #9aa0a8;
 }
 
 body {
@@ -28,15 +28,22 @@ h1 {
 
 h2 {
 	font-family: "Roboto", serif;
-	color: #FFF;
+	color: #fff;
 	font-weight: bold;
 	font-size: 32px;
+}
+
+h3 {
+	font-family: "Roboto", serif;
+	color: #fff;
+	font-weight: normal;
+	font-size: 24px;
 }
 
 p {
 	font-family: "Roboto", serif;
 	font-weight: 400;
 	font-style: normal;
-	color: #FFF;
+	color: #fff;
 	font-size: 24px;
 }

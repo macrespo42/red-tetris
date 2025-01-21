@@ -32,9 +32,8 @@
 }
 
 .gameSideInfos .controls {
-	width: 181px;
-	height: 282px;
-	background-color: red;
+	width: 400px;
+	height: 300px;
 }
 
 .opponentBoards {
