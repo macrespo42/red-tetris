@@ -4,6 +4,7 @@ import TetrisGrid from "./TetrisGrid";
 import { socket } from "../socket";
 import { useSelector } from "react-redux";
 import useMoveTetrominoes from "../hooks/useMoveTetrominoes";
+import NextPiece from "./NextPiece";
 import Button from "./Button";
 import EndGameModal from "./EndGameModal";
 import Confetti from "react-confetti";
@@ -14,6 +15,12 @@ const GameView = () => {
     Array(20)
       .fill(0)
       .map(() => Array(10).fill(0)),
+  );
+
+  const [nextPieceMatrix, setNexpieceMatrix] = useState(
+    Array(6)
+      .fill(0)
+      .map(() => Array(6).fill(0)),
   );
 
   const navigate = useNavigate();
@@ -49,7 +56,10 @@ const GameView = () => {
 
   socket.on("game state", (players) => {
     const currentPlayer = players.find((player) => player.id === socketId);
-    if (currentPlayer) setMatrix([...currentPlayer.board.grid]);
+    if (currentPlayer) {
+      setMatrix([...currentPlayer.board.grid]);
+      setNexpieceMatrix([...currentPlayer.nextPieceGrid]);
+    }
     if (currentPlayer && currentPlayer.isAlive === false) {
       setIsWinner(false);
       openModal();
@@ -67,7 +77,7 @@ const GameView = () => {
       <TetrisGrid matrix={matrix} />
       <div className="gameSideInfos">
         <h2>Next pieces</h2>
-        <div className="nextPieces"></div>
+        <NextPiece matrix={nextPieceMatrix} />
         <h2>Controls</h2>
         <div className="controls"></div>
       </div>
