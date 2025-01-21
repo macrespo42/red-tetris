@@ -5,6 +5,7 @@ import { socket } from "../socket";
 import { useSelector } from "react-redux";
 import useMoveTetrominoes from "../hooks/useMoveTetrominoes";
 import NextPiece from "./NextPiece";
+import OpponentBoard from "./OpponentBoard";
 import Controls from "./Controls";
 import Button from "./Button";
 import EndGameModal from "./EndGameModal";
@@ -23,6 +24,8 @@ const GameView = () => {
       .fill(0)
       .map(() => Array(6).fill(0)),
   );
+
+  const [opponentGrids, setOpponentGrids] = useState([]);
 
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
@@ -61,14 +64,25 @@ const GameView = () => {
       setMatrix([...currentPlayer.board.grid]);
       setNexpieceMatrix([...currentPlayer.nextPieceGrid]);
     }
+
     if (currentPlayer && currentPlayer.isAlive === false) {
       setIsWinner(false);
       openModal();
     }
+
     if (currentPlayer && currentPlayer.isWinner) {
       setIsWinner(true);
       openModal();
     }
+
+    const grids = [];
+    players.forEach((opponent) => {
+      console.log(opponent);
+      if (opponent.id !== socketId) {
+        grids.push(opponent.board.grid);
+      }
+    });
+    setOpponentGrids([...grids]);
   });
 
   useMoveTetrominoes({ room: room });
@@ -82,7 +96,11 @@ const GameView = () => {
         <h2>Controls:</h2>
         <Controls />
       </div>
-      <div className="opponentBoards">this is where opponent board show up</div>
+      <div className="opponentBoards">
+        {opponentGrids.map((grid, index) => (
+          <OpponentBoard key={index} matrix={grid} />
+        ))}
+      </div>
       <EndGameModal isOpen={modalOpen} onClose={closeModal}>
         <>
           <h2>{isWinner ? "Victory!" : "Game Over"}</h2>
