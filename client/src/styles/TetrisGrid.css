@@ -1,0 +1,45 @@
+#tetris-grid {
+	display: grid;
+	grid-template-columns: repeat(10, 40px);
+	grid-template-rows: repeat(20, 40px);
+	gap: 1px;
+	background-color: #333;
+}
+
+.cell {
+	width: 40px;
+	height: 40px;
+	background-color: var(--black);
+}
+
+.yellow {
+	background-color: #fafa03;
+}
+
+.green {
+	background-color: #00c900;
+}
+
+.red {
+	background-color: #f00000;
+}
+
+.purple {
+	background-color: #650065;
+}
+
+.orange {
+	background-color: #f0a000;
+}
+
+.dark-blue {
+	background-color: #0000f0;
+}
+
+.blue {
+	background-color: #00ffff;
+}
+
+.grey {
+	background-color: #adafb5;
+}

@@ -1,17 +1,24 @@
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router";
-import Home from "./Home";
-import Room from "./Room";
-import Game from "./Game";
+import HomeView from "./HomeView";
+import RoomView from "./RoomView";
+import GameView from "./GameView";
+import { Provider } from "react-redux";
+import store from "../store";
+import SocketMiddleware from "./SocketMiddleware";
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/lobby/:room/:player" element={<Room />} />
-        <Route path="/:room/:player" element={<Game />} />
-      </Routes>
+      <Provider store={store}>
+        <SocketMiddleware>
+          <Routes>
+            <Route path="/" element={<HomeView />} />
+            <Route path="/lobby/:room/:player" element={<RoomView />} />
+            <Route path="/:room/:player" element={<GameView />} />
+          </Routes>
+        </SocketMiddleware>
+      </Provider>
     </BrowserRouter>
   );
 };

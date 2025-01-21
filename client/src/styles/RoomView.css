@@ -8,19 +8,26 @@
 	gap: 32px;
 }
 
-.guest {
+.player {
 	border: 3px solid var(--black);
 	width: 341px;
 	height: 70px;
 	margin: auto;
 	list-style-type: none;
-	background-color: var(--grey);
 	font-family: "Roboto", serif;
 	font-weight: 400;
 	font-style: normal;
-	color: #FFF;
+	color: #fff;
 	font-size: 24px;
 	padding-top: 1rem;
+}
+
+.guest {
+	background-color: var(--grey);
+}
+
+.owner {
+	background-color: var(--gold);
 }
 
 .submit-button {
