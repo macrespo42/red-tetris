@@ -21,30 +21,29 @@
 	grid-column: 2 / 3;
 	grid-row: 2 / 4;
 	justify-self: stretch;
-	align-self: self-start;
+	justify-content: space-between;
+	white-space: nowrap;
 }
 
 .gameSideInfos .nextPieces {
-	width: 181px;
-	height: 282px;
+	width: 150px;
+	height: 150px;
 	background-color: red;
-	margin-bottom: 64px;
+	margin-bottom: 180px;
 }
 
 .gameSideInfos .controls {
-	width: 181px;
-	height: 282px;
-	background-color: red;
+	width: 400px;
+	height: 300px;
 }
 
 .opponentBoards {
-	background-color: beige;
 	grid-column: 3 / 4;
 	grid-row: 2 / 4;
 }
 
 .opponentBoards .opponent {
-	width: 100%;
-	height: 282;
-	margin-bottom: 64px;
+	width: 160px;
+	height: 300px;
+	margin-bottom: 128px;
 }

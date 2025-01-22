@@ -31,6 +31,7 @@ class Game {
    **/
   addPlayer(newPlayer) {
     newPlayer.board = new Board();
+    newPlayer.drawNextPiece(this.pieceQueue[0]);
     this.players.set(newPlayer.id, newPlayer);
   }
 
@@ -54,7 +55,7 @@ class Game {
         aliveCount++;
       }
     });
-    return isAlive && aliveCount === 1;
+    return isAlive && aliveCount === 1 && this.players.size > 1;
   }
 
   /**
@@ -77,8 +78,12 @@ class Game {
           player.currentPiece = player.board.insertPiece(
             this.pieceQueue[player.board.nextPieceIndex].clone(),
           );
+          player.drawNextPiece(
+            this.pieceQueue[player.board.nextPieceIndex + 1],
+          );
           if (!player.currentPiece) {
             player.isAlive = false;
+            if (this.players.size === 1) this.isStarted = false;
           } else {
             if (this.hasWon(player)) {
               player.isWinner = true;

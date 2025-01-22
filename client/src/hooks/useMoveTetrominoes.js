@@ -19,15 +19,13 @@ function useMoveTetrominoes({ room }) {
       } else if (e.code === "ArrowUp") {
         e.preventDefault();
         socket.emit("rotate", room);
-      } else {
-        console.log("Unhandled keystroke");
       }
     }
 
     document.addEventListener("keydown", keyPressedHandler);
 
     return () => {
-      document.removeEventListener("keydown");
+      document.removeEventListener("keydown", keyPressedHandler);
     };
   }, [room]);
 }

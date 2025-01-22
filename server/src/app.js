@@ -10,7 +10,7 @@ const app = express();
 const server = createServer(app);
 
 const io = new Server(server, {
-  cors: "http://localhost:5173",
+  cors: ["http://localhost:5173", "192.168.1.181:5173"],
   methods: ["GET", "POST"],
 });
 
@@ -88,6 +88,16 @@ app.get("/ping", (_, res) => {
       }
     });
 
+    socket.on("leave game", (room) => {
+      const game = games.find((g) => g.name === room);
+      socket.leave(room);
+      if (game) {
+        if (game.players.has(socket.id)) {
+          game.players.delete(socket.id);
+        }
+      }
+    });
+
     socket.on("start game", (args) => {
       const { room } = args;
       const game = games.find((g) => g.name === room);
@@ -110,20 +120,6 @@ app.get("/ping", (_, res) => {
           }, 500);
         }
       }
-    });
-  });
-
-  io.on("leave game", (socket) => {
-    console.log(`User: ${socket.id} leave game`);
-    games.forEach((game) => {
-      if (game.players[socket.id]) delete game.players[socket.id];
-    });
-  });
-
-  io.on("disconnect", (socket) => {
-    console.log(`User: ${socket.id} disconnect`);
-    games.forEach((game) => {
-      if (game.players[socket.id]) delete game.players[socket.id];
     });
   });
 }

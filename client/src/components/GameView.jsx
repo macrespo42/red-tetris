@@ -4,9 +4,13 @@ import TetrisGrid from "./TetrisGrid";
 import { socket } from "../socket";
 import { useSelector } from "react-redux";
 import useMoveTetrominoes from "../hooks/useMoveTetrominoes";
+import NextPiece from "./NextPiece";
+import OpponentBoard from "./OpponentBoard";
+import Controls from "./Controls";
 import Button from "./Button";
 import EndGameModal from "./EndGameModal";
 import Confetti from "react-confetti";
+import { useNavigate } from "react-router";
 
 const GameView = () => {
   const [matrix, setMatrix] = useState(
@@ -15,6 +19,15 @@ const GameView = () => {
       .map(() => Array(10).fill(0)),
   );
 
+  const [nextPieceMatrix, setNexpieceMatrix] = useState(
+    Array(6)
+      .fill(0)
+      .map(() => Array(6).fill(0)),
+  );
+
+  const [opponentGrids, setOpponentGrids] = useState([]);
+
+  const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const [isWinner, setIsWinner] = useState(false);
 
@@ -35,21 +48,41 @@ const GameView = () => {
     closeModal();
   }
 
+  function leaveRoom() {
+    socket.emit("leave game", room);
+    closeModal();
+    navigate("/");
+  }
+
   socket.on("game started", () => {
     closeModal();
   });
 
   socket.on("game state", (players) => {
     const currentPlayer = players.find((player) => player.id === socketId);
-    if (currentPlayer) setMatrix([...currentPlayer.board.grid]);
+    if (currentPlayer) {
+      setMatrix([...currentPlayer.board.grid]);
+      setNexpieceMatrix([...currentPlayer.nextPieceGrid]);
+    }
+
     if (currentPlayer && currentPlayer.isAlive === false) {
       setIsWinner(false);
       openModal();
     }
+
     if (currentPlayer && currentPlayer.isWinner) {
       setIsWinner(true);
       openModal();
     }
+
+    const grids = [];
+    players.forEach((opponent) => {
+      console.log(opponent);
+      if (opponent.id !== socketId) {
+        grids.push(opponent.board.grid);
+      }
+    });
+    setOpponentGrids([...grids]);
   });
 
   useMoveTetrominoes({ room: room });
@@ -58,19 +91,23 @@ const GameView = () => {
     <div className="gameView">
       <TetrisGrid matrix={matrix} />
       <div className="gameSideInfos">
-        <h2>Next pieces</h2>
-        <div className="nextPieces"></div>
-        <h2>Controls</h2>
-        <div className="controls"></div>
+        <h2>Next piece:</h2>
+        <NextPiece matrix={nextPieceMatrix} />
+        <h2>Controls:</h2>
+        <Controls />
       </div>
-      <div className="opponentBoards">this is where opponent board show up</div>
+      <div className="opponentBoards">
+        {opponentGrids.map((grid, index) => (
+          <OpponentBoard key={index} matrix={grid} />
+        ))}
+      </div>
       <EndGameModal isOpen={modalOpen} onClose={closeModal}>
         <>
           <h2>{isWinner ? "Victory!" : "Game Over"}</h2>
           {isGameOwner ? (
             <Button text="PLAY AGAIN" onClick={playAgain} />
           ) : (
-            <Button text="LEAVE" to="" />
+            <Button text="LEAVE" onClick={leaveRoom} />
           )}
         </>
       </EndGameModal>
