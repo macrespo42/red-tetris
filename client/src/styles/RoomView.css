@@ -11,7 +11,7 @@
 .player {
 	border: 3px solid var(--black);
 	width: 341px;
-	height: 70px;
+	height: 100px;
 	margin: auto;
 	list-style-type: none;
 	font-family: "Roboto", serif;

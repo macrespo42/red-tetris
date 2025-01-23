@@ -91,9 +91,9 @@ const GameView = () => {
     <div className="gameView">
       <TetrisGrid matrix={matrix} />
       <div className="gameSideInfos">
-        <h2>Next piece:</h2>
+        <h3>Next piece:</h3>
         <NextPiece matrix={nextPieceMatrix} />
-        <h2>Controls:</h2>
+        <h3>Controls:</h3>
         <Controls />
       </div>
       <div className="opponentBoards">

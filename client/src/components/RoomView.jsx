@@ -42,7 +42,7 @@ const RoomView = () => {
   return (
     <div className="room-page">
       <header>
-        <h1>{room}</h1>
+        <h2>{room}</h2>
       </header>
       <section className="player-list">
         <ul>
@@ -51,7 +51,7 @@ const RoomView = () => {
               className={`player ${player.isGameOwner ? "owner" : "guest"}`}
               key={player.id + player.name}
             >
-              {player.name}
+              {player.name} {gameOwner && "👑"}
             </li>
           ))}
         </ul>
