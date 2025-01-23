@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router";
 import Button from "./Button";
+import Tetrominoes from "./Tetrominoes";
 import "../styles/RoomView.css";
 import { socket } from "../socket";
 import { useEffect, useState } from "react";
@@ -42,7 +43,7 @@ const RoomView = () => {
   return (
     <div className="room-page">
       <header>
-        <h1>{room}</h1>
+        <h2>{room}</h2>
       </header>
       <section className="player-list">
         <ul>
@@ -51,7 +52,7 @@ const RoomView = () => {
               className={`player ${player.isGameOwner ? "owner" : "guest"}`}
               key={player.id + player.name}
             >
-              {player.name}
+              {player.name} {player.isGameOwner && "👑"}
             </li>
           ))}
         </ul>
@@ -59,6 +60,7 @@ const RoomView = () => {
       <div className="submit-button">
         {gameOwner && <Button text="START" onClick={startGame} />}
       </div>
+      <Tetrominoes />
     </div>
   );
 };

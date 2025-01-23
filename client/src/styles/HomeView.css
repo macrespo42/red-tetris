@@ -1,3 +1,10 @@
+.container {
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 header {
 	margin-top: 80px;
 	margin-bottom: 80px;
@@ -5,25 +12,25 @@ header {
 }
 
 input {
-	background-color: var(--primary);
+	background-color: transparent;
 	border: 5px solid var(--black);
-	color: #FFF;
+	color: #fff;
 	width: 735px;
 	height: 100px;
 	margin-bottom: 28px;
 	padding-left: 1rem;
 	font-size: 32px;
-	color: #FFF;
+	color: #fff;
 }
 
 ::placeholder {
 	font-size: 32px;
-	color: #FFF;
+	color: #fff;
 	opacity: 0.8;
 }
 
 .home-section {
-	width: 51%;
+	width: 735px;
 	margin: auto;
 	display: flex;
 	flex-direction: column;
