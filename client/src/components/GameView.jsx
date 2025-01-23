@@ -25,7 +25,7 @@ const GameView = () => {
       .map(() => Array(6).fill(0)),
   );
 
-  const [opponentGrids, setOpponentGrids] = useState([]);
+  const [opponents, setOpponents] = useState([]);
   const [currentPlayerScore, setCurrentPlayerScore] = useState(0);
 
   const navigate = useNavigate();
@@ -78,14 +78,13 @@ const GameView = () => {
       openModal();
     }
 
-    const grids = [];
+    const playerLst = [];
     players.forEach((opponent) => {
-      console.log(opponent);
       if (opponent.id !== socketId) {
-        grids.push(opponent.board.grid);
+        playerLst.push(opponent);
       }
     });
-    setOpponentGrids([...grids]);
+    setOpponents([...playerLst]);
   });
 
   useMoveTetrominoes({ room: room });
@@ -104,8 +103,13 @@ const GameView = () => {
         <Controls />
       </div>
       <div className="opponentBoards">
-        {opponentGrids.map((grid, index) => (
-          <OpponentBoard key={index} matrix={grid} />
+        {opponents.map((player, index) => (
+          <OpponentBoard
+            key={index}
+            matrix={player.board.grid}
+            name={player.name}
+            score={player.score}
+          />
         ))}
       </div>
       <EndGameModal isOpen={modalOpen} onClose={closeModal}>
