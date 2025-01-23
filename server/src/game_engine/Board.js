@@ -84,7 +84,7 @@ class Board {
    * @param {number} n
    **/
   inflictPenalty(n) {
-    let n_penalty = n;
+    let n_penalty = n - 1;
     while (n_penalty > 0) {
       this.grid[this.grid.length - (n_penalty + this.currentPenalty)].fill(8);
       n_penalty--;
