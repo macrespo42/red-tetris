@@ -51,7 +51,7 @@ const RoomView = () => {
               className={`player ${player.isGameOwner ? "owner" : "guest"}`}
               key={player.id + player.name}
             >
-              {player.name} {gameOwner && "👑"}
+              {player.name} {player.isGameOwner && "👑"}
             </li>
           ))}
         </ul>
