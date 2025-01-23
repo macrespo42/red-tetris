@@ -1,5 +1,6 @@
 import Button from "./Button";
 import "../styles/HomeView.css";
+import Tetrominoes from "./Tetrominoes";
 import { useState } from "react";
 
 const HomeView = () => {
@@ -32,6 +33,7 @@ const HomeView = () => {
           </div>
         </section>
       </div>
+      <Tetrominoes />
     </div>
   );
 };

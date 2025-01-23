@@ -1,0 +1,39 @@
+.I {
+	position: absolute;
+	top: 10%;
+	left: 10%;
+}
+
+.O {
+	position: absolute;
+	bottom: 7%;
+	right: 5%;
+}
+
+.L {
+	position: absolute;
+	top: 57%;
+	right: 15%;
+}
+
+.S {
+	position: absolute;
+	top: 80%;
+	left: 6%;
+}
+
+.T {
+	position: absolute;
+	top: 5%;
+	right: 10%;
+}
+
+.Z {
+	position: absolute;
+	top: 50%;
+	left: 15%;
+}
+
+img {
+	width: 100px;
+}

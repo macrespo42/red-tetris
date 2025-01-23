@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router";
 import Button from "./Button";
+import Tetrominoes from "./Tetrominoes";
 import "../styles/RoomView.css";
 import { socket } from "../socket";
 import { useEffect, useState } from "react";
@@ -59,6 +60,7 @@ const RoomView = () => {
       <div className="submit-button">
         {gameOwner && <Button text="START" onClick={startGame} />}
       </div>
+      <Tetrominoes />
     </div>
   );
 };
