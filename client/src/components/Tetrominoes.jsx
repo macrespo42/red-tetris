@@ -1,10 +1,10 @@
 import "../styles/Tetrominoes.css";
-import I from "../public/tetrominoes/Tetris_I.svg";
-import O from "../public/tetrominoes/Tetris_O.svg";
-import L from "../public/tetrominoes/Tetris_L.svg";
-import S from "../public/tetrominoes/Tetris_S.svg";
-import T from "../public/tetrominoes/Tetris_T.svg";
-import Z from "../public/tetrominoes/Tetris_Z.svg";
+import I from "../tetrominoes/Tetris_I.svg";
+import O from "../tetrominoes/Tetris_O.svg";
+import L from "../tetrominoes/Tetris_L.svg";
+import S from "../tetrominoes/Tetris_S.svg";
+import T from "../tetrominoes/Tetris_T.svg";
+import Z from "../tetrominoes/Tetris_Z.svg";
 
 const Tetrominoes = () => {
   const T_array = [I, O, L, S, T, Z];
