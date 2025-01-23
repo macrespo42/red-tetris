@@ -26,6 +26,7 @@ const GameView = () => {
   );
 
   const [opponentGrids, setOpponentGrids] = useState([]);
+  const [currentPlayerScore, setCurrentPlayerScore] = useState(0);
 
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
@@ -42,6 +43,7 @@ const GameView = () => {
   const room = useSelector((state) => state.player.value.roomName);
   const socketId = useSelector((state) => state.player.value.socketId);
   const isGameOwner = useSelector((state) => state.player.value.isGameOwner);
+  const playerName = useSelector((state) => state.player.value.name);
 
   function playAgain() {
     socket.emit("start game", { room });
@@ -63,6 +65,7 @@ const GameView = () => {
     if (currentPlayer) {
       setMatrix([...currentPlayer.board.grid]);
       setNexpieceMatrix([...currentPlayer.nextPieceGrid]);
+      setCurrentPlayerScore(currentPlayer.score);
     }
 
     if (currentPlayer && currentPlayer.isAlive === false) {
@@ -89,7 +92,11 @@ const GameView = () => {
 
   return (
     <div className="gameView">
-      <TetrisGrid matrix={matrix} />
+      <TetrisGrid
+        matrix={matrix}
+        name={playerName}
+        score={currentPlayerScore}
+      />
       <div className="gameSideInfos">
         <h3>Next piece:</h3>
         <NextPiece matrix={nextPieceMatrix} />
