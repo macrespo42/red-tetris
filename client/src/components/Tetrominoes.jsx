@@ -6,9 +6,10 @@ import S from "../tetrominoes/Tetris_S.svg";
 import T from "../tetrominoes/Tetris_T.svg";
 import Z from "../tetrominoes/Tetris_Z.svg";
 
+const T_array = [I, O, L, S, T, Z];
+T_array.sort(() => Math.random() - 0.5);
+
 const Tetrominoes = () => {
-  const T_array = [I, O, L, S, T, Z];
-  T_array.sort(() => Math.random() - 0.5);
   return (
     <div className="tetro-background">
       <div className="I">
