@@ -77,7 +77,6 @@ const GameView = () => {
 
     const grids = [];
     players.forEach((opponent) => {
-      console.log(opponent);
       if (opponent.id !== socketId) {
         grids.push(opponent.board.grid);
       }
@@ -86,15 +85,14 @@ const GameView = () => {
   });
 
   useMoveTetrominoes({ room: room });
-
   return (
     <div className="gameView">
       <TetrisGrid matrix={matrix} />
       <div className="gameSideInfos">
         <h2>Next piece:</h2>
-        <NextPiece matrix={nextPieceMatrix} />
+        {/* <NextPiece matrix={nextPieceMatrix} /> */}
         <h2>Controls:</h2>
-        <Controls />
+        {/* <Controls /> */}
       </div>
       <div className="opponentBoards">
         {opponentGrids.map((grid, index) => (
@@ -113,7 +111,8 @@ const GameView = () => {
       </EndGameModal>
       {isWinner && modalOpen ? (
         <>
-          <Confetti width={window.innerWidth} height={window.innerHeight} />
+        cc
+          <Confetti  width={window.innerWidth} height={window.innerHeight} />
         </>
       ) : (
         <></>
