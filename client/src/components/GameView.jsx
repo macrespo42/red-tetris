@@ -114,12 +114,9 @@ const GameView = () => {
       </div>
       <EndGameModal isOpen={modalOpen} onClose={closeModal}>
         <>
-          <h2>{isWinner ? "Victory!" : "Game Over"}</h2>
-          {isGameOwner ? (
-            <Button text="PLAY AGAIN" onClick={playAgain} />
-          ) : (
-            <Button text="LEAVE" onClick={leaveRoom} />
-          )}
+          <h2>{isWinner ? "Victory" : "Defeat"}</h2>
+          {isGameOwner && <Button text="PLAY AGAIN" onClick={playAgain} />}
+          <Button text="LEAVE" onClick={leaveRoom} />
         </>
       </EndGameModal>
       {isWinner && modalOpen ? (
