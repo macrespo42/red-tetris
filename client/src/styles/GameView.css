@@ -8,8 +8,8 @@
 }
 
 .gameBoard {
-	width: 400px;
-	height: 780px;
+	width: 310px;
+	height: 600px;
 	background-color: black;
 	grid-column: 1 / 2;
 	grid-row: 2 / 4;
@@ -26,20 +26,21 @@
 }
 
 .gameSideInfos .nextPieces {
-	width: 150px;
+	width: 155px;
 	height: 150px;
 	background-color: red;
 	margin-bottom: 180px;
 }
 
 .gameSideInfos .controls {
-	width: 400px;
+	width: 350px;
 	height: 300px;
 }
 
 .opponentBoards {
 	grid-column: 3 / 4;
 	grid-row: 2 / 4;
+	overflow-x: scroll;
 }
 
 .opponentBoards .opponent {
