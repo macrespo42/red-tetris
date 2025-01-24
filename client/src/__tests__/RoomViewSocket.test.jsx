@@ -79,10 +79,8 @@ describe("room view", () => {
       </Provider>
     );
 
-    await waitFor(() => {
       expect(screen.getByText(/testRoom/i)).toBeDefined();
-      expect(screen.getByText("Player 1")).toBeDefined();
-    });
+      expect(screen.getByText(/Player 1/i)).toBeDefined();
   });
   it("should emit 'start game' when startGame is called by game owner", async () => {
     render(

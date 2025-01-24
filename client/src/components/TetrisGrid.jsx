@@ -1,6 +1,6 @@
 import "../styles/TetrisGrid.css";
 
-const TetrisGrid = ({ matrix }) => {
+const TetrisGrid = ({ matrix, name, score }) => {
   const colorMap = {
     1: "yellow",
     2: "green",
@@ -24,6 +24,9 @@ const TetrisGrid = ({ matrix }) => {
           )),
         )}
       </div>
+      <p className="player-infos">
+        {name}: {score} pts
+      </p>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import "../styles/OpponentBoard.css";
 
-const OpponentBoard = ({ matrix }) => {
+const OpponentBoard = ({ matrix, name, score }) => {
   const colorMap = {
     1: "yellow",
     2: "green",
@@ -23,6 +23,9 @@ const OpponentBoard = ({ matrix }) => {
           )),
         )}
       </div>
+      <p className="player-infos">
+        {name}: {score} pts
+      </p>
     </div>
   );
 };

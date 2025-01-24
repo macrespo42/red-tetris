@@ -25,7 +25,8 @@ const GameView = () => {
       .map(() => Array(6).fill(0)),
   );
 
-  const [opponentGrids, setOpponentGrids] = useState([]);
+  const [opponents, setOpponents] = useState([]);
+  const [currentPlayerScore, setCurrentPlayerScore] = useState(0);
 
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
@@ -42,6 +43,7 @@ const GameView = () => {
   const room = useSelector((state) => state.player.value.roomName);
   const socketId = useSelector((state) => state.player.value.socketId);
   const isGameOwner = useSelector((state) => state.player.value.isGameOwner);
+  const playerName = useSelector((state) => state.player.value.name);
 
   function playAgain() {
     socket.emit("start game", { room });
@@ -63,6 +65,7 @@ const GameView = () => {
     if (currentPlayer) {
       setMatrix([...currentPlayer.board.grid]);
       setNexpieceMatrix([...currentPlayer.nextPieceGrid]);
+      setCurrentPlayerScore(currentPlayer.score);
     }
 
     if (currentPlayer && currentPlayer.isAlive === false) {
@@ -75,38 +78,44 @@ const GameView = () => {
       openModal();
     }
 
-    const grids = [];
+    const playerLst = [];
     players.forEach((opponent) => {
       if (opponent.id !== socketId) {
-        grids.push(opponent.board.grid);
+        playerLst.push(opponent);
       }
     });
-    setOpponentGrids([...grids]);
+    setOpponents([...playerLst]);
   });
 
   useMoveTetrominoes({ room: room });
   return (
     <div className="gameView">
-      <TetrisGrid matrix={matrix} />
+      <TetrisGrid
+        matrix={matrix}
+        name={playerName}
+        score={currentPlayerScore}
+      />
       <div className="gameSideInfos">
-        <h2>Next piece:</h2>
-        {/* <NextPiece matrix={nextPieceMatrix} /> */}
-        <h2>Controls:</h2>
-        {/* <Controls /> */}
+        <h3>Next piece:</h3>
+        <NextPiece matrix={nextPieceMatrix} />
+        <h3>Controls:</h3>
+        <Controls />
       </div>
       <div className="opponentBoards">
-        {opponentGrids.map((grid, index) => (
-          <OpponentBoard key={index} matrix={grid} />
+        {opponents.map((player, index) => (
+          <OpponentBoard
+            key={index}
+            matrix={player.board.grid}
+            name={player.name}
+            score={player.score}
+          />
         ))}
       </div>
       <EndGameModal isOpen={modalOpen} onClose={closeModal}>
         <>
-          <h2>{isWinner ? "Victory!" : "Game Over"}</h2>
-          {isGameOwner ? (
-            <Button text="PLAY AGAIN" onClick={playAgain} />
-          ) : (
-            <Button text="LEAVE" onClick={leaveRoom} />
-          )}
+          <h2>{isWinner ? "Victory" : "Defeat"}</h2>
+          {isGameOwner && <Button text="PLAY AGAIN" onClick={playAgain} />}
+          <Button text="LEAVE" onClick={leaveRoom} />
         </>
       </EndGameModal>
       {isWinner && modalOpen ? (
