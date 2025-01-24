@@ -61,6 +61,6 @@ describe("useMoveTetrominoes Hook", () => {
     const { unmount } = renderHook(() => useMoveTetrominoes({ room: "player1" }));
     expect(addEventListenerSpy).toHaveBeenCalledWith("keydown", expect.any(Function));
     unmount();
-    expect(removeEventListenerSpy).toHaveBeenCalledWith("keydown");
+    expect(removeEventListenerSpy).toHaveBeenCalledWith("keydown", expect.any(Function));
   });
 });
