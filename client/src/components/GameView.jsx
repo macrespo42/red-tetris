@@ -44,14 +44,16 @@ const GameView = () => {
   const socketId = useSelector((state) => state.player.value.socketId);
   const isGameOwner = useSelector((state) => state.player.value.isGameOwner);
   const playerName = useSelector((state) => state.player.value.name);
+  const gameId = useSelector((state) => state.player.value.gameId);
 
   function playAgain() {
-    socket.emit("start game", { room });
+    if (isGameOwner)
+      socket.emit("start game", { gameIdentifier: gameId, room });
     closeModal();
   }
 
   function leaveRoom() {
-    socket.emit("leave game", room);
+    socket.emit("leave game", { gameId, room });
     closeModal();
     navigate("/");
   }
@@ -87,7 +89,7 @@ const GameView = () => {
     setOpponents([...playerLst]);
   });
 
-  useMoveTetrominoes({ room: room });
+  useMoveTetrominoes({ gameId: gameId, room: room });
 
   return (
     <div className="gameView">
