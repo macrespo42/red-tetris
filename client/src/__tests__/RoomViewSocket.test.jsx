@@ -1,17 +1,13 @@
 import { describe, it, expect, test, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import { MemoryRouter, Route, Routes, useNavigate } from "react-router";
-import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { socket } from "../socket";
-import HomeView from "../components/HomeView";
 import RoomView from "../components/RoomView";
 import { vi, beforeEach } from "vitest";
 import SocketMiddleware from "../components/SocketMiddleware";
 import { configureStore } from "@reduxjs/toolkit";
 import playerReducer from "../playerSlice";
 import { waitFor } from "@testing-library/react";
-import GameView from "../components/GameView";
 
 describe("room view", () => {
   let store;
