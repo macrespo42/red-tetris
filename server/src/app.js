@@ -28,8 +28,12 @@ app.get("/ping", (_, res) => {
 
     socket.on("joining room", (gameInfos) => {
       const { room, player } = gameInfos;
-      socket.join(room);
       let game = games.find((game) => game.name == room);
+
+      if (game !== undefined && game.isStarted) {
+        return;
+      }
+      socket.join(room);
 
       if (game != undefined) {
         if (!game.players.get(socket.id))
