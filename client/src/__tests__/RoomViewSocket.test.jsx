@@ -97,42 +97,5 @@ describe("room view", () => {
       expect(socket.emit).toHaveBeenCalledWith("start game", { room: "testRoom" });
     });
   });
-  // it("should navigate to game page when game started", async () => {
-  //   const navigate = vi.fn();
-  //   const { rerender } = render(
-  //     <Provider store={store}>
-  //       <SocketMiddleware>
-  //               <MemoryRouter initialEntries={["/"]}>
-  //         <Routes>
-  //           <Route path="/" element={<RoomView />} />
-  //           <Route path="/:room/:player" element={<GameView />} />
-  //         </Routes>
-  //       </MemoryRouter>
-  //       </SocketMiddleware>
-  //     </Provider>
-  //   );
-  //   const mockPlayers = [
-  //     { id: "fake-socket-id", name: "Player 1", isGameOwner: true },
-  //     { id: "player-2", name: "Player 4", isGameOwner: false },
-  //   ];
-  //   const onConnectCallback = socket.on.mock.calls.find(([event]) => event === "players list")[1];
-  //   onConnectCallback(mockPlayers);
-  //   rerender(
-  //     <Provider store={store}>
-  //       <SocketMiddleware>
-  //               <MemoryRouter initialEntries={["/"]}>
-  //         <Routes>
-  //           <Route path="/" element={<RoomView />} />
-  //           <Route path="/:room/:player" element={<GameView />} />
-  //         </Routes>
-  //       </MemoryRouter>
-  //       </SocketMiddleware>
-  //     </Provider>
-  //   );
-  //   const onGameStarted = socket.on.mock.calls.find(([event]) => event === "game started")[1];
-  //   onGameStarted();
-  //       await waitFor(() => {
-  //     expect(navigate).toHaveBeenCalledWith("/testRoom/testPlayer");
-  //   });
-  // });
+
 });

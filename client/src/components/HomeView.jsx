@@ -1,10 +1,12 @@
 import Button from "./Button";
 import "../styles/HomeView.css";
-import { useState } from "react";
+import {  useState } from "react";
 
 const HomeView = () => {
   const [room, setRoom] = useState("");
   const [player, setPlayer] = useState("");
+
+
   return (
     <div className="homepage">
       <header>

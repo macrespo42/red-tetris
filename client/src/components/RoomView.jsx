@@ -14,6 +14,7 @@ const RoomView = () => {
   const socketId = useSelector((state) => state.player.value.socketId);
   const gameOwner = useSelector((state) => state.player.value.isGameOwner);
 
+
   socket.on("players list", (playersLst) => {
     players = playersLst.map((player) => player);
     const currentPlayer = players.find((player) => player.id === socketId);
@@ -22,7 +23,7 @@ const RoomView = () => {
     }
     setPlayers([...players]);
   });
-
+  
   socket.on("game started", () => {
     navigate(`/${room}/${player}`);
   });
@@ -38,6 +39,7 @@ const RoomView = () => {
       socket.emit("start game", { room });
     }
   }
+
 
   return (
     <div className="room-page">

@@ -17,7 +17,6 @@ const EndGameModal = ({ isOpen, onClose, children }) => {
       document.removeEventListener("keydown", handleEscape);
     };
   }, [isOpen, onClose]);
-
   if (!isOpen) return null;
   return (
     <div className="modal">
