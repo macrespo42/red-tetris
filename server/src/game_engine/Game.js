@@ -1,4 +1,5 @@
 "use strict";
+import { randomUUID } from "node:crypto";
 import Piece from "./Piece.js";
 import Board from "./Board.js";
 
@@ -10,6 +11,7 @@ class Game {
    **/
   constructor(name) {
     this.name = name;
+    this.id = randomUUID();
     this.isStarted = false;
     this.players = new Map();
     this.pieceQueue = [];

@@ -5,7 +5,7 @@ import "../styles/RoomView.css";
 import { socket } from "../socket";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { name, roomName, isGameOwner } from "../playerSlice";
+import { name, roomName, isGameOwner, gameId } from "../playerSlice";
 
 const RoomView = () => {
   const navigate = useNavigate();
@@ -14,6 +14,7 @@ const RoomView = () => {
   const dispatch = useDispatch();
   const socketId = useSelector((state) => state.player.value.socketId);
   const gameOwner = useSelector((state) => state.player.value.isGameOwner);
+  const gameIdentifier = useSelector((state) => state.player.value.gameId);
 
   socket.on("players list", (playersLst) => {
     players = playersLst.map((player) => player);
@@ -24,8 +25,12 @@ const RoomView = () => {
     setPlayers([...players]);
   });
 
-  socket.on("game started", () => {
-    navigate(`/${room}/${player}`);
+  socket.on("game infos", (receivedGameId) => {
+    dispatch(gameId({ gameId: receivedGameId }));
+  });
+
+  socket.on("game started", (gameId) => {
+    if (gameId === gameIdentifier) navigate(`/${gameIdentifier}/${player}`);
   });
 
   useEffect(() => {
@@ -36,7 +41,7 @@ const RoomView = () => {
 
   function startGame() {
     if (gameOwner) {
-      socket.emit("start game", { room });
+      socket.emit("start game", { gameIdentifier, room });
     }
   }
 
