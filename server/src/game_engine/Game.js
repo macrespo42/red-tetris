@@ -8,9 +8,11 @@ class Game {
 
   /**
    * @param { string } name
+   * @param { string } [mode="normal"]
    **/
-  constructor(name) {
+  constructor(name, mode = "normal") {
     this.name = name;
+    this.mode = mode;
     this.id = randomUUID();
     this.isStarted = false;
     this.players = new Map();
@@ -87,9 +89,19 @@ class Game {
     } else {
       for (let i = 0; i < Game.QUEUE_SIZE; i++) {
         const piece = new Piece();
+        if (this.mode === "broken piece") {
+          const isBroken = Math.floor(Math.random() * 10);
+          if (isBroken === 8) piece.color = isBroken;
+        }
         this.pieceQueue.push(piece);
       }
     }
+  }
+
+  #forceWon(winner) {
+    this.players.forEach((player) => {
+      if (player.id !== winner.id) player.isAlive = false;
+    });
   }
 
   /**
@@ -98,10 +110,17 @@ class Game {
   #updateScores(player) {
     const rowsFullfilled = player.board.checkForFullRows();
     if (rowsFullfilled > 0) player.computeScore(rowsFullfilled);
-    if (rowsFullfilled > 1) {
+    if (rowsFullfilled > 0 && this.mode === "sudden_death") {
+      this.#forceWon(player);
+    }
+    if (rowsFullfilled > 1 || this.mode === "domination") {
       this.players.forEach((penalizedPlayer) => {
         if (penalizedPlayer.id !== player.id && penalizedPlayer.isAlive) {
-          penalizedPlayer.board.inflictPenalty(rowsFullfilled);
+          if (this.mode === "domination") {
+            penalizedPlayer.board.inflictPenalty(2);
+          } else {
+            penalizedPlayer.board.inflictPenalty(rowsFullfilled);
+          }
         }
       });
     }

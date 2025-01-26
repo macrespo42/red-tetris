@@ -120,6 +120,8 @@ app.get("/ping", (_, res) => {
           let playersArray = Array.from(game.players.values());
           io.to(room).emit("game started", gameId);
 
+          const interval = game.mode === "quick" ? 150 : 200;
+
           const gameInterval = setInterval(() => {
             game.tick();
             playersArray = Array.from(game.players.values());
@@ -128,7 +130,7 @@ app.get("/ping", (_, res) => {
               game.clearGame();
               clearInterval(gameInterval);
             }
-          }, 500);
+          }, interval);
         }
       }
     });
