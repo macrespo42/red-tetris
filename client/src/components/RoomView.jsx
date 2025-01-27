@@ -1,6 +1,8 @@
 import { useNavigate, useParams } from "react-router";
+import { IoMdSettings } from "react-icons/io";
 import Button from "./Button";
 import Tetrominoes from "./Tetrominoes";
+import EndGameModal from "./EndGameModal";
 import "../styles/RoomView.css";
 import { socket } from "../socket";
 import { useEffect, useState } from "react";
@@ -11,6 +13,8 @@ const RoomView = () => {
   const navigate = useNavigate();
   let { room, player } = useParams();
   let [players, setPlayers] = useState([player]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [gameMode, setGameMode] = useState("normal");
   const dispatch = useDispatch();
   const socketId = useSelector((state) => state.player.value.socketId);
   const gameOwner = useSelector((state) => state.player.value.isGameOwner);
@@ -41,12 +45,17 @@ const RoomView = () => {
 
   function startGame() {
     if (gameOwner) {
-      socket.emit("start game", { gameIdentifier, room });
+      socket.emit("start game", { gameIdentifier, room, gameMode });
     }
   }
 
   return (
     <div className="room-page">
+      {gameOwner && (
+        <div className="game__settings" onClick={() => setIsOpen(!isOpen)}>
+          <IoMdSettings size={75} />
+        </div>
+      )}
       <header>
         <h2>{room}</h2>
       </header>
@@ -66,6 +75,26 @@ const RoomView = () => {
         {gameOwner && <Button text="START" onClick={startGame} />}
       </div>
       <Tetrominoes />
+      <EndGameModal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <h2>Settings</h2>
+        <label htmlFor="standard-select">Game mode selection:</label>
+        <div className="select">
+          <select
+            id="standard-select"
+            name="game_mode"
+            onChange={(e) => {
+              setGameMode(e.target.value);
+            }}
+          >
+            <option value="normal">normal</option>
+            <option value="broken_piece">broken piece</option>
+            <option value="sudden_death">sudden death</option>
+            <option value="domination">domination</option>
+            <option value="quick">quick</option>
+          </select>
+        </div>
+        <Button text="Confirm" onClick={() => setIsOpen(false)}></Button>
+      </EndGameModal>
     </div>
   );
 };

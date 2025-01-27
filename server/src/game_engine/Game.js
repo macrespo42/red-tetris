@@ -8,9 +8,11 @@ class Game {
 
   /**
    * @param { string } name
+   * @param { string } [mode="normal"]
    **/
-  constructor(name) {
+  constructor(name, mode = "normal") {
     this.name = name;
+    this.mode = mode;
     this.id = randomUUID();
     this.isStarted = false;
     this.players = new Map();
@@ -52,6 +54,13 @@ class Game {
   }
 
   /**
+   * @param {string} mode
+   **/
+  setGameMode(mode) {
+    this.mode = mode;
+  }
+
+  /**
    * @param {string} movement
    * @param {string} playerId
    **/
@@ -82,14 +91,25 @@ class Game {
   }
 
   #fillPieceQueue() {
-    if (this.pieceQueue.length === Game.QUEUE_SIZE) {
+    if (this.mode === "broken_piece") {
+      for (let i = 0; i < Game.QUEUE_SIZE; i++) {
+        const piece = new Piece();
+        if (Math.random() < 0.2) piece.color = 8;
+        this.pieceQueue.push(piece);
+      }
+    } else if (this.pieceQueue.length === Game.QUEUE_SIZE) {
       this.pieceQueue.sort(() => Math.random() - 0.5);
     } else {
       for (let i = 0; i < Game.QUEUE_SIZE; i++) {
-        const piece = new Piece();
-        this.pieceQueue.push(piece);
+        this.pieceQueue.push(new Piece());
       }
     }
+  }
+
+  #forceWon(winner) {
+    this.players.forEach((player) => {
+      if (player.id !== winner.id) player.isAlive = false;
+    });
   }
 
   /**
@@ -98,10 +118,20 @@ class Game {
   #updateScores(player) {
     const rowsFullfilled = player.board.checkForFullRows();
     if (rowsFullfilled > 0) player.computeScore(rowsFullfilled);
-    if (rowsFullfilled > 1) {
+    if (rowsFullfilled > 0 && this.mode === "sudden_death") {
+      this.#forceWon(player);
+    }
+    if (
+      rowsFullfilled > 1 ||
+      (rowsFullfilled === 1 && this.mode === "domination")
+    ) {
       this.players.forEach((penalizedPlayer) => {
         if (penalizedPlayer.id !== player.id && penalizedPlayer.isAlive) {
-          penalizedPlayer.board.inflictPenalty(rowsFullfilled);
+          if (this.mode === "domination") {
+            penalizedPlayer.board.inflictPenalty(2);
+          } else {
+            penalizedPlayer.board.inflictPenalty(rowsFullfilled);
+          }
         }
       });
     }

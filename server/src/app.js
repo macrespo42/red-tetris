@@ -106,19 +106,24 @@ app.get("/ping", (_, res) => {
         if (game.players.has(socket.id)) {
           game.players.delete(socket.id);
         }
+        if (game.players.size === 0) games.splice(games.indexOf(game), 1);
       }
     });
 
     socket.on("start game", (gameInfos) => {
-      const { gameIdentifier: gameId, room } = gameInfos;
+      const { gameIdentifier: gameId, room, gameMode } = gameInfos;
       const game = games.find((g) => g.id === gameId);
       if (game) {
+        game.setGameMode(gameMode);
+        console.log(`game mode: ${game.mode} | received one: ${gameMode}`);
         const player = game.players.get(socket.id);
         if (player && player.isGameOwner) {
           game.startGame();
 
           let playersArray = Array.from(game.players.values());
           io.to(room).emit("game started", gameId);
+
+          const interval = game.mode === "quick" ? 150 : 500;
 
           const gameInterval = setInterval(() => {
             game.tick();
@@ -128,7 +133,7 @@ app.get("/ping", (_, res) => {
               game.clearGame();
               clearInterval(gameInterval);
             }
-          }, 500);
+          }, interval);
         }
       }
     });
