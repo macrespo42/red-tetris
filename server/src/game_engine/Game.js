@@ -89,7 +89,7 @@ class Game {
     } else {
       for (let i = 0; i < Game.QUEUE_SIZE; i++) {
         const piece = new Piece();
-        if (this.mode === "broken piece") {
+        if (this.mode === "broken_piece") {
           const isBroken = Math.floor(Math.random() * 10);
           if (isBroken === 8) piece.color = isBroken;
         }
@@ -113,7 +113,10 @@ class Game {
     if (rowsFullfilled > 0 && this.mode === "sudden_death") {
       this.#forceWon(player);
     }
-    if (rowsFullfilled > 1 || this.mode === "domination") {
+    if (
+      rowsFullfilled > 1 ||
+      (rowsFullfilled === 1 && this.mode === "domination")
+    ) {
       this.players.forEach((penalizedPlayer) => {
         if (penalizedPlayer.id !== player.id && penalizedPlayer.isAlive) {
           if (this.mode === "domination") {
