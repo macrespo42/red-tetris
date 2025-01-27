@@ -114,7 +114,8 @@ app.get("/ping", (_, res) => {
       const { gameIdentifier: gameId, room, gameMode } = gameInfos;
       const game = games.find((g) => g.id === gameId);
       if (game) {
-        game.mode = gameMode;
+        game.setGameMode(gameMode);
+        console.log(`game mode: ${game.mode} | received one: ${gameMode}`);
         const player = game.players.get(socket.id);
         if (player && player.isGameOwner) {
           game.startGame();

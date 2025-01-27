@@ -54,6 +54,13 @@ class Game {
   }
 
   /**
+   * @param {string} mode
+   **/
+  setGameMode(mode) {
+    this.mode = mode;
+  }
+
+  /**
    * @param {string} movement
    * @param {string} playerId
    **/
@@ -84,16 +91,17 @@ class Game {
   }
 
   #fillPieceQueue() {
-    if (this.pieceQueue.length === Game.QUEUE_SIZE) {
+    if (this.mode === "broken_piece") {
+      for (let i = 0; i < Game.QUEUE_SIZE; i++) {
+        const piece = new Piece();
+        if (Math.random() < 0.2) piece.color = 8;
+        this.pieceQueue.push(piece);
+      }
+    } else if (this.pieceQueue.length === Game.QUEUE_SIZE) {
       this.pieceQueue.sort(() => Math.random() - 0.5);
     } else {
       for (let i = 0; i < Game.QUEUE_SIZE; i++) {
-        const piece = new Piece();
-        if (this.mode === "broken_piece") {
-          const isBroken = Math.floor(Math.random() * 10);
-          if (isBroken === 8) piece.color = isBroken;
-        }
-        this.pieceQueue.push(piece);
+        this.pieceQueue.push(new Piece());
       }
     }
   }
