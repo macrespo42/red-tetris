@@ -13,7 +13,7 @@ const SocketMiddleware = ({ children }) => {
     });
 
     socket.on("connect_error", (err) => {
-      console.error("Connection error: ", err.message);
+      console.error("Connection error: ", err?.message);
       setTimeout(() => socket.connect(), 5000);
     });
 

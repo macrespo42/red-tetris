@@ -17,6 +17,7 @@ const TetrisGrid = ({ matrix, name, score }) => {
         {matrix.map((row, rowIndex) =>
           row.map((cell, colIndex) => (
             <div
+            role="gameboard"
               key={`${rowIndex}-${colIndex}`}
               className={`cell ${cell > 0 ? colorMap[cell] : ""}`}
             ></div>
