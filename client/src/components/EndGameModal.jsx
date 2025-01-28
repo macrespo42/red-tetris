@@ -21,7 +21,7 @@ const EndGameModal = ({ isOpen, onClose, children }) => {
   return (
     <div className="modal">
       <div className="modalContent">
-        <span className="close" onClick={onClose}>
+        <span className="close" onClick={onClose} data-testid="close-modal">
           &times;
         </span>
         {children}

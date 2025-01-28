@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import playerReducer, { all, socketId, name, roomName, isGameOwner } from "../playerSlice";
+import playerReducer, { all, socketId, name, roomName, isGameOwner, gameId } from "../playerSlice";
 
 describe("playerSlice", () => {
   const initialState = {
@@ -8,6 +8,7 @@ describe("playerSlice", () => {
       name: "",
       roomName: "",
       isGameOwner: false,
+      gameId: "",
     },
   };
 
@@ -21,6 +22,7 @@ describe("playerSlice", () => {
       name: "Player1",
       roomName: "RoomA",
       isGameOwner: true,
+      gameId: "123",
     };
     const action = all(newState);
     const state = playerReducer(initialState, action);
@@ -44,6 +46,7 @@ describe("playerSlice", () => {
       name: "Player3",
       roomName: "RoomB",
       isGameOwner: false,
+      gameId: "123",
     };
     const action = all(newState);
     const state = playerReducer(initialState, action);
@@ -60,5 +63,10 @@ describe("playerSlice", () => {
     const action = isGameOwner({ isGameOwner: true });
     const state = playerReducer(initialState, action);
     expect(state.value.isGameOwner).toBe(true);
+  });
+  it("should handle gameId reducer", () => {
+    const action = gameId({ gameId: "123" });
+    const state = playerReducer(initialState, action);
+    expect(state.value.gameId).toBe("123");
   });
 });

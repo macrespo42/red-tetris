@@ -28,8 +28,12 @@ app.get("/ping", (_, res) => {
 
     socket.on("joining room", (gameInfos) => {
       const { room, player } = gameInfos;
-      socket.join(room);
       let game = games.find((game) => game.name == room);
+
+      if (game !== undefined && game.isStarted) {
+        return;
+      }
+      socket.join(room);
 
       if (game != undefined) {
         if (!game.players.get(socket.id))
@@ -41,10 +45,12 @@ app.get("/ping", (_, res) => {
       }
       const playersArray = Array.from(game.players.values());
       io.to(room).emit("players list", playersArray);
+      io.to(room).emit("game infos", game.id);
     });
 
-    socket.on("move left", (room) => {
-      const game = games.find((g) => g.name === room);
+    socket.on("move left", (gameInfos) => {
+      const { gameId, room } = gameInfos;
+      const game = games.find((g) => g.id === gameId);
       if (game) {
         game.movePiece("moveLeft", socket.id);
         const playersArray = Array.from(game.players.values());
@@ -52,8 +58,9 @@ app.get("/ping", (_, res) => {
       }
     });
 
-    socket.on("move right", (room) => {
-      const game = games.find((g) => g.name === room);
+    socket.on("move right", (gameInfos) => {
+      const { gameId, room } = gameInfos;
+      const game = games.find((g) => g.id === gameId);
       if (game) {
         game.movePiece("moveRight", socket.id);
         const playersArray = Array.from(game.players.values());
@@ -61,8 +68,9 @@ app.get("/ping", (_, res) => {
       }
     });
 
-    socket.on("move down", (room) => {
-      const game = games.find((g) => g.name === room);
+    socket.on("move down", (gameInfos) => {
+      const { gameId, room } = gameInfos;
+      const game = games.find((g) => g.id === gameId);
       if (game) {
         game.movePiece("moveDown", socket.id);
         const playersArray = Array.from(game.players.values());
@@ -70,8 +78,9 @@ app.get("/ping", (_, res) => {
       }
     });
 
-    socket.on("move bottom", (room) => {
-      const game = games.find((g) => g.name === room);
+    socket.on("move bottom", (gameInfos) => {
+      const { gameId, room } = gameInfos;
+      const game = games.find((g) => g.id === gameId);
       if (game) {
         game.movePiece("moveBottom", socket.id);
         const playersArray = Array.from(game.players.values());
@@ -79,8 +88,9 @@ app.get("/ping", (_, res) => {
       }
     });
 
-    socket.on("rotate", (room) => {
-      const game = games.find((g) => g.name === room);
+    socket.on("rotate", (gameInfos) => {
+      const { gameId, room } = gameInfos;
+      const game = games.find((g) => g.id === gameId);
       if (game) {
         game.movePiece("rotate", socket.id);
         const playersArray = Array.from(game.players.values());
@@ -88,26 +98,32 @@ app.get("/ping", (_, res) => {
       }
     });
 
-    socket.on("leave game", (room) => {
-      const game = games.find((g) => g.name === room);
+    socket.on("leave game", (gameInfos) => {
+      const { gameId, room } = gameInfos;
+      const game = games.find((g) => g.id === gameId);
       socket.leave(room);
       if (game) {
         if (game.players.has(socket.id)) {
           game.players.delete(socket.id);
         }
+        if (game.players.size === 0) games.splice(games.indexOf(game), 1);
       }
     });
 
-    socket.on("start game", (args) => {
-      const { room } = args;
-      const game = games.find((g) => g.name === room);
+    socket.on("start game", (gameInfos) => {
+      const { gameIdentifier: gameId, room, gameMode } = gameInfos;
+      const game = games.find((g) => g.id === gameId);
       if (game) {
+        game.setGameMode(gameMode);
+        console.log(`game mode: ${game.mode} | received one: ${gameMode}`);
         const player = game.players.get(socket.id);
         if (player && player.isGameOwner) {
           game.startGame();
 
           let playersArray = Array.from(game.players.values());
-          io.to(room).emit("game started");
+          io.to(room).emit("game started", gameId);
+
+          const interval = game.mode === "quick" ? 150 : 500;
 
           const gameInterval = setInterval(() => {
             game.tick();
@@ -117,7 +133,7 @@ app.get("/ping", (_, res) => {
               game.clearGame();
               clearInterval(gameInterval);
             }
-          }, 500);
+          }, interval);
         }
       }
     });
