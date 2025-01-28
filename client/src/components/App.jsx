@@ -8,7 +8,7 @@ import store from "../store";
 import SocketMiddleware from "./SocketMiddleware";
 import React from "react";
 
-const  App = () => {
+const App = () => {
   return (
     <BrowserRouter>
       <Provider store={store}>

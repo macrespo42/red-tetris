@@ -123,8 +123,8 @@ const GameView = () => {
       </EndGameModal>
       {isWinner && modalOpen ? (
         <>
-        cc
-          <Confetti  width={window.innerWidth} height={window.innerHeight} />
+          cc
+          <Confetti width={window.innerWidth} height={window.innerHeight} />
         </>
       ) : (
         <></>
