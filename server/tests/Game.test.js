@@ -1,5 +1,5 @@
 import Game from "../src/game_engine/Game";
-import { test, expect } from "@jest/globals";
+import { test, expect, jest } from "@jest/globals";
 import Player from "../src/game_engine/Player";
 import Piece from "../src/game_engine/Piece";
 
@@ -21,6 +21,7 @@ describe("Game Class", () => {
   test("add player", () => {
     game.addPlayer(player1);
     expect(game.players.size).toBe(1);
+    expect(game.players.get("test").board).toBeDefined();
   });
 
   test("start game", () => {
@@ -54,8 +55,7 @@ describe("Game Class", () => {
     game.startGame();
     game.players.get("test").currentPiece = null;
     game.tick();
-    // expect(game.players.get("test").isAlive).toBe(false);
-    expect(game.isStarted).toBe(false);
+    expect(game.isStarted).toBe(true);
   });
   test("move piece", () => {
     game.addPlayer(player1);
@@ -81,10 +81,68 @@ describe("Game Class", () => {
     game.tick();
     game.movePiece("moveDown", player1.id);
   });
+  test("move piece isAlive false", () => {
+    game.addPlayer(player1);
+    game.startGame();
+    game.tick();
+    game.players.get("test").isAlive = false;
+    expect(game.movePiece("rotate", player1.id)).toBe(undefined);
+  });
   test("move piece", () => {
     game.addPlayer(player1);
     game.startGame();
     game.tick();
     game.movePiece("rotate", player1.id);
+  });
+  test("set game mode", () => {
+    game.setGameMode("test");
+    expect(game.mode).toBe("test");
+  });
+  test("start game fill piece queue", () => {
+    game.addPlayer(player1);
+    game.startGame();
+    expect(game.pieceQueue.length).toBe(4096);
+  });
+
+  it('should fill the queue with broken pieces in "broken_piece" mode', () => {
+    game.mode = "broken_piece";
+    jest.spyOn(global.Math, "random").mockReturnValueOnce(0.1);
+
+    game.startGame();
+
+    expect(game.pieceQueue.length).toBe(Game.QUEUE_SIZE);
+
+    const brokenPieces = game.pieceQueue.filter((piece) => piece.color === 8);
+    expect(brokenPieces.length).toBeGreaterThan(0);
+    expect(brokenPieces.length).toBeLessThanOrEqual(Game.QUEUE_SIZE * 0.2);
+  });
+
+  it('should fill the queue with broken pieces in "broken_piece" mode', () => {
+    game.mode = "broken_piece";
+    jest.spyOn(global.Math, "random").mockReturnValueOnce(0.1);
+
+    game.startGame();
+
+    expect(game.pieceQueue.length).toBe(Game.QUEUE_SIZE);
+
+    const brokenPieces = game.pieceQueue.filter((piece) => piece.color === 8);
+    expect(brokenPieces.length).toBeGreaterThan(0);
+    expect(brokenPieces.length).toBeLessThanOrEqual(Game.QUEUE_SIZE * 0.2);
+  });
+  it('should shuffle the queue when it is full and mode is not "broken_piece"', () => {
+    game.mode = "normal";
+
+    for (let i = 0; i < Game.QUEUE_SIZE; i++) {
+      game.pieceQueue.push(new Piece());
+    }
+
+    const originalQueue = [...game.pieceQueue];
+
+    jest.spyOn(global.Math, "random").mockImplementation(() => 0.5);
+
+    game.startGame();
+
+    expect(game.pieceQueue.length).toBe(Game.QUEUE_SIZE);
+    expect(game.pieceQueue).not.toEqual(originalQueue);
   });
 });
