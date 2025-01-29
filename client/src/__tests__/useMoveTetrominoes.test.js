@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, render } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { vi } from "vitest";
 import { socket } from "../socket";
 import useMoveTetrominoes from "../hooks/useMoveTetrominoes";

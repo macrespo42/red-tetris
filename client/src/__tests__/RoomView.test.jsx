@@ -1,15 +1,14 @@
-import { describe, it, expect, test } from "vitest";
+import { describe, it, expect } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { useNavigate } from "react-router";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { socket } from "../socket";
-import HomeView from "../components/HomeView";
 import RoomView from "../components/RoomView";
 import { vi, beforeEach } from "vitest";
 import SocketMiddleware from "../components/SocketMiddleware";
 import { configureStore } from "@reduxjs/toolkit";
-import playerReducer, { gameId, isGameOwner, name, roomName } from "../playerSlice";
+import playerReducer, { gameId,  name, roomName } from "../playerSlice";
 import React from "react";
 
 describe("room view", () => {

@@ -1,6 +1,6 @@
-import { describe, it, expect, test, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
-import { MemoryRouter, Route, Routes, useNavigate } from "react-router";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, cleanup } from "@testing-library/react";
+import { useNavigate } from "react-router";
 import { Provider } from "react-redux";
 import GameView from "../components/GameView";
 import { configureStore } from "@reduxjs/toolkit";
@@ -13,7 +13,7 @@ describe("Gameview", () => {
 
   vi.mock("react-confetti", () => ({
     __esModule: true,
-    default: () => <div testid="confetti" />,
+    default: () => <div  />,
   }));
   vi.mock("../socket", () => ({
     socket: {
