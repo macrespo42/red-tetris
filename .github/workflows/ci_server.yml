@@ -3,7 +3,7 @@ name: Server CI
 on:
   push:
     branches:
-      - "main"
+      - "*"
 jobs:
   styles:
     name: Style
