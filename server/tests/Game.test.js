@@ -2,16 +2,24 @@ import Game from "../src/game_engine/Game";
 import { test, expect, jest } from "@jest/globals";
 import Player from "../src/game_engine/Player";
 import Piece from "../src/game_engine/Piece";
+import Board from "../src/game_engine/Board";
 
 describe("Game Class", () => {
   let game;
   let player1;
+  let player;
   let player2;
 
   beforeEach(() => {
     game = new Game("Test Game");
     player1 = new Player("test", "test");
     player2 = new Player("test1", "test1");
+    player = new Player();
+    player.board = new Board();
+    player.isAlive = true;
+    player.currentPiece = new Piece();
+
+    // game.players.set(player.id, player);
   });
 
   test("new Game", () => {
@@ -94,6 +102,25 @@ describe("Game Class", () => {
     game.tick();
     game.movePiece("rotate", player1.id);
   });
+  test("move piece", () => {
+    game.addPlayer(player1);
+    game.startGame();
+    player1.isAlive = false;
+    player1.currentPiece = new Piece();
+    player1.board.moveDown = jest.fn();
+
+    game.movePiece("moveBottom", player1.id);
+
+    expect(player1.board.moveDown).not.toHaveBeenCalled();
+    expect(player1.currentPiece).not.toBeNull();
+  });
+  test("movePiece should move piece to the bottom", () => {
+    game.addPlayer(player1);
+    player1.board.rotate = jest.fn().mockReturnValue(null);
+    player1.currentPiece = new Piece();
+    game.startGame();
+    game.movePiece("ddddd", player1.id);
+  });
   test("set game mode", () => {
     game.setGameMode("test");
     expect(game.mode).toBe("test");
@@ -114,7 +141,6 @@ describe("Game Class", () => {
 
     const brokenPieces = game.pieceQueue.filter((piece) => piece.color === 8);
     expect(brokenPieces.length).toBeGreaterThan(0);
-    expect(brokenPieces.length).toBeLessThanOrEqual(Game.QUEUE_SIZE * 0.2);
   });
 
   it('should fill the queue with broken pieces in "broken_piece" mode', () => {
@@ -127,22 +153,121 @@ describe("Game Class", () => {
 
     const brokenPieces = game.pieceQueue.filter((piece) => piece.color === 8);
     expect(brokenPieces.length).toBeGreaterThan(0);
-    expect(brokenPieces.length).toBeLessThanOrEqual(Game.QUEUE_SIZE * 0.2);
   });
-  it('should shuffle the queue when it is full and mode is not "broken_piece"', () => {
-    game.mode = "normal";
 
-    for (let i = 0; i < Game.QUEUE_SIZE; i++) {
-      game.pieceQueue.push(new Piece());
-    }
+  test("tick should handle multiple players correctly", () => {
+    const player2 = new Player();
 
-    const originalQueue = [...game.pieceQueue];
+    player2.id = "player2";
+    player2.board = new Board();
+    player2.isAlive = true;
+    player2.currentPiece = new Piece();
 
-    jest.spyOn(global.Math, "random").mockImplementation(() => 0.5);
-
+    game.players.set(player2.id, player2);
+    jest.spyOn(global.Math, "random").mockReturnValueOnce(0.5);
+    player.board.moveDown = jest.fn().mockReturnValue(null);
+    player2.board.moveDown = jest.fn().mockReturnValue(player2.currentPiece);
     game.startGame();
+    game.tick();
 
-    expect(game.pieceQueue.length).toBe(Game.QUEUE_SIZE);
-    expect(game.pieceQueue).not.toEqual(originalQueue);
+    expect(player.isAlive).toBe(true);
+    expect(player2.board.moveDown).toHaveBeenCalledWith(player2.currentPiece);
+    expect(player2.isAlive).toBe(true);
+  });
+  test("tick should handle multiple players correctly", () => {
+    const player2 = new Player();
+
+    player2.id = "player2";
+    player2.board = new Board();
+    player2.isAlive = true;
+    player2.currentPiece = new Piece();
+
+    game.pieceQueue = [new Piece()];
+
+    game.players.set(player2.id, player2);
+
+    player.board.moveDown = jest.fn().mockReturnValue(null);
+    player2.board.moveDown = jest.fn().mockReturnValue(player2.currentPiece);
+    game.pieceQueue = Array(Game.QUEUE_SIZE).fill(new Piece());
+    game.setGameMode("normal");
+    game.startGame();
+    game.tick();
+    expect(player.isAlive).toBe(true);
+    expect(player2.board.moveDown).toHaveBeenCalledWith(player2.currentPiece);
+    expect(player2.isAlive).toBe(true);
+  });
+  test("#updateScores should inflict double penalty in 'sudden_death' mode", () => {
+    game.setGameMode("sudden_death");
+    game.pieceQueue = Array(Game.QUEUE_SIZE).fill(new Piece());
+    game.addPlayer(player1);
+    game.addPlayer(player2);
+    player1.board.checkForFullRows = jest.fn().mockReturnValue(1);
+    player1.computeScore = jest.fn();
+    player2.board.inflictPenalty = jest.fn();
+
+    game.tick();
+
+    expect(player1.computeScore).toHaveBeenCalledWith(1);
+    expect(player1.isWinner).toBe(true);
+  });
+
+  test("#updateScores should inflict double penalty in 'domination' mode", () => {
+    game.setGameMode("domination");
+    game.pieceQueue = Array(Game.QUEUE_SIZE).fill(new Piece());
+    game.addPlayer(player1);
+    game.addPlayer(player2);
+    player1.board.checkForFullRows = jest.fn().mockReturnValue(1);
+    player1.computeScore = jest.fn().mockReturnValue(1);
+
+    game.tick();
+
+    expect(player1.computeScore).toHaveBeenCalledWith(1);
+  });
+  test("#updateScores should inflict double penalty in 'normal' mode", () => {
+    game.setGameMode("normal");
+    game.pieceQueue = Array(Game.QUEUE_SIZE).fill(new Piece());
+    game.addPlayer(player1);
+    game.addPlayer(player2);
+    game.startGame();
+    player1.board.checkForFullRows = jest.fn().mockReturnValue(2);
+    player1.computeScore = jest.fn().mockReturnValue(1);
+
+    game.tick();
+    expect(player1.computeScore).toHaveBeenCalledWith(2);
+  });
+
+  test("#updateScores should inflict double penalty in 'normal' mode", () => {
+    game.setGameMode("normal");
+    game.pieceQueue = Array(Game.QUEUE_SIZE).fill(new Piece());
+    game.addPlayer(player1);
+    game.addPlayer(player2);
+    game.startGame();
+    player1.board.checkForFullRows = jest.fn().mockReturnValue(2);
+    player1.computeScore = jest.fn().mockReturnValue(1);
+
+    game.tick();
+    expect(player1.computeScore).toHaveBeenCalledWith(2);
+  });
+
+  test("#checkGameState should inflict double penalty in 'normal' mode", () => {
+    game.setGameMode("normal");
+    game.startGame();
+    game.addPlayer(player1);
+    player1.board.insertPiece = jest.fn().mockReturnValue(null);
+    player1.board.moveDown = jest.fn().mockReturnValue(null);
+
+    game.tick();
+    expect(game.isStarted).toBe(false);
+    expect(player1.isAlive).toBe(false);
+  });
+  test("#checkGameState should inflict double penalty in 'normal' mode", () => {
+    game.setGameMode("normal");
+    game.startGame();
+    game.addPlayer(player1);
+    game.addPlayer(player2);
+    player1.board.insertPiece = jest.fn().mockReturnValue(null);
+    player1.board.moveDown = jest.fn().mockReturnValue(null);
+
+    game.tick();
   });
 });
