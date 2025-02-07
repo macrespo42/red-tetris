@@ -3,7 +3,7 @@ name: Client CI
 on:
   push:
     branches:
-      - "main"
+      - "*"
 jobs:
   styles:
     name: Style

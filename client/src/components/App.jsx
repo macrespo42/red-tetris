@@ -6,8 +6,9 @@ import GameView from "./GameView";
 import { Provider } from "react-redux";
 import store from "../store";
 import SocketMiddleware from "./SocketMiddleware";
+import React from "react";
 
-const App = () => {
+const  App = () => {
   return (
     <BrowserRouter>
       <Provider store={store}>
@@ -26,3 +27,5 @@ const App = () => {
 const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(<App />);
+
+export default App;

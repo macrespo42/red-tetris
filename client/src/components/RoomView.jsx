@@ -49,11 +49,15 @@ const RoomView = () => {
     }
   }
 
+
+ const handleOnClose = () => {
+  setIsOpen(false);
+ }
   return (
     <div className="room-page">
       {gameOwner && (
-        <div className="game__settings" onClick={() => setIsOpen(!isOpen)}>
-          <IoMdSettings size={75} />
+        <div className="game__settings" title="game_settings" onClick={() => setIsOpen(!isOpen)}>
+          <IoMdSettings size={75} aria-label="game_settings" />
         </div>
       )}
       <header>
@@ -72,10 +76,10 @@ const RoomView = () => {
         </ul>
       </section>
       <div className="submit-button">
-        {gameOwner && <Button text="START" onClick={startGame} />}
+        {gameOwner && <Button id="start-room" text="START" onClick={startGame} />}
       </div>
       <Tetrominoes />
-      <EndGameModal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+      <EndGameModal isOpen={isOpen} onClose={handleOnClose}>
         <h2>Settings</h2>
         <label htmlFor="standard-select">Game mode selection:</label>
         <div className="select">

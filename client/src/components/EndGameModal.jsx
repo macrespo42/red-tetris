@@ -17,12 +17,11 @@ const EndGameModal = ({ isOpen, onClose, children }) => {
       document.removeEventListener("keydown", handleEscape);
     };
   }, [isOpen, onClose]);
-
   if (!isOpen) return null;
   return (
     <div className="modal">
       <div className="modalContent">
-        <span className="close" onClick={onClose}>
+        <span className="close" onClick={onClose} data-testid="close-modal">
           &times;
         </span>
         {children}
