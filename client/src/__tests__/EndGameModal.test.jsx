@@ -1,5 +1,5 @@
-import { describe, it, expect,  } from "vitest";
-import { render, screen,  } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
+import { render, screen } from "@testing-library/react";
 import { vi } from "vitest";
 import EndGameModal from "../components/EndGameModal";
 describe("EndGameModal", () => {
@@ -7,7 +7,7 @@ describe("EndGameModal", () => {
     const home = render(
       <EndGameModal isOpen={true} onClose={() => {}}>
         <div>Game Over</div>
-      </EndGameModal>
+      </EndGameModal>,
     );
     expect(screen.getByText("Game Over")).toBeDefined();
     home.unmount();
@@ -17,7 +17,7 @@ describe("EndGameModal", () => {
     const home = render(
       <EndGameModal isOpen={true} onClose={onCloseMock}>
         <div>Game Over</div>
-      </EndGameModal>
+      </EndGameModal>,
     );
     const event = new KeyboardEvent("keydown", { key: "Escape" });
     document.dispatchEvent(event);
@@ -28,7 +28,7 @@ describe("EndGameModal", () => {
     const home = render(
       <EndGameModal isOpen={false} onClose={() => {}}>
         <div>Game Over</div>
-      </EndGameModal>
+      </EndGameModal>,
     );
     expect(screen.queryByText("Game Over")).toBeNull();
     home.unmount();

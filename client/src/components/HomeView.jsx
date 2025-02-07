@@ -7,7 +7,6 @@ const HomeView = () => {
   const [room, setRoom] = useState("");
   const [player, setPlayer] = useState("");
 
-
   return (
     <div className="container">
       <div className="homepage">

@@ -1,5 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
+
+import {
+  render,
+  screen,
+  cleanup,
+} from "@testing-library/react";
+
 import { useNavigate } from "react-router";
 import { Provider } from "react-redux";
 import GameView from "../components/GameView";
@@ -10,7 +16,6 @@ import { socket } from "../socket";
 import userEvent from "@testing-library/user-event";
 
 describe("Gameview", () => {
-
   vi.mock("react-confetti", () => ({
     __esModule: true,
     default: () => <div  />,
@@ -60,7 +65,7 @@ describe("Gameview", () => {
     const home = render(
       <Provider store={store}>
         <GameView />
-      </Provider>
+      </Provider>,
     );
     expect(screen.getAllByText(/Next piece:/i)).toBeDefined();
     expect(screen.getByText(/Controls:/i)).toBeDefined();
@@ -70,14 +75,14 @@ describe("Gameview", () => {
   it("confetti test", async () => {
     const navigate = vi.fn();
     useNavigate.mockReturnValue(navigate);
-       const { rerender } = render(
+    const { rerender } = render(
       <Provider store={store}>
         <SocketMiddleware>
           <GameView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
-        const players = [
+    const players = [
       {
         id: "fake-socket-id",
         board: {
@@ -109,23 +114,24 @@ describe("Gameview", () => {
         isAlive: false,
       },
     ];
-        const onConnectCallback = vi.mocked(socket.on).mock.calls.find(([event]) => event === "game state")[1];
+    const onConnectCallback = vi
+      .mocked(socket.on)
+      .mock.calls.find(([event]) => event === "game state")[1];
     onConnectCallback(players);
     rerender(
       <Provider store={store}>
         <SocketMiddleware>
           <GameView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
-
 
     const user = userEvent.setup();
     await user.click(screen.getByText(/PLAY AGAIN/i));
     // home.unmount();
-  });  
+  });
   it("leave room", async () => {
-        store = configureStore({
+    store = configureStore({
       reducer: {
         player: playerReducer,
       },
@@ -143,14 +149,14 @@ describe("Gameview", () => {
     store.dispatch = vi.fn();
     const navigate = vi.fn();
     useNavigate.mockReturnValue(navigate);
-       const { rerender } = render(
+    const { rerender } = render(
       <Provider store={store}>
         <SocketMiddleware>
           <GameView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
-        const players = [
+    const players = [
       {
         id: "fake-socket-id",
         board: {
@@ -182,32 +188,32 @@ describe("Gameview", () => {
         isAlive: false,
       },
     ];
-        const onConnectCallback = vi.mocked(socket.on).mock.calls.find(([event]) => event === "game state")[1];
+    const onConnectCallback = vi
+      .mocked(socket.on)
+      .mock.calls.find(([event]) => event === "game state")[1];
     onConnectCallback(players);
     rerender(
       <Provider store={store}>
         <SocketMiddleware>
           <GameView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
-
 
     const user = userEvent.setup();
     await user.click(screen.getByText(/LEAVE/i));
   });
   it("game started", async () => {
-
     const navigate = vi.fn();
     useNavigate.mockReturnValue(navigate);
-       const { rerender } = render(
+    const { rerender } = render(
       <Provider store={store}>
         <SocketMiddleware>
           <GameView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
-        const players = [
+    const players = [
       {
         id: "fake-socket-id",
         board: {
@@ -239,16 +245,20 @@ describe("Gameview", () => {
         isAlive: false,
       },
     ];
-        const onConnectCallback = vi.mocked(socket.on).mock.calls.find(([event]) => event === "game state")[1];
+    const onConnectCallback = vi
+      .mocked(socket.on)
+      .mock.calls.find(([event]) => event === "game state")[1];
     onConnectCallback(players);
-    const onGameStartedCallback = vi.mocked(socket.on).mock.calls.find(([event]) => event === "game started")[1];
+    const onGameStartedCallback = vi
+      .mocked(socket.on)
+      .mock.calls.find(([event]) => event === "game started")[1];
     onGameStartedCallback();
     rerender(
       <Provider store={store}>
         <SocketMiddleware>
           <GameView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
 
     expect(screen.queryByText(/PLAY AGAIN/i)).toBeNull();

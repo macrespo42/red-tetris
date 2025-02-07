@@ -8,7 +8,12 @@ import RoomView from "../components/RoomView";
 import { vi, beforeEach } from "vitest";
 import SocketMiddleware from "../components/SocketMiddleware";
 import { configureStore } from "@reduxjs/toolkit";
-import playerReducer, { gameId,  name, roomName } from "../playerSlice";
+import playerReducer, {
+  gameId,
+  name,
+  roomName,
+} from "../playerSlice";
+
 import React from "react";
 
 describe("room view", () => {
@@ -59,7 +64,7 @@ describe("room view", () => {
         <SocketMiddleware>
           <RoomView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
     expect(screen.getByText("testRoom")).toBeDefined();
     home.unmount();
@@ -71,9 +76,11 @@ describe("room view", () => {
         <SocketMiddleware>
           <RoomView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
-    const onConnectCallback = socket.on.mock.calls.find(([event]) => event === "players list")[1];
+    const onConnectCallback = socket.on.mock.calls.find(
+      ([event]) => event === "players list",
+    )[1];
     const mockPlayers = [
       { id: "test-socket-id", name: "Player 1", isGameOwner: true },
       { id: "player-2", name: "Player 2", isGameOwner: false },
@@ -89,16 +96,22 @@ describe("room view", () => {
         <SocketMiddleware>
           <RoomView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
-    const onConnectCallback = socket.on.mock.calls.find(([event]) => event === "players list")[1];
+    const onConnectCallback = socket.on.mock.calls.find(
+      ([event]) => event === "players list",
+    )[1];
     const mockPlayers = [
       { id: "test-socket-id", name: "Player 1", isGameOwner: true },
       { id: "player-2", name: "Player 2", isGameOwner: false },
     ];
     onConnectCallback(mockPlayers);
     expect(screen.queryByText(/START/i)).toBe(null);
-    expect(socket.emit).toHaveBeenCalledWith("joining room", { player: "testPlayer", room: "testRoom", socketId: "fake-socket-id" });
+    expect(socket.emit).toHaveBeenCalledWith("joining room", {
+      player: "testPlayer",
+      room: "testRoom",
+      socketId: "fake-socket-id",
+    });
     home.unmount();
   });
 });
@@ -153,9 +166,11 @@ describe("room view socket", () => {
         <SocketMiddleware>
           <RoomView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
-    const onConnectCallback = socket.on.mock.calls.find(([event]) => event === "players list")[1];
+    const onConnectCallback = socket.on.mock.calls.find(
+      ([event]) => event === "players list",
+    )[1];
     const mockPlayers = [
       { id: "fake-socket-id", name: "fake-name", isGameOwner: true },
       { id: "player-2", name: "Player 2", isGameOwner: false },
@@ -164,10 +179,18 @@ describe("room view socket", () => {
     expect(store.getState().player.value.name).toBe("fake-name");
     expect(store.getState().player.value.roomName).toBe("fake-room-name");
     expect(store.getState().player.value.isGameOwner).toBe(true);
-    expect(socket.emit).toHaveBeenCalledWith("joining room", { player: "testPlayer", room: "testRoom", socketId: "fake-socket-id" });
+    expect(socket.emit).toHaveBeenCalledWith("joining room", {
+      player: "testPlayer",
+      room: "testRoom",
+      socketId: "fake-socket-id",
+    });
     const user = userEvent.setup();
     await user.click(screen.getByText(/START/i));
-    expect(socket.emit).toHaveBeenCalledWith("start game", { gameIdentifier: "fake-game-id", room: "testRoom", gameMode: "normal" });
+    expect(socket.emit).toHaveBeenCalledWith("start game", {
+      gameIdentifier: "fake-game-id",
+      room: "testRoom",
+      gameMode: "normal",
+    });
     home.unmount();
   });
   it("game info", async () => {
@@ -176,16 +199,20 @@ describe("room view socket", () => {
         <SocketMiddleware>
           <RoomView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
-    const onConnectCallback = socket.on.mock.calls.find(([event]) => event === "players list")[1];
+    const onConnectCallback = socket.on.mock.calls.find(
+      ([event]) => event === "players list",
+    )[1];
     const mockPlayers = [
       { id: "fake-socket-id", name: "fake-name", isGameOwner: true },
       { id: "player-2", name: "Player 2", isGameOwner: false },
     ];
     store.getState().player.value.isGameOwner = true;
     onConnectCallback(mockPlayers);
-    const onGameInfo = socket.on.mock.calls.find(([event]) => event === "game infos")[1];
+    const onGameInfo = socket.on.mock.calls.find(
+      ([event]) => event === "game infos",
+    )[1];
     onGameInfo("fake-game-id");
     expect(store.getState().player.value.gameId).toBe("fake-game-id");
     home.unmount();
@@ -198,19 +225,33 @@ describe("room view socket", () => {
         <SocketMiddleware>
           <RoomView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
 
     const mockPlayers = [
-      { id: "fake-socket-id", name: "Player1", isGameOwner: true, gameId: "fake-game-id" },
-      { id: "player-2", name: "Player 4", isGameOwner: false, gameId: "testRoom" },
+      {
+        id: "fake-socket-id",
+        name: "Player1",
+        isGameOwner: true,
+        gameId: "fake-game-id",
+      },
+      {
+        id: "player-2",
+        name: "Player 4",
+        isGameOwner: false,
+        gameId: "testRoom",
+      },
     ];
 
-    const playersListCall = vi.mocked(socket.on).mock.calls.find(([event]) => event === "players list");
+    const playersListCall = vi
+      .mocked(socket.on)
+      .mock.calls.find(([event]) => event === "players list");
     const onConnectCallback = playersListCall[1];
     onConnectCallback(mockPlayers);
 
-    const onGameStarted = socket.on.mock.calls.find(([event]) => event === "game started")[1];
+    const onGameStarted = socket.on.mock.calls.find(
+      ([event]) => event === "game started",
+    )[1];
     onGameStarted("fake-game-id");
     expect(navigate).toHaveBeenCalledWith("/fake-game-id/testPlayer");
     home.unmount();
@@ -221,12 +262,18 @@ describe("room view socket", () => {
         <SocketMiddleware>
           <RoomView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
 
     expect(store.dispatch).toHaveBeenCalledWith(name({ name: "testPlayer" }));
-    expect(store.dispatch).toHaveBeenCalledWith(roomName({ roomName: "testRoom" }));
-    expect(socket.emit).toHaveBeenCalledWith("joining room", { room: "testRoom", player: "testPlayer", socketId: "fake-socket-id" });
+    expect(store.dispatch).toHaveBeenCalledWith(
+      roomName({ roomName: "testRoom" }),
+    );
+    expect(socket.emit).toHaveBeenCalledWith("joining room", {
+      room: "testRoom",
+      player: "testPlayer",
+      socketId: "fake-socket-id",
+    });
 
     home.unmount();
   });
@@ -236,7 +283,7 @@ describe("room view socket", () => {
         <SocketMiddleware>
           <RoomView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
 
     const settingsButton = screen.getByLabelText("game_settings");
@@ -257,7 +304,7 @@ describe("room view socket", () => {
         <SocketMiddleware>
           <RoomView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
 
     const settingsButton = screen.getByLabelText("game_settings");
@@ -276,10 +323,12 @@ describe("room view socket", () => {
         <SocketMiddleware>
           <RoomView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
 
-    const onConnectCallback = socket.on.mock.calls.find(([event]) => event === "players list")[1];
+    const onConnectCallback = socket.on.mock.calls.find(
+      ([event]) => event === "players list",
+    )[1];
     const mockPlayers = [
       { id: "fake-socket-id", name: "Player 1", isGameOwner: true },
       { id: "player-2", name: "Player 2", isGameOwner: false },
@@ -287,7 +336,9 @@ describe("room view socket", () => {
     onConnectCallback(mockPlayers);
 
     expect(store.dispatch).toHaveBeenCalledWith(name({ name: "testPlayer" }));
-    expect(store.dispatch).toHaveBeenCalledWith(roomName({ roomName: "testRoom" }));
+    expect(store.dispatch).toHaveBeenCalledWith(
+      roomName({ roomName: "testRoom" }),
+    );
     // expect(screen.getByText("Player 1 👑")).toBeDefined();
     // expect(screen.getByText("Player 2")).toBeDefined();
 
@@ -299,12 +350,16 @@ describe("room view socket", () => {
         <SocketMiddleware>
           <RoomView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
 
-    const onGameInfoCallback = socket.on.mock.calls.find(([event]) => event === "game infos")[1];
+    const onGameInfoCallback = socket.on.mock.calls.find(
+      ([event]) => event === "game infos",
+    )[1];
     onGameInfoCallback("new-game-id");
-    expect(store.dispatch).toHaveBeenCalledWith(gameId({ gameId: "new-game-id" }));
+    expect(store.dispatch).toHaveBeenCalledWith(
+      gameId({ gameId: "new-game-id" }),
+    );
 
     home.unmount();
   });
@@ -314,13 +369,17 @@ describe("room view socket", () => {
         <SocketMiddleware>
           <RoomView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
 
     const startButton = screen.getByText("START");
     fireEvent.click(startButton);
 
-    expect(socket.emit).toHaveBeenCalledWith("start game", { gameIdentifier: "fake-game-id", room: "testRoom", gameMode: "normal" });
+    expect(socket.emit).toHaveBeenCalledWith("start game", {
+      gameIdentifier: "fake-game-id",
+      room: "testRoom",
+      gameMode: "normal",
+    });
 
     home.unmount();
   });
@@ -330,7 +389,7 @@ describe("room view socket", () => {
         <SocketMiddleware>
           <RoomView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
 
     expect(screen.findAllByText("tetrominoes")).toBeDefined();
@@ -344,7 +403,7 @@ describe("room view socket", () => {
         <SocketMiddleware>
           <RoomView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
 
     const settingsButton = screen.getByLabelText("game_settings");
@@ -362,19 +421,33 @@ describe("room view socket", () => {
         <SocketMiddleware>
           <RoomView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
 
     const mockPlayers = [
-      { id: "fake-socket-id", name: "Player1", isGameOwner: true, gameId: "fake-game-id" },
-      { id: "player-2", name: "Player 4", isGameOwner: false, gameId: "testRoom" },
+      {
+        id: "fake-socket-id",
+        name: "Player1",
+        isGameOwner: true,
+        gameId: "fake-game-id",
+      },
+      {
+        id: "player-2",
+        name: "Player 4",
+        isGameOwner: false,
+        gameId: "testRoom",
+      },
     ];
 
-    const playersListCall = vi.mocked(socket.on).mock.calls.find(([event]) => event === "players list");
+    const playersListCall = vi
+      .mocked(socket.on)
+      .mock.calls.find(([event]) => event === "players list");
     const onConnectCallback = playersListCall[1];
     onConnectCallback(mockPlayers);
 
-    const onGameStarted = socket.on.mock.calls.find(([event]) => event === "game started")[1];
+    const onGameStarted = socket.on.mock.calls.find(
+      ([event]) => event === "game started",
+    )[1];
     onGameStarted("testRoom");
     expect(navigate).not.toHaveBeenCalledWith("/fake-game-id/testPlayer");
     home.unmount();
@@ -387,19 +460,33 @@ describe("room view socket", () => {
         <SocketMiddleware>
           <RoomView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
 
     const mockPlayers = [
-      { id: "fake-socket-id", name: "Player1", isGameOwner: true, gameId: "fake-game-id" },
-      { id: "player-2", name: "Player 4", isGameOwner: false, gameId: "testRoom" },
+      {
+        id: "fake-socket-id",
+        name: "Player1",
+        isGameOwner: true,
+        gameId: "fake-game-id",
+      },
+      {
+        id: "player-2",
+        name: "Player 4",
+        isGameOwner: false,
+        gameId: "testRoom",
+      },
     ];
 
-    const playersListCall = vi.mocked(socket.on).mock.calls.find(([event]) => event === "players list");
+    const playersListCall = vi
+      .mocked(socket.on)
+      .mock.calls.find(([event]) => event === "players list");
     const onConnectCallback = playersListCall[1];
     onConnectCallback(mockPlayers);
 
-    const onGameStarted = socket.on.mock.calls.find(([event]) => event === "game started")[1];
+    const onGameStarted = socket.on.mock.calls.find(
+      ([event]) => event === "game started",
+    )[1];
     onGameStarted("testRoom");
     expect(navigate).not.toHaveBeenCalledWith("/fake-game-id/testPlayer");
     home.unmount();
@@ -410,7 +497,7 @@ describe("room view socket", () => {
         <SocketMiddleware>
           <RoomView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
     const settingsButton = screen.getByLabelText("game_settings");
     expect(settingsButton).toBeDefined();
@@ -432,19 +519,33 @@ describe("room view socket", () => {
         <SocketMiddleware>
           <RoomView />
         </SocketMiddleware>
-      </Provider>
+      </Provider>,
     );
 
     const mockPlayers = [
-      { id: "fake-socket-id", name: "Player1", isGameOwner: true, gameId: "fake-game-id" },
-      { id: "player-2", name: "Player 4", isGameOwner: false, gameId: "testRoom" },
+      {
+        id: "fake-socket-id",
+        name: "Player1",
+        isGameOwner: true,
+        gameId: "fake-game-id",
+      },
+      {
+        id: "player-2",
+        name: "Player 4",
+        isGameOwner: false,
+        gameId: "testRoom",
+      },
     ];
 
-    const playersListCall = vi.mocked(socket.on).mock.calls.find(([event]) => event === "players list");
+    const playersListCall = vi
+      .mocked(socket.on)
+      .mock.calls.find(([event]) => event === "players list");
     const onConnectCallback = playersListCall[1];
     onConnectCallback(mockPlayers);
 
-    const onGameStarted = socket.on.mock.calls.find(([event]) => event === "game started")[1];
+    const onGameStarted = socket.on.mock.calls.find(
+      ([event]) => event === "game started",
+    )[1];
     onGameStarted("testRoom");
     expect(navigate).not.toHaveBeenCalledWith("/fake-game-id/testPlayer");
     home.unmount();

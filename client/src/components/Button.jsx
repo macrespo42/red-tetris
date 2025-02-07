@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 import "../styles/Button.css";
 
-
 const Button = ({ id, text, to, onClick, type = "submit" }) => {
   if (to) {
     return (

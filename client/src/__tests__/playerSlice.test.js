@@ -1,5 +1,12 @@
 import { describe, it, expect } from "vitest";
-import playerReducer, { all, socketId, name, roomName, isGameOwner, gameId } from "../playerSlice";
+import playerReducer, {
+  all,
+  socketId,
+  name,
+  roomName,
+  isGameOwner,
+  gameId,
+} from "../playerSlice";
 
 describe("playerSlice", () => {
   const initialState = {
