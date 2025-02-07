@@ -1,9 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+
 import {
   render,
   screen,
   cleanup,
 } from "@testing-library/react";
+
 import { useNavigate } from "react-router";
 import { Provider } from "react-redux";
 import GameView from "../components/GameView";
