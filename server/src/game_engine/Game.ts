@@ -1,16 +1,20 @@
 "use strict";
-import { randomUUID } from "node:crypto";
+import { randomUUID, UUID } from "node:crypto";
 import Piece from "./Piece.js";
 import Board from "./Board.js";
+import Player from "./Player.js";
 
 class Game {
+  name: string;
+  mode: string;
+  id: UUID;
+  isStarted: boolean;
+  players: Map<string, Player>;
+  pieceQueue: Piece[];
+
   static QUEUE_SIZE = 4096;
 
-  /**
-   * @param { string } name
-   * @param { string } [mode="normal"]
-   **/
-  constructor(name, mode = "normal") {
+  constructor(name: string, mode: string = "normal") {
     this.name = name;
     this.mode = mode;
     this.id = randomUUID();
@@ -19,12 +23,11 @@ class Game {
     this.pieceQueue = [];
   }
 
-  /**
-   * @param { Player } newPlayer
-   **/
-  addPlayer(newPlayer) {
+  addPlayer(newPlayer: Player) {
     newPlayer.board = new Board();
-    newPlayer.drawNextPiece(this.pieceQueue[0]);
+    if (this.pieceQueue[0]) {
+      newPlayer.drawNextPiece(this.pieceQueue[0]);
+    }
     this.players.set(newPlayer.id, newPlayer);
   }
 
@@ -43,41 +46,36 @@ class Game {
   tick() {
     this.players.forEach((player) => {
       if (player.isAlive) {
-        player.currentPiece = player.board.moveDown(player.currentPiece);
-        if (!player.currentPiece) {
-          this.#updateScores(player);
-          this.#getNextPiece(player);
-          this.#checkGameState(player);
+        if (player.board && player.currentPiece) {
+          player.currentPiece = player.board.moveDown(player.currentPiece);
+          if (!player.currentPiece) {
+            this.#updateScores(player);
+            this.#getNextPiece(player);
+            this.#checkGameState(player);
+          }
         }
       }
     });
   }
 
-  /**
-   * @param {string} mode
-   **/
-  setGameMode(mode) {
+  setGameMode(mode: string) {
     this.mode = mode;
   }
 
-  /**
-   * @param {string} movement
-   * @param {string} playerId
-   **/
-  movePiece(movement, playerId) {
+  movePiece(movement: string, playerId: string) {
     const player = this.players.get(playerId);
-    if (!player.isAlive) {
+    if (!player || !player.isAlive) {
       return;
     }
     if (movement === "moveLeft") {
       player.currentPiece = player.board.moveHorizontally(
         player.currentPiece,
-        "left",
+        "left"
       );
     } else if (movement === "moveRight") {
       player.currentPiece = player.board.moveHorizontally(
         player.currentPiece,
-        "right",
+        "right"
       );
     } else if (movement === "moveDown") {
       player.currentPiece = player.board.moveDown(player.currentPiece);
@@ -106,16 +104,13 @@ class Game {
     }
   }
 
-  #forceWon(winner) {
+  #forceWon(winner: Player) {
     this.players.forEach((player) => {
       if (player.id !== winner.id) player.isAlive = false;
     });
   }
 
-  /**
-   * @param { Player } player
-   **/
-  #updateScores(player) {
+  #updateScores(player: Player) {
     const rowsFullfilled = player.board.checkForFullRows();
     if (rowsFullfilled > 0) player.computeScore(rowsFullfilled);
     if (rowsFullfilled > 0 && this.mode === "sudden_death") {
@@ -137,20 +132,18 @@ class Game {
     }
   }
 
-  /**
-   * @param { Player } player
-   **/
-  #getNextPiece(player) {
-    player.currentPiece = player.board.insertPiece(
-      this.pieceQueue[player.board.nextPieceIndex].clone(),
-    );
-    player.drawNextPiece(this.pieceQueue[player.board.nextPieceIndex + 1]);
+  #getNextPiece(player: Player) {
+    const nextPiece = this.pieceQueue[player.board.nextPieceIndex]?.clone();
+    if (nextPiece) {
+      player.currentPiece = player.board.insertPiece(nextPiece);
+    }
+    const nextNextPiece = this.pieceQueue[player.board.nextPieceIndex + 1];
+    if (nextNextPiece) {
+      player.drawNextPiece(nextNextPiece);
+    }
   }
 
-  /**
-   * @param { Player } currentPlayer
-   **/
-  #hasWon(currentPlayer) {
+  #hasWon(currentPlayer: Player) {
     const isAlive = currentPlayer.isAlive;
     let aliveCount = 0;
     this.players.forEach((player) => {
@@ -161,10 +154,7 @@ class Game {
     return isAlive && aliveCount === 1 && this.players.size > 1;
   }
 
-  /**
-   * @param { Player } player
-   **/
-  #checkGameState(player) {
+  #checkGameState(player: Player) {
     if (!player.currentPiece) {
       player.isAlive = false;
       if (this.players.size === 1) this.isStarted = false;

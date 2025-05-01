@@ -13,7 +13,7 @@ class Board {
     this.nextPieceIndex = 0;
     this.currentPenalty = 0;
     this.grid = [];
-    this.#initGrid();
+    this.initGrid();
   }
 
   insertPiece(piece: Piece): Piece | null {
@@ -35,7 +35,7 @@ class Board {
     return piece;
   }
 
-  moveDown(piece: Piece): Piece | null {
+  moveDown(piece: Piece | null): Piece | null {
     if (!piece) return null;
 
     const newPositions = [];
@@ -67,7 +67,7 @@ class Board {
     return piece;
   }
 
-  moveHorizontally(piece: Piece, direction: string): Piece | null {
+  moveHorizontally(piece: Piece | null, direction: string): Piece | null {
     if (!piece) return piece;
 
     const offset = direction === "right" ? 1 : -1;
@@ -104,7 +104,7 @@ class Board {
     return piece;
   }
 
-  rotate(piece: Piece): Piece | null {
+  rotate(piece: Piece | null): Piece | null {
     if (!piece) return null;
     let collision = false;
 
@@ -161,7 +161,7 @@ class Board {
     this.currentPenalty += n;
   }
 
-  #initGrid() {
+  initGrid() {
     this.grid = Array(this.height)
       .fill(0)
       .map(() => Array(this.width).fill(0));
