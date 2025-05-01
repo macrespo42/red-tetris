@@ -10,8 +10,10 @@ const app = express();
 const server = createServer(app);
 
 const io = new Server(server, {
-  cors: ["http://localhost:5173", "192.168.1.181:5173"],
-  methods: ["GET", "POST"],
+  cors: {
+    origin: ["http://localhost:5173", "192.168.1.181:5173"],
+    methods: ["GET", "POST"],
+  },
 });
 
 app.set("port", process.env.PORT || 3000);
@@ -21,7 +23,7 @@ app.get("/ping", (_, res) => {
 });
 
 {
-  const games = [];
+  const games: Game[] = [];
 
   io.on("connection", (socket) => {
     console.log(`A user is connected: ${socket.id}`);
@@ -140,15 +142,15 @@ app.get("/ping", (_, res) => {
   });
 }
 
-/**
- * @returns {string}
- **/
-const getNetworkAddress = () => {
+const getNetworkAddress = (): string => {
   const interfaces = os.networkInterfaces();
   for (const name of Object.keys(interfaces)) {
-    for (const iface of interfaces[name]) {
-      if (iface.family === "IPv4" && !iface.internal) {
-        return iface.address;
+    const currentInterface = interfaces[name];
+    if (currentInterface) {
+      for (const iface of currentInterface) {
+        if (iface.family === "IPv4" && !iface.internal) {
+          return iface.address;
+        }
       }
     }
   }
@@ -158,6 +160,6 @@ const getNetworkAddress = () => {
 server.listen(app.get("port"), "0.0.0.0", () => {
   console.log(`App listening on port http://localhost:${app.get("port")}`);
   console.log(
-    `Accessible on the network: http://${getNetworkAddress()}:${app.get("port")}`,
+    `Accessible on the network: http://${getNetworkAddress()}:${app.get("port")}`
   );
 });
