@@ -70,7 +70,8 @@ class Player {
   }
 
   reset() {
-    this.board.initGrid();
+    this.board = new Board();
+    this.currentPiece = null;
     this.isAlive = true;
     this.isWinner = false;
     this.score = 0;

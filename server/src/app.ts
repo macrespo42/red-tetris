@@ -117,7 +117,6 @@ app.get("/ping", (_, res) => {
       const game = games.find((g) => g.id === gameId);
       if (game) {
         game.setGameMode(gameMode);
-        console.log(`game mode: ${game.mode} | received one: ${gameMode}`);
         const player = game.players.get(socket.id);
         if (player && player.isGameOwner) {
           game.startGame();
@@ -160,6 +159,6 @@ const getNetworkAddress = (): string => {
 server.listen(app.get("port"), "0.0.0.0", () => {
   console.log(`App listening on port http://localhost:${app.get("port")}`);
   console.log(
-    `Accessible on the network: http://${getNetworkAddress()}:${app.get("port")}`
+    `Accessible on the network: http://${getNetworkAddress()}:${app.get("port")}`,
   );
 });
