@@ -11,7 +11,7 @@ class Game {
   players: Map<string, Player>;
   pieceQueue: Piece[];
 
-  static QUEUE_SIZE = 10;
+  static QUEUE_SIZE = 4096;
 
   constructor(name: string, mode: string = "normal") {
     this.name = name;
@@ -132,9 +132,11 @@ class Game {
   }
 
   #getNextPiece(player: Player) {
-    const nextPiece = this.pieceQueue[player.board.nextPieceIndex];
+    let nextPiece = this.pieceQueue[player.board.nextPieceIndex];
     if (nextPiece) {
       player.currentPiece = player.board.insertPiece(nextPiece.clone());
+    } else {
+      nextPiece = this.pieceQueue[0];
     }
     const nextNextPiece = this.pieceQueue[player.board.nextPieceIndex + 1];
     if (nextNextPiece) {
