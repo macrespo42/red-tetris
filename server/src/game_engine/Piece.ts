@@ -1,5 +1,12 @@
-"use strict";
+type position = {
+  x: number;
+  y: number;
+};
+
 class Piece {
+  color: number;
+  shape: position[][];
+  currentRotation: number;
   static O = [
     [
       { x: 1, y: 0 },
@@ -195,10 +202,11 @@ class Piece {
     ],
   ];
 
-  /**
-   * @param {string} [type="random"]
-   **/
-  constructor(type = "random") {
+  constructor(type: string = "random") {
+    this.shape = [...Piece.O];
+    this.color = 0;
+    this.currentRotation = 0;
+
     if (type !== "random") {
       if (type == "0") {
         this.shape = [...Piece.O];
@@ -239,16 +247,13 @@ class Piece {
         Piece.I,
       ];
       const randomIndex = Math.floor(Math.random() * shapes.length);
-      this.shape = [...shapes[randomIndex]];
+      this.shape = [...(shapes[randomIndex] ?? [])];
       this.color = randomIndex + 1;
       this.currentRotation = 0;
     }
   }
 
-  /**
-   * @return {Piece}
-   **/
-  clone() {
+  clone(): Piece {
     const piece = new Piece();
     piece.shape = [...this.shape];
     piece.color = this.color;
@@ -256,14 +261,11 @@ class Piece {
     return piece;
   }
 
-  /**
-   * @param {number} x
-   * @param {number} y
-   * @return {boolean}
-   **/
-  isInPiece(x, y) {
-    return this.shape[this.currentRotation].some(
-      (position) => position.x === x && position.y === y,
+  isInPiece(x: number, y: number): boolean {
+    return (
+      this.shape[this.currentRotation]?.some(
+        (position) => position.x === x && position.y === y
+      ) || false
     );
   }
 

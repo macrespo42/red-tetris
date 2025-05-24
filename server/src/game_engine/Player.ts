@@ -1,23 +1,33 @@
-"use strict";
+import Board from "./Board";
+import Piece from "./Piece";
+
+type score = {
+  [key: number]: number;
+};
 
 class Player {
-  static scoringSystem = {
+  name: string;
+  id: string;
+  isGameOwner: boolean;
+  board: Board;
+  currentPiece: Piece | null;
+  isAlive: boolean;
+  isWinner: boolean;
+  score: number;
+  nextPieceGrid: number[][];
+
+  static scoringSystem: score = {
     1: 40,
     2: 100,
     3: 300,
     4: 1200,
   };
 
-  /**
-   * @param { string } name
-   * @param { string } id
-   * @param { boolean } [gameOwner=false]
-   **/
-  constructor(name, id, isGameOwner = false) {
+  constructor(name: string, id: string, isGameOwner: boolean = false) {
     this.name = name;
     this.id = id;
     this.isGameOwner = isGameOwner;
-    this.board = null;
+    this.board = new Board();
     this.currentPiece = null;
     this.isAlive = true;
     this.isWinner = false;
@@ -27,10 +37,7 @@ class Player {
       .map(() => Array(6).fill(0));
   }
 
-  /**
-   * @param { Piece } piece
-   **/
-  drawNextPiece(piece) {
+  drawNextPiece(piece: Piece) {
     if (!piece) {
       return;
     }
@@ -44,27 +51,24 @@ class Player {
       }
     }
 
-    piece.shape[piece.currentRotation].forEach((position) => {
+    piece.shape[piece.currentRotation]?.forEach((position) => {
       this.nextPieceGrid[position.x + xOffset][position.y + yOffset] =
         piece.color;
     });
   }
 
-  /**
-   * @param {number} lines
-   **/
-  computeScore(lines) {
+  computeScore(lines: number) {
     // original BPS scoring system
     const scoreAddition = Player.scoringSystem[lines];
     if (scoreAddition) {
       this.score += scoreAddition;
     } else {
-      this.score += Player.scoringSystem[4];
+      this.score += Player.scoringSystem[4] || 0;
     }
   }
 
   reset() {
-    this.board = null;
+    this.board = new Board();
     this.currentPiece = null;
     this.isAlive = true;
     this.isWinner = false;

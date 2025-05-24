@@ -1,58 +1,58 @@
-"use strict";
+import Piece from "./Piece";
 
 class Board {
-  /**
-   * @param {number} width=10
-   * @param {number} height=20
-   **/
-  constructor(width = 10, height = 20) {
+  width: number;
+  height: number;
+  nextPieceIndex: number;
+  currentPenalty: number;
+  grid: number[][];
+
+  constructor(width: number = 10, height: number = 20) {
     this.width = width;
     this.height = height;
     this.nextPieceIndex = 0;
     this.currentPenalty = 0;
-    this.#initGrid();
+    this.grid = [];
+    this.initGrid();
   }
 
-  /**
-   * @param {Piece} [piece]
-   * @returns {Piece || null}
-   **/
-  insertPiece(piece) {
+  insertPiece(piece: Piece): Piece | null {
     const offset = Math.floor((this.width - 1) / 2) - 1;
     let collision = false;
 
     piece.shape = this.#applyOffset(piece, offset, "horizontal");
 
-    piece.shape[piece.currentRotation].forEach((position) => {
-      if (this.grid[position.x][position.y] > 0) {
+    piece.shape[piece.currentRotation]?.forEach((position) => {
+      if (this.grid[position.x]?.[position.y] ?? 0 > 0) {
         collision = true;
       }
     });
 
-    if (collision) return null;
+    if (collision) {
+      return null;
+    }
 
     this.#draw(piece);
 
     return piece;
   }
 
-  /**
-   * @param {Piece} piece
-   * @returns {(Piece|null)}
-   **/
-  moveDown(piece) {
-    if (!piece) return null;
+  moveDown(piece: Piece | null): Piece | null {
+    if (!piece) {
+      return null;
+    }
 
     const newPositions = [];
     let collision = false;
 
-    piece.shape[piece.currentRotation].forEach((position) => {
+    piece.shape[piece.currentRotation]?.forEach((position) => {
       const newX = position.x + 1;
       const newY = position.y;
 
+      const nextPiecePosition = this.grid[newX]?.[newY] ?? 0;
       if (
         newX >= this.height ||
-        (this.grid[newX][newY] > 0 && !piece.isInPiece(newX, newY))
+        (nextPiecePosition > 0 && !piece.isInPiece(newX, newY))
       ) {
         collision = true;
       } else {
@@ -72,30 +72,28 @@ class Board {
     return piece;
   }
 
-  /**
-   * @param {Piece} piece
-   * @returns {(Piece|null)}
-   **/
-  moveHorizontally(piece, direction) {
+  moveHorizontally(piece: Piece | null, direction: string): Piece | null {
     if (!piece) return piece;
 
     const offset = direction === "right" ? 1 : -1;
     const newPositions = [];
     let collision = false;
 
-    piece.shape[piece.currentRotation].map((position) => ({
+    piece.shape[piece.currentRotation]?.map((position) => ({
       x: position.x,
       y: position.y,
     }));
 
-    piece.shape[piece.currentRotation].forEach((position) => {
+    piece.shape[piece.currentRotation]?.forEach((position) => {
       const newX = position.x;
       const newY = position.y + offset;
+
+      const nextPiecePosition = this.grid[newX]?.[newY] ?? 0;
 
       if (
         newY < 0 ||
         newY >= this.width ||
-        (this.grid[newX][newY] > 0 && !piece.isInPiece(newX, newY))
+        (nextPiecePosition > 0 && !piece.isInPiece(newX, newY))
       ) {
         collision = true;
       } else {
@@ -113,23 +111,19 @@ class Board {
     return piece;
   }
 
-  /**
-   * @param {Piece} piece
-   * @returns {(Piece|null)}
-   **/
-  rotate(piece) {
+  rotate(piece: Piece | null): Piece | null {
     if (!piece) return null;
     let collision = false;
 
     piece.nextRotation();
-    piece.shape[piece.currentRotation].forEach((position) => {
+    piece.shape[piece.currentRotation]?.forEach((position) => {
+      const nextPiecePosition = this.grid[position.x]?.[position.y] ?? 0;
       if (
         position.x < 0 ||
         position.x >= this.height ||
         position.y >= this.width ||
         position.y < 0 ||
-        (this.grid[position.x][position.y] > 0 &&
-          !piece.isInPiece(position.x, position.y))
+        (nextPiecePosition > 0 && !piece.isInPiece(position.x, position.y))
       ) {
         collision = true;
       }
@@ -149,14 +143,11 @@ class Board {
     return piece;
   }
 
-  /**
-   * @returns {number}
-   **/
-  checkForFullRows() {
+  checkForFullRows(): number {
     let n = 0;
     const fullRowsIndex = [];
     for (let i = 0; i < this.grid.length; i++) {
-      if (!this.grid[i].some((cell) => cell === 0 || cell === 8)) {
+      if (!this.grid[i]?.some((cell) => cell === 0 || cell === 8)) {
         fullRowsIndex.push(i);
       }
     }
@@ -168,56 +159,43 @@ class Board {
     return n;
   }
 
-  /**
-   * @param {number} n
-   **/
-  inflictPenalty(n) {
+  inflictPenalty(n: number) {
     let n_penalty = n - 1;
     while (n_penalty > 0) {
-      this.grid[this.grid.length - (n_penalty + this.currentPenalty)].fill(8);
+      this.grid[this.grid.length - (n_penalty + this.currentPenalty)]?.fill(8);
       n_penalty--;
     }
     this.currentPenalty += n;
   }
 
-  #initGrid() {
-    this.grid = [];
+  initGrid() {
     this.grid = Array(this.height)
       .fill(0)
       .map(() => Array(this.width).fill(0));
   }
 
-  /**
-   * @param {Piece} piece
-   * @param {number} offset
-   * @param {string} direction
-   * @returns {Array}
-   **/
-  #applyOffset(piece, offset, direction) {
+  #applyOffset(piece: Piece, offset: number, direction: string) {
     for (let i = 0; i < piece.shape.length; i++) {
-      piece.shape[i] = piece.shape[i].map((position) => ({
-        x: direction === "vertical" ? position.x + offset : position.x,
-        y: direction === "horizontal" ? position.y + offset : position.y,
-      }));
+      const currentShape = piece.shape[i];
+      if (currentShape) {
+        piece.shape[i] = currentShape.map((position) => ({
+          x: direction === "vertical" ? position.x + offset : position.x,
+          y: direction === "horizontal" ? position.y + offset : position.y,
+        }));
+      }
     }
     return piece.shape;
   }
 
-  /**
-   * @param {Piece} piece
-   **/
-  #draw(piece) {
-    piece.shape[piece.currentRotation].forEach((position) => {
-      this.grid[position.x][position.y] = piece.color;
+  #draw(piece: Piece) {
+    piece.shape[piece.currentRotation]?.forEach((position) => {
+      this.grid[position.x]![position.y] = piece.color;
     });
   }
 
-  /**
-   * @param {Piece} piece
-   **/
-  #undraw(piece) {
-    piece.shape[piece.currentRotation].forEach((position) => {
-      this.grid[position.x][position.y] = 0;
+  #undraw(piece: Piece) {
+    piece.shape[piece.currentRotation]?.forEach((position) => {
+      this.grid[position.x]![position.y] = 0;
     });
   }
 }
