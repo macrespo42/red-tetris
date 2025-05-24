@@ -8,8 +8,8 @@
     "build": "tsc --build",
     "dev": "npx tsx src/app.ts",
     "start": "node dist/src/app.js",
-    "format": "prettier --write \"src/**/*.{js,jsx}\"",
-    "lint": "eslint \"src/**/*.{js,jsx}\" --quiet",
+    "format": "prettier --write \"src/**/*.{ts}\"",
+    "lint": "eslint",
     "test": " node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
   },
   "author": "",
@@ -20,7 +20,7 @@
     "socket.io": "^4.8.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.16.0",
+    "@eslint/js": "^9.27.0",
     "@jest/globals": "^29.7.0",
     "@types/express": "^5.0.1",
     "@types/jest": "^29.5.14",
@@ -28,15 +28,16 @@
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^0.0.0",
     "cross-env": "^7.0.3",
-    "eslint": "^9.16.0",
+    "eslint": "^9.27.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "globals": "^15.13.0",
+    "globals": "^16.1.0",
     "jest": "^29.7.0",
     "prettier": "^3.4.2",
     "superagent": "^10.1.1",
     "supertest": "^7.0.0",
     "tsx": "^4.19.3",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.32.1"
   }
 }

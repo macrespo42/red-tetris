@@ -14,7 +14,7 @@ class Player {
   isAlive: boolean;
   isWinner: boolean;
   score: number;
-  nextPieceGrid: any;
+  nextPieceGrid: number[][];
 
   static scoringSystem: score = {
     1: 40,
