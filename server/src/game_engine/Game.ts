@@ -1,4 +1,3 @@
-"use strict";
 import { randomUUID, UUID } from "node:crypto";
 import Piece from "./Piece.js";
 import Board from "./Board.js";
@@ -12,7 +11,7 @@ class Game {
   players: Map<string, Player>;
   pieceQueue: Piece[];
 
-  static QUEUE_SIZE = 4096;
+  static QUEUE_SIZE = 10;
 
   constructor(name: string, mode: string = "normal") {
     this.name = name;
@@ -46,7 +45,7 @@ class Game {
   tick() {
     this.players.forEach((player) => {
       if (player.isAlive) {
-        if (player.board && player.currentPiece) {
+        if (player.board) {
           player.currentPiece = player.board.moveDown(player.currentPiece);
           if (!player.currentPiece) {
             this.#updateScores(player);
@@ -133,9 +132,9 @@ class Game {
   }
 
   #getNextPiece(player: Player) {
-    const nextPiece = this.pieceQueue[player.board.nextPieceIndex]?.clone();
+    const nextPiece = this.pieceQueue[player.board.nextPieceIndex];
     if (nextPiece) {
-      player.currentPiece = player.board.insertPiece(nextPiece);
+      player.currentPiece = player.board.insertPiece(nextPiece.clone());
     }
     const nextNextPiece = this.pieceQueue[player.board.nextPieceIndex + 1];
     if (nextNextPiece) {

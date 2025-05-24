@@ -1,5 +1,3 @@
-"use strict";
-
 import Board from "./Board";
 import Piece from "./Piece";
 
@@ -30,7 +28,7 @@ class Player {
     this.id = id;
     this.isGameOwner = isGameOwner;
     this.board = new Board();
-    this.currentPiece = new Piece();
+    this.currentPiece = null;
     this.isAlive = true;
     this.isWinner = false;
     this.score = 0;

@@ -1,4 +1,3 @@
-"use strict";
 import express from "express";
 import { Server } from "socket.io";
 import { createServer } from "node:http";
@@ -159,6 +158,6 @@ const getNetworkAddress = (): string => {
 server.listen(app.get("port"), "0.0.0.0", () => {
   console.log(`App listening on port http://localhost:${app.get("port")}`);
   console.log(
-    `Accessible on the network: http://${getNetworkAddress()}:${app.get("port")}`,
+    `Accessible on the network: http://${getNetworkAddress()}:${app.get("port")}`
   );
 });

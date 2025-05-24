@@ -28,7 +28,9 @@ class Board {
       }
     });
 
-    if (collision) return null;
+    if (collision) {
+      return null;
+    }
 
     this.#draw(piece);
 
@@ -36,7 +38,9 @@ class Board {
   }
 
   moveDown(piece: Piece | null): Piece | null {
-    if (!piece) return null;
+    if (!piece) {
+      return null;
+    }
 
     const newPositions = [];
     let collision = false;
@@ -45,9 +49,10 @@ class Board {
       const newX = position.x + 1;
       const newY = position.y;
 
+      const nextPiecePosition = this.grid[newX]?.[newY] ?? 0;
       if (
         newX >= this.height ||
-        (this.grid[newX]?.[newY] ?? (0 > 0 && !piece.isInPiece(newX, newY)))
+        (nextPiecePosition > 0 && !piece.isInPiece(newX, newY))
       ) {
         collision = true;
       } else {
@@ -83,10 +88,12 @@ class Board {
       const newX = position.x;
       const newY = position.y + offset;
 
+      const nextPiecePosition = this.grid[newX]?.[newY] ?? 0;
+
       if (
         newY < 0 ||
         newY >= this.width ||
-        (this.grid[newX]?.[newY] ?? (0 > 0 && !piece.isInPiece(newX, newY)))
+        (nextPiecePosition > 0 && !piece.isInPiece(newX, newY))
       ) {
         collision = true;
       } else {
@@ -110,13 +117,13 @@ class Board {
 
     piece.nextRotation();
     piece.shape[piece.currentRotation]?.forEach((position) => {
+      const nextPiecePosition = this.grid[position.x]?.[position.y] ?? 0;
       if (
         position.x < 0 ||
         position.x >= this.height ||
         position.y >= this.width ||
         position.y < 0 ||
-        (this.grid[position.x]?.[position.y] ??
-          (0 > 0 && !piece.isInPiece(position.x, position.y)))
+        (nextPiecePosition > 0 && !piece.isInPiece(position.x, position.y))
       ) {
         collision = true;
       }
