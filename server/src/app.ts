@@ -5,6 +5,7 @@ import os from "node:os";
 import Game from "./game_engine/Game.js";
 import Player from "./game_engine/Player.js";
 import { rateLimit } from "express-rate-limit";
+import helmet from "helmet";
 
 const app = express();
 const server = createServer(app);
@@ -24,6 +25,7 @@ const limiter = rateLimit({
 });
 
 app.use("/api/", limiter);
+app.use(helmet());
 
 app.get("/ping", (_, res) => {
   res.send("pong");
