@@ -4,6 +4,8 @@ import { createServer } from "node:http";
 import os from "node:os";
 import Game from "./game_engine/Game.js";
 import Player from "./game_engine/Player.js";
+import { rateLimit } from "express-rate-limit";
+import helmet from "helmet";
 
 const app = express();
 const server = createServer(app);
@@ -16,6 +18,14 @@ const io = new Server(server, {
 });
 
 app.set("port", process.env.PORT || 3000);
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
+
+app.use("/api/", limiter);
+app.use(helmet());
 
 app.get("/ping", (_, res) => {
   res.send("pong");
