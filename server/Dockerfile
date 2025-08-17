@@ -1,17 +1,19 @@
-FROM node:22-alpine
+FROM denoland/deno:2.4.4
 
 WORKDIR /app
 
+USER deno
+
 COPY package.json .
 
-RUN npm install
+RUN deno install
 
 COPY . .
-
-RUN npm run build
 
 ENV PORT 3000
 
 EXPOSE 3000
 
-CMD ["npm", "run", "start"]
+RUN deno cache src/app.ts
+
+CMD ["deno", "--allow-net", "src/app.ts"]
