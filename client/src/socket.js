@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
 
-const URL = import.meta.env.VITE_SERVER_URL || "redtetris.duckdns.org";
+const URL = import.meta.env.VITE_SERVER_URL || "redtetris.duckdns.org:3000";
 
 export const socket = io(URL);
