@@ -1,7 +1,7 @@
 import { randomUUID, UUID } from "node:crypto";
-import Piece from "./Piece.js";
-import Board from "./Board.js";
-import Player from "./Player.js";
+import Piece from "./Piece.ts";
+import Board from "./Board.ts";
+import Player from "./Player.ts";
 
 class Game {
   name: string;
@@ -69,12 +69,12 @@ class Game {
     if (movement === "moveLeft") {
       player.currentPiece = player.board.moveHorizontally(
         player.currentPiece,
-        "left"
+        "left",
       );
     } else if (movement === "moveRight") {
       player.currentPiece = player.board.moveHorizontally(
         player.currentPiece,
-        "right"
+        "right",
       );
     } else if (movement === "moveDown") {
       player.currentPiece = player.board.moveDown(player.currentPiece);
