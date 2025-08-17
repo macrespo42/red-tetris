@@ -52,8 +52,11 @@ class Player {
     }
 
     piece.shape[piece.currentRotation]?.forEach((position) => {
-      this.nextPieceGrid[position.x + xOffset][position.y + yOffset] =
-        piece.color;
+      const row = this.nextPieceGrid[position.x + xOffset];
+
+      if (row) {
+        row[position.y + yOffset] = piece.color;
+      }
     });
   }
 
@@ -75,5 +78,12 @@ class Player {
     this.score = 0;
   }
 }
+
+/**
+    piece.shape[piece.currentRotation]?.forEach((position) => {
+      this.nextPieceGrid[position.x + xOffset]![position.y + yOffset] =
+        piece.color;
+    });
+ * **/
 
 export default Player;
