@@ -4,17 +4,11 @@ services:
     container_name: client
     ports:
       - 5173:5173
-    volumes:
-      - "./client:/app"
-      - "/app/node_modules"
     stdin_open: true
   server:
     image: ghcr.io/macrespo42/server:latest
     container_name: server
     ports:
       - 3000:3000
-    volumes:
-      - "./server:/app"
-      - "/app/node_modules"
     environment:
       - PORT=3000
