@@ -2,8 +2,6 @@ FROM denoland/deno:2.4.4
 
 WORKDIR /app
 
-USER deno
-
 COPY package.json .
 
 RUN deno install
