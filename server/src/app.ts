@@ -6,9 +6,22 @@ import Game from "./game_engine/Game.js";
 import Player from "./game_engine/Player.js";
 import { rateLimit } from "express-rate-limit";
 import helmet from "helmet";
+import cors from "cors";
 
 const app = express();
 const server = createServer(app);
+
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "192.168.1.181:5173",
+      "http://redtetris.duckdns.org:5173",
+      "http://redtetris.duckdns.org:5173/",
+    ],
+    methods: ["GET", "POST"],
+  }),
+);
 
 const io = new Server(server, {
   cors: {
