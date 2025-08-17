@@ -8,10 +8,11 @@ jobs:
   build:
     name: Publish
     runs-on: ubuntu-latest
-    matrix:
-      container:
-        - client
-        - server
+    strategy:
+      matrix:
+        container:
+          - client
+          - server
     permissions:
       contents: read
       packages: write
