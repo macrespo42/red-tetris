@@ -12,7 +12,12 @@ const server = createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173", "192.168.1.181:5173"],
+    origin: [
+      "http://localhost:5173",
+      "192.168.1.181:5173",
+      "http://redtetris.duckdns.org:5173/",
+      "http://redtetris.duckdns.org:5173",
+    ],
     methods: ["GET", "POST"],
   },
 });
@@ -168,6 +173,6 @@ const getNetworkAddress = (): string => {
 server.listen(app.get("port"), "0.0.0.0", () => {
   console.log(`App listening on port http://localhost:${app.get("port")}`);
   console.log(
-    `Accessible on the network: http://${getNetworkAddress()}:${app.get("port")}`
+    `Accessible on the network: http://${getNetworkAddress()}:${app.get("port")}`,
   );
 });
