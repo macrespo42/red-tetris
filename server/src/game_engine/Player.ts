@@ -1,5 +1,5 @@
-import Board from "./Board";
-import Piece from "./Piece";
+import Board from "./Board.js";
+import Piece from "./Piece.js";
 
 type score = {
   [key: number]: number;
