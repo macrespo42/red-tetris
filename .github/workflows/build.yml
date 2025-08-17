@@ -1,0 +1,39 @@
+name: Build docker
+
+on:
+  push:
+    branches:
+      - "main"
+jobs:
+  build:
+    name: Publish
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        container:
+          - client
+          - server
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+
+      - name: Login to GHCR
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Containers
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6
+        with:
+          context: ./${{ matrix.container }}
+          file: Dockerfile
+          platform: linux/amd64
+          push: true
+          tags: |
+            ghcr.io/macrespo42/${{ matrix.container }}:latest
