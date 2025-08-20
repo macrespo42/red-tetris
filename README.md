@@ -26,4 +26,16 @@ The last who stay alive whon the game!
 
 ## Rules
 
+The last to survive is the winner!
+If you score a line you can inflict scored line - 1 malus line to your opponents
+
+If you play in solo the goal is to score the maximum of points!
+
 ## Gamemode
+
+Several gamemodes are availables
+
+- Broken piece: You have a chance to got a Broken piece (a piece where you can't score a line with)
+- Sudden death: The first player who score a line won the game
+- Domination: The penalty is doubled when you score a line
+- Quick: The game goes fastes (blazingly faster)
