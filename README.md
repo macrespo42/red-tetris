@@ -7,9 +7,9 @@ An online battle royal tetris game
 
 ## Presentation
 
-The game is available [here](http://redtetris.duckdns.org:5173/)
+Ready to play? Click [here](http://redtetris.duckdns.org:5173/)
 
-You can create or join a Room to start playing with your friends
+Red Tetris is a fast-paced multiplayer game where the goal is to be the last player standing. You can create or join a room to challenge your friends in a battle of wits and speed.
 
 ![homepage](./screenshot/homepage.png)
 
@@ -21,21 +21,20 @@ And enjoy!
 
 ![game](./screenshot/game.png)
 
-At the right of the screen you can show a minimap of your opponent fields, and just at the right of your field the list of availables commands  
-The last who stay alive whon the game!
+During the game, you'll see a mini-map of your opponents' fields on the right side of the screen. Just next to your own field, a list of available commands is displayed to help you control your game.
 
 ## Rules
 
-The last to survive is the winner!
-If you score a line you can inflict scored line - 1 malus line to your opponents
+The last player alive wins!
+Each time you clear a line, you send (number of lines cleared - 2) garbage lines to your opponents. These garbage lines appear at the bottom of their field, complicating their game and pushing them closer to defeat.
 
-If you play in solo the goal is to score the maximum of points!
+In solo mode, the objective is simply to score the maximum number of points.
 
-## Gamemode
+## Gamemodes
 
-Several gamemodes are availables
+We have several unique gamemodes availables:
 
-- Broken piece: You have a chance to got a Broken piece (a piece where you can't score a line with)
-- Sudden death: The first player who score a line won the game
-- Domination: The penalty is doubled when you score a line
-- Quick: The game goes fastes (blazingly faster)
+- Broken Piece: You have a chance to receive a "broken piece," which cannot be used to clear any lines.
+- Sudden Death: The first player to clear a line wins the game.
+- Domination: All penalties are doubled, making for an intense, high-stakes match.
+- Quick: The game speed is significantly increased, putting your reflexes to the ultimate test.
