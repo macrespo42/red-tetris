@@ -165,7 +165,7 @@ class Board {
       this.grid[this.grid.length - (n_penalty + this.currentPenalty)]?.fill(8);
       n_penalty--;
     }
-    this.currentPenalty += n;
+    this.currentPenalty += n - 1;
   }
 
   initGrid() {
