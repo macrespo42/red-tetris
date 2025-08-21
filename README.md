@@ -34,7 +34,7 @@ In solo mode, the objective is simply to score the maximum number of points.
 
 We have several unique gamemodes availables:
 
-- Broken Piece: You have a chance to receive a "broken piece," which cannot be used to clear any lines.
-- Sudden Death: The first player to clear a line wins the game.
-- Domination: All penalties are doubled, making for an intense, high-stakes match.
-- Quick: The game speed is significantly increased, putting your reflexes to the ultimate test.
+- Broken Piece: You have a chance to receive a "broken piece," which cannot be used to clear any lines
+- Sudden Death: The first player to clear a line wins the game
+- Domination: All penalties are doubled, making for an intense, high-stakes match
+- Quick: The game speed is significantly increased, putting your reflexes to the ultimate test
