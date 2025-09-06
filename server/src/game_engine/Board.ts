@@ -16,7 +16,7 @@ class Board {
     this.initGrid();
   }
 
-  insertPiece(piece: Piece): Piece | null {
+  insertPiece(piece: Piece) {
     const offset = Math.floor((this.width - 1) / 2) - 1;
     let collision = false;
 
@@ -37,7 +37,7 @@ class Board {
     return piece;
   }
 
-  moveDown(piece: Piece | null): Piece | null {
+  moveDown(piece: Piece | null) {
     if (!piece) {
       return null;
     }
@@ -72,7 +72,7 @@ class Board {
     return piece;
   }
 
-  moveHorizontally(piece: Piece | null, direction: string): Piece | null {
+  moveHorizontally(piece: Piece | null, direction: string) {
     if (!piece) return piece;
 
     const offset = direction === "right" ? 1 : -1;
@@ -111,7 +111,7 @@ class Board {
     return piece;
   }
 
-  rotate(piece: Piece | null): Piece | null {
+  rotate(piece: Piece | null) {
     if (!piece) return null;
     let collision = false;
 
@@ -143,7 +143,7 @@ class Board {
     return piece;
   }
 
-  checkForFullRows(): number {
+  checkForFullRows() {
     let n = 0;
     const fullRowsIndex = [];
     for (let i = 0; i < this.grid.length; i++) {

@@ -168,7 +168,7 @@ app.get("/ping", (_, res) => {
   });
 }
 
-const getNetworkAddress = (): string => {
+const getNetworkAddress = () => {
   const interfaces = os.networkInterfaces();
   for (const name of Object.keys(interfaces)) {
     const currentInterface = interfaces[name];
