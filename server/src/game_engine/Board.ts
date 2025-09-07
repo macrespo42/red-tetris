@@ -1,5 +1,7 @@
 import Piece from "./Piece.ts";
 
+type Direction = "right" | "left";
+
 class Board {
   width: number;
   height: number;
@@ -72,7 +74,7 @@ class Board {
     return piece;
   }
 
-  moveHorizontally(piece: Piece | null, direction: string) {
+  moveHorizontally(piece: Piece | null, direction: Direction) {
     if (!piece) return piece;
 
     const offset = direction === "right" ? 1 : -1;

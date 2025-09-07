@@ -3,6 +3,8 @@ import Piece from "./Piece.ts";
 import Board from "./Board.ts";
 import Player from "./Player.ts";
 
+type Movement = "moveRight" | "moveLeft" | "moveDown" | "moveBottom" | "rotate";
+
 class Game {
   name: string;
   mode: string;
@@ -61,7 +63,7 @@ class Game {
     this.mode = mode;
   }
 
-  movePiece(movement: string, playerId: string) {
+  movePiece(movement: Movement, playerId: string) {
     const player = this.players.get(playerId);
     if (!player || !player.isAlive) {
       return;
