@@ -9,7 +9,7 @@ An online battle royal tetris game
 
 Ready to play? Click [here](http://redtetris.duckdns.org:5173/)
 
-Red Tetris is a fast-paced multiplayer game where the goal is to be the last player standing. You can create or join a room to challenge your friends in a battle of wits and speed.
+Red Tetris is a fast-paced multiplayer game where the goal is to be the last player standing. You can create or join a room to challenge your friends in a battle of wits and speed
 
 ![homepage](./screenshot/homepage.png)
 
