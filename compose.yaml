@@ -1,10 +1,18 @@
 services:
   client:
-    image: ghcr.io/macrespo42/client:latest
+    build:
+      context: ./client
+      target: builder
     container_name: client
+    user: "1000:1000"
     ports:
-      - 5173:5173
-    stdin_open: true
+      - "5173:5173"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    command: npm run dev
+    depends_on:
+      - server
   server:
     image: ghcr.io/macrespo42/server:latest
     container_name: server
