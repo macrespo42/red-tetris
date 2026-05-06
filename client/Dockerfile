@@ -3,6 +3,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
 COPY . .
+RUN chown -R node:node /app
+USER node
 
 FROM builder AS build
 RUN npm run build
@@ -20,7 +22,7 @@ RUN mkdir -p /var/cache/nginx /var/run/nginx && \
 
 COPY --from=build /app/dist /usr/share/nginx/html
 
-USER nginx
+# USER nginx
 
 EXPOSE 8080
 
