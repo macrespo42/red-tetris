@@ -20,9 +20,9 @@ RUN mkdir -p /var/cache/nginx /var/run/nginx && \
     chown -R nginx:nginx /etc/nginx/conf.d && \
     chown -R nginx:nginx /run
 
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --chown=nginx:nginx --from=build /app/dist /usr/share/nginx/html
 
-# USER nginx
+USER nginx
 
 EXPOSE 8080
 
