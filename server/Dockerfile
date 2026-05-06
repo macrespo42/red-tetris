@@ -1,17 +1,18 @@
-FROM node:22-alpine AS builder
+FROM denoland/deno:2.4.4 AS builder
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm install
+ENV DENO_DIR=/deno-dir
+COPY deno.lock ./
 COPY . .
-RUN npm run build
+RUN deno install
+RUN deno cache src/app.ts
 
-FROM node:22-alpine
+FROM denoland/deno:2.4.4
 WORKDIR /app
-COPY --from=builder /app/package.json /app/package-lock.json ./
-RUN npm ci --omit=dev
-COPY --from=builder /app/dist ./dist
+COPY --from=builder /app .
+COPY --from=builder /deno-dir /deno-dir
+ENV DENO_DIR=/deno-dir
 ENV PORT=3000
-RUN chown -R node:node /app
-USER node
+RUN chown -R deno:deno /app /deno-dir
+USER deno
 EXPOSE 3000
-CMD ["node", "./dist/app.js"]
+CMD ["deno", "run", "--allow-net", "--allow-env", "--allow-sys", "src/app.ts"]
