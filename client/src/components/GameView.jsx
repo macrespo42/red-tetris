@@ -47,8 +47,7 @@ const GameView = () => {
   const gameId = useSelector((state) => state.player.value.gameId);
 
   function playAgain() {
-    if (isGameOwner)
-      socket.emit("start game", { gameIdentifier: gameId, room });
+    if (isGameOwner) socket.emit("start game", { gameIdentifier: gameId, room });
     closeModal();
   }
 
@@ -93,11 +92,7 @@ const GameView = () => {
 
   return (
     <div className="gameView">
-      <TetrisGrid
-        matrix={matrix}
-        name={playerName}
-        score={currentPlayerScore}
-      />
+      <TetrisGrid matrix={matrix} name={playerName} score={currentPlayerScore} />
       <div className="gameSideInfos">
         <h3>Next piece:</h3>
         <NextPiece matrix={nextPieceMatrix} />

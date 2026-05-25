@@ -18,18 +18,11 @@ describe("button global components", () => {
               element={
                 <div>
                   {" "}
-                  <Button
-                    id={"id"}
-                    text={"test"}
-                    to={"/lobby/room/player"}
-                  />{" "}
+                  <Button id={"id"} text={"test"} to={"/lobby/room/player"} />{" "}
                 </div>
               }
             />
-            <Route
-              path="/lobby/:room/:player"
-              element={<div> hello button match </div>}
-            />
+            <Route path="/lobby/:room/:player" element={<div> hello button match </div>} />
           </Routes>
         </MemoryRouter>
       </Provider>,
