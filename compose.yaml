@@ -14,7 +14,7 @@ services:
       - server
   server:
     build:
-      context: ./server
+      context: ./server-legacy
     container_name: server
     ports:
       - 3000:3000
