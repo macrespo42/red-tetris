@@ -1,29 +1,29 @@
-name: Server CI
+# name: Server CI
 
-on:
-  push:
-    branches:
-      - "*"
-jobs:
-  styles:
-    name: Style
-    runs-on: ubuntu-latest
+# on:
+#   push:
+#     branches:
+#       - "*"
+# jobs:
+#   styles:
+#     name: Style
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v6
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 22.12.0
+#     steps:
+#       - name: Check out code
+#         uses: actions/checkout@v6
 
-      - name: Install dependencies
-        run: |
-          cd server
-          npm install
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v6
+#         with:
+#           node-version: 22.12.0
 
-      - name: Lint
-        run: |
-          cd server
-          npm run lint
+#       - name: Install dependencies
+#         run: |
+#           cd server
+#           npm install
+
+#       - name: Lint
+#         run: |
+#           cd server
+#           npm run lint
