@@ -1,10 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-import {
-  render,
-  screen,
-  cleanup,
-} from "@testing-library/react";
+import { render, screen, cleanup } from "@testing-library/react";
 
 import { useNavigate } from "react-router";
 import { Provider } from "react-redux";
@@ -18,7 +14,7 @@ import userEvent from "@testing-library/user-event";
 describe("Gameview", () => {
   vi.mock("react-confetti", () => ({
     __esModule: true,
-    default: () => <div  />,
+    default: () => <div />,
   }));
   vi.mock("../socket", () => ({
     socket: {

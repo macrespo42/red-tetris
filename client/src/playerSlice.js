@@ -33,6 +33,5 @@ export const playerSlice = createSlice({
   },
 });
 
-export const { all, socketId, name, roomName, isGameOwner, gameId } =
-  playerSlice.actions;
+export const { all, socketId, name, roomName, isGameOwner, gameId } = playerSlice.actions;
 export default playerSlice.reducer;

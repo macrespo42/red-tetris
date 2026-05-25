@@ -39,9 +39,7 @@ describe("socket middleware", () => {
     });
   });
   const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-  const consoleErrorSpy = vi
-    .spyOn(console, "error")
-    .mockImplementation(() => {});
+  const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
   it("connect socket", () => {
     render(
@@ -49,9 +47,7 @@ describe("socket middleware", () => {
         <SocketMiddleware>{<div>cc</div>}</SocketMiddleware>
       </Provider>,
     );
-    const onConnectCallback = socket.on.mock.calls.find(
-      ([event]) => event === "connect",
-    )[1];
+    const onConnectCallback = socket.on.mock.calls.find(([event]) => event === "connect")[1];
     onConnectCallback();
 
     expect(consoleLogSpy).toHaveBeenCalledWith("Connected: test-socket-id");
@@ -69,10 +65,7 @@ describe("socket middleware", () => {
       .mock.calls.find(([event]) => event === "connect_error")[1];
 
     onConnectCallback(new Error("Test error"));
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      "Connection error: ",
-      "Test error",
-    );
+    expect(consoleErrorSpy).toHaveBeenCalledWith("Connection error: ", "Test error");
   });
 
   it("connect  error socket", () => {
