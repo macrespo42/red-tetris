@@ -1,13 +1,17 @@
-FROM node:22-alpine AS builder
+FROM node:22-alpine AS base
+RUN npm install -g pnpm
+
+FROM base AS builder
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm install
+COPY package.json pnpm-lock.yaml ./
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile
 COPY . .
 RUN chown -R node:node /app
 USER node
 
 FROM builder AS build
-RUN npm run build
+RUN pnpm run build
 
 FROM nginx:alpine AS runner
 
