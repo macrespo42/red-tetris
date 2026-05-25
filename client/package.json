@@ -13,7 +13,8 @@
     "preview": "vite preview --host",
     "format": "oxfmt",
     "lint": "oxlint",
-    "test": "vitest --coverage"
+    "test": "vitest --coverage",
+    "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.0",
