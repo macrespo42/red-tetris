@@ -17,13 +17,19 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 22.12.0
+          cache: "pnpm"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 9
 
       - name: Install dependencies
         run: |
           cd client
-          npm install
+          pnpm install
 
       - name: Lint
         run: |
           cd client
-          npm run lint
+          pnpm lint
