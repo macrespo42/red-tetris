@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+# TODO implement matrix rotation or SSR (ssr is clearly better)
+
 
 @dataclass(frozen=True)
 class orthogonal_position:
