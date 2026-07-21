@@ -1,7 +1,5 @@
 from dataclasses import dataclass
 
-# TODO implement matrix rotation or SSR (ssr is clearly better)
-
 
 @dataclass(frozen=True)
 class orthogonal_position:
@@ -14,17 +12,17 @@ class Shape:
     line: list[orthogonal_position]
 
 
+@dataclass
 class Piece:
     shapes: list[Shape]
     color: int
     current_rotation: int = 0
 
-    def rotate_counterclockwise(self):
-        self.current_rotation -= 1
-        if self.current_rotation < 0:
-            self.current_rotation = len(self.shapes) - 1
+    def rot90(self):
+        pass
 
-    def rotate_clockwise(self):
-        self.current_rotation += 1
-        if self.current_rotation > len(self.shapes) - 1:
-            self.current_rotation = 0
+    def move_down(self):
+        pass
+
+    def move_horizontally(self):
+        pass

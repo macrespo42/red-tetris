@@ -79,11 +79,4 @@ class Player {
   }
 }
 
-/**
-    piece.shape[piece.currentRotation]?.forEach((position) => {
-      this.nextPieceGrid[position.x + xOffset]![position.y + yOffset] =
-        piece.color;
-    });
- * **/
-
 export default Player;
