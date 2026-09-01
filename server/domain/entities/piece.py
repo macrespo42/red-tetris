@@ -60,7 +60,7 @@ SHAPES: dict[PieceType, list[list[tuple[int, int]]]] = {
 }
 
 
-@dataclass
+@dataclass(frozen=True)
 class Piece:
     type: PieceType
     x: int

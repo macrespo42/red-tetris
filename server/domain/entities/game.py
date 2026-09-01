@@ -1,10 +1,12 @@
-from board import Board
-from piece import Piece
+from domain.entities.board import Board
+from domain.entities.piece import Piece
+from domain.entities.player import Player
 
 
 class Game:
     board: Board
     current_piece: Piece
+    players: list[Player]
 
     def try_move(self, dx: int, dy: int) -> bool:
         candidate = self.current_piece.moved(dx, dy)
@@ -21,7 +23,7 @@ class Game:
         # TODO implement SRS
         return False
 
-    def soft_drop_or_lock(self) -> None:
+    def soft_drop_or_insert(self) -> None:
         candidate = self.current_piece.moved(0, 1)
         if self.board.can_place(candidate):
             self.current_piece = candidate
