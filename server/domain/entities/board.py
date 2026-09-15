@@ -17,7 +17,7 @@ class Board:
         return self.grid[y][x] != 0
 
     def is_within_bounds(self, x: int, y: int) -> bool:
-        return (x > 0 and x <= self.width) and (y > 0 and y <= self.height)
+        return (0 <= x < self.width) and (0 <= y < self.height)
 
     def can_place(self, piece: Piece) -> bool:
         return all(
