@@ -13,11 +13,12 @@ class Direction(Enum):
 @dataclass
 class MovePieceInput:
     game_id: str
+    player_id: str
     direction: Direction
 
 
 @dataclass
-class MoviePieceOutput:
+class MovePieceOutput:
     game: Game
     moved: bool
 
@@ -26,20 +27,19 @@ class MovePiece:
     def __init__(self, game_repository: IGameRepository) -> None:
         self._game_repository = game_repository
 
-    def execute(self, input: MovePieceInput):
+    def execute(self, input: MovePieceInput) -> MovePieceOutput:
         game = self._game_repository.get(input.game_id)
         if game is None:
-            raise ValueError(
-                f"Game {input.game_id} not found"
-            )  # TODO create custom exception
+            raise ValueError(f"Game {input.game_id} not found")  # TODO create custom exception
+
+        player = game.get_player(input.player_id)
+        if player is None:
+            raise ValueError(f"Player {input.player_id} not found in game {input.game_id}")
 
         dx, dy = input.direction.value
-        candidate_piece = game.current_piece.moved(dx, dy)
+        moved = player.try_move(dx, dy)
 
-        if not game.board.can_place(candidate_piece):
-            return MoviePieceOutput(game=game, moved=False)
+        if moved:
+            self._game_repository.save(game)
 
-        game.current_piece = candidate_piece
-        self._game_repository.save(game)
-
-        return MoviePieceOutput(game=game, moved=True)
+        return MovePieceOutput(game=game, moved=moved)

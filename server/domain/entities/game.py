@@ -1,33 +1,21 @@
-from domain.entities.board import Board
-from domain.entities.piece import Piece
+from dataclasses import dataclass
+
 from domain.entities.player import Player
 
 
+@dataclass
 class Game:
-    board: Board
-    current_piece: Piece
+    id: str
     players: list[Player]
 
-    def try_move(self, dx: int, dy: int) -> bool:
-        candidate = self.current_piece.moved(dx, dy)
-        if self.board.can_place(candidate):
-            self.current_piece = candidate
-            return True
-        return False
+    def get_player(self, player_id: str) -> Player | None:
+        return next((p for p in self.players if p.id == player_id), None)
 
-    def try_rotate(self, clockwise: bool = True) -> bool:
-        candidate = self.current_piece.rotated(clockwise)
-        if self.board.can_place(candidate):
-            self.current_piece = candidate
-            return True
-        # TODO implement SRS
-        return False
+    @property
+    def alive_players(self) -> list[Player]:
+        return [p for p in self.players if p.is_alive]
 
-    def soft_drop_or_insert(self) -> None:
-        candidate = self.current_piece.moved(0, 1)
-        if self.board.can_place(candidate):
-            self.current_piece = candidate
-        else:
-            self.board.draw_piece(self.current_piece)
-            self.board.clear_full_lines()
-            # TODO spawn next piece...
+    @property
+    def winner(self) -> Player | None:
+        alive = self.alive_players
+        return alive[0] if len(alive) == 1 else None
