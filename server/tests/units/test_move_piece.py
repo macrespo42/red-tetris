@@ -1,5 +1,5 @@
 from tests.fakes import FakeGameRepository
-from use_cases.move_piece import MovePiece, MovePieceInput, MovePieceOutput, Direction
+from use_cases.move_piece import Direction, MovePiece, MovePieceInput, MovePieceOutput
 
 
 def test_move_piece_left_should_move_piece_left_when_possible():
@@ -29,7 +29,7 @@ def test_move_piece_right_should_move_piece_right_when_possible():
 
     assert result.game.id == "42"
     assert result.moved
-    assert repo.game is result.game
+    assert repo.saved
 
 
 def test_move_piece_left_should_not_move_when_blocked_by_left_wall():
@@ -43,7 +43,7 @@ def test_move_piece_left_should_not_move_when_blocked_by_left_wall():
     result: MovePieceOutput = use_case.execute(input=move_piece_input)
 
     assert not result.moved
-    assert repo.game is None
+    assert not repo.saved
 
 
 def test_move_piece_right_should_not_move_when_blocked_by_right_wall():
@@ -57,4 +57,4 @@ def test_move_piece_right_should_not_move_when_blocked_by_right_wall():
     result: MovePieceOutput = use_case.execute(input=move_piece_input)
 
     assert not result.moved
-    assert repo.game is None
+    assert not repo.saved

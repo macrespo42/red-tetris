@@ -1,18 +1,16 @@
-from domain.entities.player import Player
-from domain.entities.piece import Piece, PieceType
 from domain.entities.board import Board
 from domain.entities.game import Game
+from domain.entities.piece import Piece, PieceType
+from domain.entities.player import Player
 from domain.repositories.game_repository import IGameRepository
 
 
 class FakeGameRepository(IGameRepository):
     def __init__(self, piece_x: int = 4) -> None:
         super().__init__()
-        self.game = None
+        self.saved = False
         self._piece_x = piece_x
-
-    def get(self, game_id: str) -> Game | None:
-        game = Game(
+        self.game = Game(
             id="42",
             players=[
                 Player(
@@ -43,7 +41,9 @@ class FakeGameRepository(IGameRepository):
                 ),
             ],
         )
-        return game
+
+    def get(self, game_id: str) -> Game | None:
+        return self.game
 
     def save(self, game: Game) -> None:
-        self.game = game
+        self.saved = True
